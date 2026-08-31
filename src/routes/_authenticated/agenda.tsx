@@ -20,12 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  KIND_LABEL,
-  SCOPE_LABEL,
-  type ChurchEvent,
-  type RsvpStatus,
-} from "@/lib/agenda";
+import { KIND_LABEL, SCOPE_LABEL, type ChurchEvent, type RsvpStatus } from "@/lib/agenda";
 
 export const Route = createFileRoute("/_authenticated/agenda")({
   head: () => ({
@@ -63,9 +58,7 @@ function AgendaPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("events")
-        .select(
-          "*, ministry:ministries(name, color), rede:redes(name, color), mesa:mesas(name)",
-        )
+        .select("*, ministry:ministries(name, color), rede:redes(name, color), mesa:mesas(name)")
         .order("starts_at", { ascending: true });
       if (error) throw error;
       return (data ?? []) as unknown as ChurchEvent[];
@@ -88,7 +81,10 @@ function AgendaPage() {
       if (!user) throw new Error("Faça login para confirmar presença.");
       const { error } = await supabase
         .from("event_rsvps")
-        .upsert({ event_id: eventId, user_id: user.id, status }, { onConflict: "event_id,user_id" });
+        .upsert(
+          { event_id: eventId, user_id: user.id, status },
+          { onConflict: "event_id,user_id" },
+        );
       if (error) throw error;
     },
     onSuccess: () => {
@@ -150,9 +146,7 @@ function AgendaPage() {
 
   const now = Date.now();
   const upcoming = filtered.filter((e) => new Date(e.starts_at).getTime() >= now);
-  const past = filtered
-    .filter((e) => new Date(e.starts_at).getTime() < now)
-    .reverse();
+  const past = filtered.filter((e) => new Date(e.starts_at).getTime() < now).reverse();
   const mine = upcoming.filter((e) => myRsvpByEvent.get(e.id) === "vou");
   const pendingRsvp = upcoming.filter((e) => e.requires_rsvp && !myRsvpByEvent.has(e.id));
 
@@ -230,20 +224,28 @@ function AgendaPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <Select value={scopeFilter} onValueChange={setScopeFilter}>
-            <SelectTrigger className="sm:w-48"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="sm:w-48">
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="todos">Todos os públicos</SelectItem>
               {Object.entries(SCOPE_LABEL).map(([v, l]) => (
-                <SelectItem key={v} value={v}>{l}</SelectItem>
+                <SelectItem key={v} value={v}>
+                  {l}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <Select value={kindFilter} onValueChange={setKindFilter}>
-            <SelectTrigger className="sm:w-44"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="sm:w-44">
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="todos">Todos os tipos</SelectItem>
               {Object.entries(KIND_LABEL).map(([v, l]) => (
-                <SelectItem key={v} value={v}>{l}</SelectItem>
+                <SelectItem key={v} value={v}>
+                  {l}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -260,25 +262,26 @@ function AgendaPage() {
 
           <TabsContent value="proximos" className="mt-6">
             <PanelSection label="Agenda" title="Próximos eventos">
-              {eventsQuery.isLoading
-                ? <EmptyLine>Carregando agenda...</EmptyLine>
-                : upcoming.length === 0 ? (
-                    <div className="border border-dashed border-border p-8 text-center">
-                      <p className="text-sm text-muted-foreground">
-                        Nenhum evento futuro com esses filtros. Crie o primeiro compromisso da agenda.
-                      </p>
-                      <Button
-                        className="evt-cta mt-4"
-                        onClick={() => {
-                          setEditing(null);
-                          setFormOpen(true);
-                        }}
-                      >
-                        <Plus className="h-4 w-4" /> Novo evento
-                      </Button>
-                    </div>
-                  )
-                : renderList(upcoming, "Nenhum evento futuro com esses filtros.")}
+              {eventsQuery.isLoading ? (
+                <EmptyLine>Carregando agenda...</EmptyLine>
+              ) : upcoming.length === 0 ? (
+                <div className="border border-dashed border-border p-8 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Nenhum evento futuro com esses filtros. Crie o primeiro compromisso da agenda.
+                  </p>
+                  <Button
+                    className="evt-cta mt-4"
+                    onClick={() => {
+                      setEditing(null);
+                      setFormOpen(true);
+                    }}
+                  >
+                    <Plus className="h-4 w-4" /> Novo evento
+                  </Button>
+                </div>
+              ) : (
+                renderList(upcoming, "Nenhum evento futuro com esses filtros.")
+              )}
             </PanelSection>
           </TabsContent>
 

@@ -3,13 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -54,7 +48,8 @@ export function SocialManagement() {
     },
   });
 
-  if (isLoading) return <LoadingRegion label="Carregando solicitações de assistência..." children={<div />} />;
+  if (isLoading)
+    return <LoadingRegion label="Carregando solicitações de assistência..." children={<div />} />;
 
   if (!requests || requests.length === 0) {
     return (
@@ -86,7 +81,9 @@ export function SocialManagement() {
               )}
               <Select
                 defaultValue={request.status}
-                onValueChange={(val) => updateStatusMutation.mutate({ id: request.id, status: val })}
+                onValueChange={(val) =>
+                  updateStatusMutation.mutate({ id: request.id, status: val })
+                }
               >
                 <SelectTrigger className="h-7 w-[130px]">
                   <SelectValue />

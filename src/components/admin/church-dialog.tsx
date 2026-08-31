@@ -151,7 +151,10 @@ export function ChurchDialog({
           <div className="grid grid-cols-[1fr_100px] gap-4">
             <div className="space-y-2">
               <Label>Cidade</Label>
-              <Input value={draft.city} onChange={(e) => setDraft({ ...draft, city: e.target.value })} />
+              <Input
+                value={draft.city}
+                onChange={(e) => setDraft({ ...draft, city: e.target.value })}
+              />
             </div>
             <div className="space-y-2">
               <Label>UF</Label>
@@ -181,7 +184,10 @@ export function ChurchDialog({
             </div>
             <div className="space-y-2">
               <Label>Endereço (rua)</Label>
-              <Input value={draft.address} onChange={(e) => setDraft({ ...draft, address: e.target.value })} />
+              <Input
+                value={draft.address}
+                onChange={(e) => setDraft({ ...draft, address: e.target.value })}
+              />
             </div>
           </div>
           <div className="grid grid-cols-[120px_1fr] gap-4">
@@ -204,7 +210,10 @@ export function ChurchDialog({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Telefone</Label>
-              <Input value={draft.phone} onChange={(e) => setDraft({ ...draft, phone: e.target.value })} />
+              <Input
+                value={draft.phone}
+                onChange={(e) => setDraft({ ...draft, phone: e.target.value })}
+              />
             </div>
             <div className="space-y-2">
               <Label>E-mail</Label>
@@ -217,7 +226,11 @@ export function ChurchDialog({
           </div>
           <div className="space-y-2">
             <Label>Observações</Label>
-            <Textarea rows={3} value={draft.notes} onChange={(e) => setDraft({ ...draft, notes: e.target.value })} />
+            <Textarea
+              rows={3}
+              value={draft.notes}
+              onChange={(e) => setDraft({ ...draft, notes: e.target.value })}
+            />
           </div>
           <div className="flex items-center gap-3">
             <Switch
@@ -227,7 +240,10 @@ export function ChurchDialog({
             <Label className="text-sm">É a sede</Label>
           </div>
           <div className="flex items-center gap-3">
-            <Switch checked={draft.is_active} onCheckedChange={(v) => setDraft({ ...draft, is_active: v })} />
+            <Switch
+              checked={draft.is_active}
+              onCheckedChange={(v) => setDraft({ ...draft, is_active: v })}
+            />
             <Label className="text-sm">Ativa</Label>
           </div>
           <Button className="w-full" disabled={save.isPending} onClick={() => save.mutate()}>

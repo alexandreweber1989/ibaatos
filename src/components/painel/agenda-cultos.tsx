@@ -53,9 +53,7 @@ export function AgendaCultos() {
         {rows.map((s) => (
           <li key={s.id} className="flex flex-wrap items-center gap-4 py-4 first:pt-0 last:pb-0">
             <div className="w-16 shrink-0 text-center border border-border rounded-sm py-2">
-              <div className="font-serif text-2xl leading-none">
-                {s.event_date.slice(8, 10)}
-              </div>
+              <div className="font-serif text-2xl leading-none">{s.event_date.slice(8, 10)}</div>
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground mt-1">
                 {formatDateBR(s.event_date, { month: "short" }).replace(".", "")}
               </div>

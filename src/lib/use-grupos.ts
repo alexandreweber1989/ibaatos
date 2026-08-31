@@ -17,8 +17,16 @@ export interface GroupStats {
 }
 
 const EMPTY: GroupStats = { total: 0, leaders: [] };
-const LEADER_ROLES = new Set(["pastor", "apascentador", "lider", "lider_mesa", "lider_rede", "lider_ministerio", "obreiro", "diacono"]);
-
+const LEADER_ROLES = new Set([
+  "pastor",
+  "apascentador",
+  "lider",
+  "lider_mesa",
+  "lider_rede",
+  "lider_ministerio",
+  "obreiro",
+  "diacono",
+]);
 
 /** Papel exercido no grupo tem prioridade; o card mostra quem lidera. */
 function collect(rows: any[], groupKey: string): Record<string, GroupStats> {
@@ -31,18 +39,16 @@ function collect(rows: any[], groupKey: string): Record<string, GroupStats> {
     if (LEADER_ROLES.has(row.role)) {
       stats.leaders.push({
         userId: row.user_id,
-        name: displayMemberName(
-          row.profiles?.full_name,
-          row.role,
-          row.profiles?.gender,
-        ),
+        name: displayMemberName(row.profiles?.full_name, row.role, row.profiles?.gender),
         role: row.role,
       });
     }
   }
   for (const stats of Object.values(map)) {
     stats.leaders.sort(
-      (a, b) => churchFunctionRank(a.role) - churchFunctionRank(b.role) || a.name.localeCompare(b.name, "pt-BR"),
+      (a, b) =>
+        churchFunctionRank(a.role) - churchFunctionRank(b.role) ||
+        a.name.localeCompare(b.name, "pt-BR"),
     );
   }
   return map;
@@ -57,8 +63,12 @@ export function useGroupStats() {
     queryKey: ["group-stats"],
     queryFn: async () => {
       const [redes, mesas] = await Promise.all([
-        supabase.from("rede_members").select("rede_id, user_id, role, profiles:profiles!user_id(full_name, gender)"),
-        supabase.from("mesa_members").select("mesa_id, user_id, role, profiles:profiles!user_id(full_name, gender)"),
+        supabase
+          .from("rede_members")
+          .select("rede_id, user_id, role, profiles:profiles!user_id(full_name, gender)"),
+        supabase
+          .from("mesa_members")
+          .select("mesa_id, user_id, role, profiles:profiles!user_id(full_name, gender)"),
       ]);
       if (redes.error) throw redes.error;
       if (mesas.error) throw mesas.error;

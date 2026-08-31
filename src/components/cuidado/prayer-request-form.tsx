@@ -70,11 +70,15 @@ export function PrayerRequestForm({ onSuccess }: { onSuccess?: () => void }) {
             userName: profile.full_name || "Membro",
             mesaId: profile.mesa_id,
             urgent: true,
-          }
+          },
         });
       }
 
-      toast.success(values.urgent ? "Pedido URGENTE enviado e líderes notificados!" : "Pedido enviado com sucesso!");
+      toast.success(
+        values.urgent
+          ? "Pedido URGENTE enviado e líderes notificados!"
+          : "Pedido enviado com sucesso!",
+      );
       form.reset();
       onSuccess?.();
     } catch (error: any) {
@@ -159,10 +163,7 @@ export function PrayerRequestForm({ onSuccess }: { onSuccess?: () => void }) {
                   </FormDescription>
                 </div>
                 <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}

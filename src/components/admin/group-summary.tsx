@@ -9,9 +9,7 @@ import type { GroupStats } from "@/lib/use-grupos";
  */
 export function GroupSummary({ stats, emptyHint }: { stats: GroupStats; emptyHint: string }) {
   if (stats.total === 0) {
-    return (
-      <p className="text-sm text-muted-foreground">{emptyHint}</p>
-    );
+    return <p className="text-sm text-muted-foreground">{emptyHint}</p>;
   }
 
   return (

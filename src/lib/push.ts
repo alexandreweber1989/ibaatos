@@ -118,7 +118,8 @@ export async function ativarPush(userId: string): Promise<PushStatus> {
   );
   // Detalhe do erro incluído de propósito: sem ele, diagnosticar falha de
   // gravação vira adivinhação.
-  if (error) throw new Error(`Não foi possível salvar a assinatura deste aparelho: ${error.message}`);
+  if (error)
+    throw new Error(`Não foi possível salvar a assinatura deste aparelho: ${error.message}`);
 
   return "ativo";
 }
@@ -142,9 +143,10 @@ export async function desativarPush(): Promise<PushStatus> {
       }
     });
     if (alvos.length > 0) {
-      await (supabase.from("user_push_tokens" as any) as any)
-        .delete()
-        .in("id", alvos.map((a) => a.id));
+      await (supabase.from("user_push_tokens" as any) as any).delete().in(
+        "id",
+        alvos.map((a) => a.id),
+      );
     }
   }
   return "desativado";

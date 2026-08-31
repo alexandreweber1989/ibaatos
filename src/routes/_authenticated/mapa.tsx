@@ -62,7 +62,10 @@ function MapaPage() {
           .from("profiles")
           .select("id, full_name, city, neighborhood, membership_status")
           .eq("membership_status", "ativo"),
-        supabase.from("mesas").select("id, name, meeting_location, is_active").eq("is_active", true),
+        supabase
+          .from("mesas")
+          .select("id, name, meeting_location, is_active")
+          .eq("is_active", true),
       ]);
       if (pessoas.error) throw pessoas.error;
       return {
@@ -73,9 +76,7 @@ function MapaPage() {
   });
 
   const cidades = useMemo(() => {
-    const set = new Set(
-      (data?.pessoas ?? []).map((p) => (p.city ?? "").trim()).filter(Boolean),
-    );
+    const set = new Set((data?.pessoas ?? []).map((p) => (p.city ?? "").trim()).filter(Boolean));
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [data]);
 

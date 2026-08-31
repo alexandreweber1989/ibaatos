@@ -50,18 +50,20 @@ export const approveMembershipRequest = createServerFn({ method: "POST" })
     const userId = created.user?.id;
     if (!userId) throw new Error("Conta criada sem identificador.");
 
-    const { error: profileError } = await supabaseAdmin
-      .from("profiles")
-      .upsert(
-        { id: userId, full_name: req.full_name, email: req.email, phone: req.phone ?? null } as never,
-        { onConflict: "id" },
-      );
+    const { error: profileError } = await supabaseAdmin.from("profiles").upsert(
+      {
+        id: userId,
+        full_name: req.full_name,
+        email: req.email,
+        phone: req.phone ?? null,
+      } as never,
+      { onConflict: "id" },
+    );
     if (profileError) throw new Error(profileError.message);
 
     await supabaseAdmin
       .from("user_roles")
       .upsert({ user_id: userId, role: "membro" } as never, { onConflict: "user_id,role" });
-
 
     const { error: updError } = await supabaseAdmin
       .from("membership_requests")

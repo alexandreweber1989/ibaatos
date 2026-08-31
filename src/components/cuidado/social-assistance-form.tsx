@@ -23,7 +23,9 @@ import { Heart, HandHelping, AlertTriangle } from "lucide-react";
 
 const formSchema = z.object({
   needs_food: z.boolean(),
-  description: z.string().min(10, "Por favor, descreva brevemente a necessidade (mínimo 10 caracteres)."),
+  description: z
+    .string()
+    .min(10, "Por favor, descreva brevemente a necessidade (mínimo 10 caracteres)."),
   urgent: z.boolean(),
 });
 
@@ -62,11 +64,15 @@ export function SocialAssistanceForm({ onSuccess }: { onSuccess?: () => void }) 
             userName: profile?.full_name || "Membro",
             mesaId: profile?.mesa_id,
             urgent: true,
-          }
+          },
         });
       }
 
-      toast.success(values.urgent ? "Pedido URGENTE enviado e assistência notificada!" : "Solicitação enviada ao Atos de Amor!");
+      toast.success(
+        values.urgent
+          ? "Pedido URGENTE enviado e assistência notificada!"
+          : "Solicitação enviada ao Atos de Amor!",
+      );
       form.reset();
       onSuccess?.();
     } catch (error: any) {
@@ -83,8 +89,9 @@ export function SocialAssistanceForm({ onSuccess }: { onSuccess?: () => void }) 
         <Heart className="h-5 w-5 text-rose-500 mt-1 shrink-0" />
         <div className="text-sm text-muted-foreground leading-relaxed">
           <strong className="text-foreground block mb-1">Atos de Amor</strong>
-          Nossa igreja está aqui para estender a mão. Se você ou sua família estão passando por dificuldades, 
-          use este canal para solicitar ajuda. A equipe responsável entrará em contato com total discrição.
+          Nossa igreja está aqui para estender a mão. Se você ou sua família estão passando por
+          dificuldades, use este canal para solicitar ajuda. A equipe responsável entrará em contato
+          com total discrição.
         </div>
       </div>
 
@@ -96,17 +103,13 @@ export function SocialAssistanceForm({ onSuccess }: { onSuccess?: () => void }) 
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
                 <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>
-                    Preciso de auxílio com alimentação (Cesta Básica)
-                  </FormLabel>
+                  <FormLabel>Preciso de auxílio com alimentação (Cesta Básica)</FormLabel>
                   <FormDescription>
-                    Marque esta opção se sua necessidade imediata for alimento. (Notificação Automática)
+                    Marque esta opção se sua necessidade imediata for alimento. (Notificação
+                    Automática)
                   </FormDescription>
                 </div>
               </FormItem>
@@ -146,16 +149,17 @@ export function SocialAssistanceForm({ onSuccess }: { onSuccess?: () => void }) 
                   </FormDescription>
                 </div>
                 <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
           />
 
-          <Button type="submit" className="w-full gap-2 bg-rose-600 hover:bg-rose-700 text-white" disabled={loading}>
+          <Button
+            type="submit"
+            className="w-full gap-2 bg-rose-600 hover:bg-rose-700 text-white"
+            disabled={loading}
+          >
             <HandHelping className="h-4 w-4" />
             {loading ? "Enviando..." : "Solicitar Apoio"}
           </Button>

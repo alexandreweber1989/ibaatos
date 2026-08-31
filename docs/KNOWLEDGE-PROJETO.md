@@ -33,23 +33,23 @@ Igreja → Redes → Mesas → Membros        (Ministérios são transversais)
 **Papel de acesso** (`app_role`) e **função eclesiástica** (`church_function`)
 são coisas diferentes — papel é permissão no sistema, função é posição na igreja:
 
-| `app_role` | `church_function` |
-|---|---|
+| `app_role`                                                                                                 | `church_function`                                                 |
+| ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | `admin_geral`, `admin_ministerio`, `lider_mesa`, `membro`, `admin_livraria`, `admin_cantina`, `admin_kids` | `pastor`, `apascentador`, `lider`, `diacono`, `obreiro`, `membro` |
 
 ## 3. Módulos que JÁ existem
 
 **Verifique antes de criar qualquer coisa.** Rotas em `src/routes/_authenticated/`:
 
-| Área | Rotas |
-|---|---|
-| Núcleo | `dashboard`, `perfil`, `membros`, `redes`, `mesas`, `ministerios`, `mapa`, `manual` |
-| Comunicação | `avisos`, `noticias`, `pregacoes`, `midia`, `agenda` |
-| Cuidado | `cuidado` (oração e assistência), `cuidado-semana` (painel do líder) |
-| Pessoas | `visitantes`, `onboarding` (trilha de integração) |
-| Ministérios | `louvor` (escalas e setlists), `faxina`, `igrejas` (ação social) |
-| Kids | `kids`, `kids.relatorios`, `kids-retirada.$checkinId` |
-| Operação | `livraria`, `cantina` |
+| Área        | Rotas                                                                               |
+| ----------- | ----------------------------------------------------------------------------------- |
+| Núcleo      | `dashboard`, `perfil`, `membros`, `redes`, `mesas`, `ministerios`, `mapa`, `manual` |
+| Comunicação | `avisos`, `noticias`, `pregacoes`, `midia`, `agenda`                                |
+| Cuidado     | `cuidado` (oração e assistência), `cuidado-semana` (painel do líder)                |
+| Pessoas     | `visitantes`, `onboarding` (trilha de integração)                                   |
+| Ministérios | `louvor` (escalas e setlists), `faxina`, `igrejas` (ação social)                    |
+| Kids        | `kids`, `kids.relatorios`, `kids-retirada.$checkinId`                               |
+| Operação    | `livraria`, `cantina`                                                               |
 
 Rotas públicas: `/` (home), `auth`, `kids.visitante`, e APIs em
 `src/routes/api/public/` e `src/routes/api/push/`.
@@ -62,13 +62,14 @@ Rotas públicas: `/` (home), `auth`, `kids.visitante`, e APIs em
 - **Server functions** ficam em `src/lib/*.functions.ts` e usam o padrão:
   ```ts
   createServerFn({ method: "POST" })
-    .middleware([requireSupabaseAuth])   // dá context.supabase e context.userId
+    .middleware([requireSupabaseAuth]) // dá context.supabase e context.userId
     .handler(async ({ data, context }) => {
       const { data: isAdmin } = await context.supabase.rpc("has_role", {
-        _user_id: context.userId, _role: "admin_geral",
+        _user_id: context.userId,
+        _role: "admin_geral",
       });
       if (!isAdmin) throw new Error("...");
-    })
+    });
   ```
 - **Código que só roda no servidor** fica em `src/lib/*.server.ts` e é importado
   dinamicamente (`await import(...)`) dentro do handler — arquivos `.functions.ts`
@@ -108,7 +109,7 @@ Todas são `SECURITY DEFINER` — é assim que se evita recursão de policy.
 ### Regras de RLS aprendidas na prática
 
 1. **Recursão infinita.** Se a policy de A consulta B e a de B consulta A, o
-   Postgres estoura com *"infinite recursion detected in policy"*. Já aconteceu
+   Postgres estoura com _"infinite recursion detected in policy"_. Já aconteceu
    entre `redes`, `mesas` e `mesa_members`. Sempre faça a checagem por função
    `SECURITY DEFINER`.
 2. **Use os valores reais do enum.** `'admin'` **não existe** em `app_role` —

@@ -27,7 +27,10 @@ function extensionFor(file: Blob, fallback = "jpg"): string {
  * Envia a imagem para o Storage e devolve o caminho salvo no banco.
  * `folder` separa crianças de responsáveis para facilitar auditoria.
  */
-export async function uploadKidsPhoto(file: Blob, folder: "criancas" | "responsaveis"): Promise<string> {
+export async function uploadKidsPhoto(
+  file: Blob,
+  folder: "criancas" | "responsaveis",
+): Promise<string> {
   if (file.size > 8 * 1024 * 1024) {
     throw new Error("Imagem muito grande. Use uma foto de até 8 MB.");
   }

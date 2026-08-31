@@ -24,7 +24,8 @@ export const enviarNotificacao = createServerFn({ method: "POST" })
 
     const { enviarPush, resolverPublico } = await import("./push.server");
     const userIds = await resolverPublico(data.audience, data.audienceRef);
-    if (userIds.length === 0) return { enviados: 0, falhas: 0, semAparelho: 0, expiradas: 0, pessoas: 0 };
+    if (userIds.length === 0)
+      return { enviados: 0, falhas: 0, semAparelho: 0, expiradas: 0, pessoas: 0 };
 
     const resultado = await enviarPush(
       userIds,

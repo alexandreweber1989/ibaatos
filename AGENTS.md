@@ -1,4 +1,5 @@
 <!-- LOVABLE:BEGIN -->
+
 > [!IMPORTANT]
 > This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
 > published git history — force pushing, or rebasing/amending/squashing commits
@@ -7,6 +8,7 @@
 >
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
+
 <!-- LOVABLE:END -->
 
 ---
@@ -37,18 +39,20 @@
   resíduo desse ciclo, não uma instrução a cumprir.
 
 ## 1. Toda tarefa começa por uma Issue
+
 Nenhuma mudança é feita sem uma Issue correspondente. Cada Issue deve ser
 **categorizada** com exatamente uma das labels abaixo:
 
-| Label | Quando usar |
-|---|---|
-| `Correção` | Corrigir um comportamento quebrado / bug / regressão. |
-| `Melhoria` | Aprimorar algo que já existe (UX, performance, refactor, processo). |
-| `Nova função` | Criar uma funcionalidade que ainda não existe. |
+| Label         | Quando usar                                                         |
+| ------------- | ------------------------------------------------------------------- |
+| `Correção`    | Corrigir um comportamento quebrado / bug / regressão.               |
+| `Melhoria`    | Aprimorar algo que já existe (UX, performance, refactor, processo). |
+| `Nova função` | Criar uma funcionalidade que ainda não existe.                      |
 
 A Issue deve descrever: **contexto**, **objetivo** e **critérios de aceite**.
 
 ## 2. Toda entrega passa por Pull Request
+
 - **Nunca** faça commit direto em `main`. Trabalhe em uma branch e abra um PR.
 - Nomeie a branch por tipo: `correcao/...`, `melhoria/...` ou `feature/...`.
 - Um PR = uma Issue (mantenha o escopo pequeno e revisável).
@@ -81,6 +85,7 @@ alterações de custo, ou qualquer coisa que afete todos os membros de uma vez.
 > não gerar conflito.
 
 ## 3. Todo Pull Request DEVE conter na descrição
+
 1. **Issue relacionada** — referencie com `Closes #<número>` (ou `Refs #<número>`).
 2. **O que mudou** — resumo claro das alterações.
 3. **Como foi validado** — testes feitos, passos de verificação, preview do Vercel.
@@ -89,6 +94,7 @@ alterações de custo, ou qualquer coisa que afete todos os membros de uma vez.
 Use o modelo em `.github/pull_request_template.md` (preenchido automaticamente).
 
 ## 4. Antes de abrir o PR
+
 - Rode o lint/build local quando possível (`npm run lint`, `npm run build`).
 - Mudanças de banco entram como **migration** em `supabase/migrations/`
   (nunca altere migrations já publicadas — crie uma nova).
@@ -98,6 +104,7 @@ Use o modelo em `.github/pull_request_template.md` (preenchido automaticamente).
   só acessa o que lhe compete.
 
 ## 5. Referências
+
 - **Contexto para agentes de IA** — o mesmo conteúdo deve estar na Knowledge do
   Lovable, em dois níveis:
   - `docs/KNOWLEDGE-WORKSPACE.md` → Knowledge do **Workspace** (regras gerais);

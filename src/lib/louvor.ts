@@ -18,7 +18,11 @@ export type WorshipFunction = (typeof WORSHIP_FUNCTIONS)[number];
 
 /** Agrupamento das funções do louvor por naipe/família. */
 export const FUNCTION_GROUPS: { id: string; label: string; functions: string[] }[] = [
-  { id: "vozes", label: "Vozes", functions: ["Violão (ministro)", "Backvocal", "Vocal", "Ministro(a)", "Backing vocal"] },
+  {
+    id: "vozes",
+    label: "Vozes",
+    functions: ["Violão (ministro)", "Backvocal", "Vocal", "Ministro(a)", "Backing vocal"],
+  },
   { id: "cordas", label: "Cordas", functions: ["Guitarra", "Baixo", "Violão"] },
   { id: "teclas", label: "Teclas", functions: ["Teclado"] },
   { id: "ritmo", label: "Ritmo", functions: ["Bateria", "Percussão"] },
@@ -33,12 +37,36 @@ export function functionGroupId(fn: string): string {
 /** Iniciais para avatares (máx. 2 letras). */
 export function initials(name: string): string {
   const parts = name.trim().split(/\s+/);
-  return ((parts[0]?.[0] ?? "") + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
+  return (
+    (parts[0]?.[0] ?? "") + (parts.length > 1 ? parts[parts.length - 1][0] : "")
+  ).toUpperCase();
 }
 
 export const SONG_KEYS = [
-  "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
-  "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm",
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B",
+  "Cm",
+  "C#m",
+  "Dm",
+  "D#m",
+  "Em",
+  "Fm",
+  "F#m",
+  "Gm",
+  "G#m",
+  "Am",
+  "A#m",
+  "Bm",
 ] as const;
 
 export const TEMPO_LABELS: Record<string, string> = {
@@ -90,13 +118,17 @@ export function relativeDays(iso: string | null): string {
 
 const SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const FLAT_TO_SHARP: Record<string, string> = {
-  Db: "C#", Eb: "D#", Gb: "F#", Ab: "G#", Bb: "A#",
+  Db: "C#",
+  Eb: "D#",
+  Gb: "F#",
+  Ab: "G#",
+  Bb: "A#",
 };
 
 /** Transpõe uma cifra em N semitons preservando o texto ao redor. */
 export function transposeChords(text: string, semitones: number): string {
   if (!semitones) return text;
-  
+
   // Regex para capturar o acorde completo, incluindo baixo após a barra e extensões entre parênteses
   // Ex: C#m7(9), G/B, A#add9
   return text.replace(
@@ -111,9 +143,8 @@ export function transposeChords(text: string, semitones: number): string {
 
       const newRoot = transposeKey(root);
       const newBass = bass ? "/" + transposeKey(bass) : "";
-      
+
       return newRoot + suffix + newBass;
     },
   );
 }
-

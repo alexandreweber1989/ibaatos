@@ -51,7 +51,8 @@ export function FamilySummary({ personId, enabled }: { personId: string; enabled
     return parts.join(" · ");
   })();
 
-  if (!list.length) return <p className="text-sm text-muted-foreground">Nenhum parente vinculado.</p>;
+  if (!list.length)
+    return <p className="text-sm text-muted-foreground">Nenhum parente vinculado.</p>;
 
   return (
     <div className="space-y-3">

@@ -1,12 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Users,
-  CalendarDays,
-  UtensilsCrossed,
-  Sparkles,
-  LayoutDashboard,
-} from "lucide-react";
+import { Users, CalendarDays, UtensilsCrossed, Sparkles, LayoutDashboard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { PageHeader, PageBody } from "@/components/app-shell";
@@ -26,15 +20,9 @@ function DashboardPage() {
     queryKey: ["dashboard-stats"],
     queryFn: async () => {
       const [membros, ministerios, mesas, louvor, visitantes] = await Promise.all([
-        supabase
-          .from("profiles")
-          .select("id, created_at", { count: "exact" }),
-        supabase
-          .from("ministries")
-          .select("id", { count: "exact" }),
-        supabase
-          .from("mesas")
-          .select("id", { count: "exact" }),
+        supabase.from("profiles").select("id, created_at", { count: "exact" }),
+        supabase.from("ministries").select("id", { count: "exact" }),
+        supabase.from("mesas").select("id", { count: "exact" }),
         supabase
           .from("worship_schedules")
           .select("id", { count: "exact" })
@@ -77,9 +65,7 @@ function DashboardPage() {
         <div className="space-y-8">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {isLoading ? (
-              Array.from({ length: isAdmin ? 5 : 3 }).map((_, i) => (
-                <StatTileSkeleton key={i} />
-              ))
+              Array.from({ length: isAdmin ? 5 : 3 }).map((_, i) => <StatTileSkeleton key={i} />)
             ) : isAdmin ? (
               <>
                 <StatTile
@@ -145,10 +131,9 @@ function DashboardPage() {
             <div className="border border-border bg-card p-8 rounded-sm">
               <h2 className="font-serif text-xl mb-4">Bem-vindo(a)</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Este é o centro de comando da Igreja Batista Atos. Aqui você
-                tem acesso rápido aos dados de membresia, ministérios e escalas.
-                Use a barra de pesquisa (Ctrl+K) para encontrar qualquer coisa
-                rapidamente.
+                Este é o centro de comando da Igreja Batista Atos. Aqui você tem acesso rápido aos
+                dados de membresia, ministérios e escalas. Use a barra de pesquisa (Ctrl+K) para
+                encontrar qualquer coisa rapidamente.
               </p>
             </div>
           </div>

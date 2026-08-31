@@ -111,12 +111,17 @@ export function EventCalendar({
                   title={`${e.title} · ${KIND_LABEL[e.kind]}`}
                   className="w-full text-left truncate rounded-sm border border-border px-1 sm:px-1.5 py-0.5 sm:py-1 text-[9px] sm:text-[11px] hover:border-foreground transition-colors"
                 >
-                  {new Date(e.starts_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}{" "}
+                  {new Date(e.starts_at).toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}{" "}
                   {e.title}
                 </button>
               ))}
               {list.length > 3 && (
-                <div className="font-mono text-[10px] text-muted-foreground">+{list.length - 3}</div>
+                <div className="font-mono text-[10px] text-muted-foreground">
+                  +{list.length - 3}
+                </div>
               )}
             </div>
           );

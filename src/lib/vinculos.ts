@@ -34,12 +34,8 @@ export function useAffiliations() {
     queryKey: ["affiliations"],
     queryFn: async () => {
       const [mins, mesas] = await Promise.all([
-        supabase
-          .from("ministry_members")
-          .select("user_id, function_name, ministries(name, color)"),
-        supabase
-          .from("mesa_members")
-          .select("user_id, mesas(name, redes(name, color))"),
+        supabase.from("ministry_members").select("user_id, function_name, ministries(name, color)"),
+        supabase.from("mesa_members").select("user_id, mesas(name, redes(name, color))"),
       ]);
       if (mins.error) throw mins.error;
       if (mesas.error) throw mesas.error;

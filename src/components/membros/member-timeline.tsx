@@ -53,17 +53,25 @@ export function useMemberTimeline(personId: string | undefined, enabled: boolean
       const [profile, ministries, mesas, redes, worship, rsvps] = await Promise.all([
         supabase
           .from("profiles")
-          .select("birth_date, conversion_date, baptism_date, baptism_church, member_since, wedding_date, membership_end_date, membership_status, created_at")
+          .select(
+            "birth_date, conversion_date, baptism_date, baptism_church, member_since, wedding_date, membership_end_date, membership_status, created_at",
+          )
           .eq("id", id)
           .maybeSingle(),
-        supabase.from("ministry_members").select("joined_at, function_name, ministries(name)").eq("user_id", id),
+        supabase
+          .from("ministry_members")
+          .select("joined_at, function_name, ministries(name)")
+          .eq("user_id", id),
         supabase.from("mesa_members").select("joined_at, role, mesas(name)").eq("user_id", id),
         supabase.from("rede_members").select("created_at, role, redes(name)").eq("user_id", id),
         supabase
           .from("worship_schedule_assignments")
           .select("status, function_name, worship_schedules(title, event_date, schedule_type)")
           .eq("user_id", id),
-        supabase.from("event_rsvps").select("status, created_at, events(title, starts_at)").eq("user_id", id),
+        supabase
+          .from("event_rsvps")
+          .select("status, created_at, events(title, starts_at)")
+          .eq("user_id", id),
       ]);
 
       const events: TimelineEvent[] = [];

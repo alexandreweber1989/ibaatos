@@ -14,7 +14,7 @@ import {
   Presentation,
   Pencil,
   CalendarDays,
-  Video, 
+  Video,
   Send,
   Loader2,
   CheckCircle2,
@@ -148,7 +148,11 @@ function PregacoesPage() {
       if (error) throw error;
       return editingId;
     }
-    const { data, error } = await (supabase as any).from("sermons").insert(payload).select("id").single();
+    const { data, error } = await (supabase as any)
+      .from("sermons")
+      .insert(payload)
+      .select("id")
+      .single();
     if (error) throw error;
     return data!.id as string;
   }
@@ -173,7 +177,7 @@ function PregacoesPage() {
       return;
     }
     setYtLoading(true);
-    
+
     // A capa vem do ID do vídeo, carregada direto no navegador.
     const cover = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
     setDraft((d) => ({ ...d, cover_image_url: cover }));
@@ -234,14 +238,17 @@ function PregacoesPage() {
       if (draft.summary) linhas.push("", draft.summary);
       if (pts.length) {
         linhas.push("", "Pontos da mensagem:");
-        pts.forEach((p, i) => linhas.push(`${i + 1}. ${p.title}${p.detail ? ` — ${p.detail}` : ""}`));
+        pts.forEach((p, i) =>
+          linhas.push(`${i + 1}. ${p.title}${p.detail ? ` — ${p.detail}` : ""}`),
+        );
       }
       if (draft.preacher) linhas.push("", `Pregação: ${draft.preacher}`);
-      if (draft.youtube_url?.trim()) linhas.push("", `Assista na íntegra: ${draft.youtube_url.trim()}`);
+      if (draft.youtube_url?.trim())
+        linhas.push("", `Assista na íntegra: ${draft.youtube_url.trim()}`);
 
       const slug = `pregacao-${id}`;
       const newsPayload = {
-        title: (draft.theme?.trim() || draft.title.trim()),
+        title: draft.theme?.trim() || draft.title.trim(),
         slug,
         excerpt: draft.base_verse?.trim() || draft.theme?.trim() || null,
         content: linhas.join("\n") || (draft.theme?.trim() ?? draft.title.trim()),
@@ -255,11 +262,18 @@ function PregacoesPage() {
       const existing = await supabase.from("news").select("id").eq("slug", slug).maybeSingle();
       let newsId: string;
       if (existing.data?.id) {
-        const { error } = await supabase.from("news").update(newsPayload).eq("id", existing.data.id);
+        const { error } = await supabase
+          .from("news")
+          .update(newsPayload)
+          .eq("id", existing.data.id);
         if (error) throw error;
         newsId = existing.data.id;
       } else {
-        const { data, error } = await supabase.from("news").insert(newsPayload).select("id").single();
+        const { data, error } = await supabase
+          .from("news")
+          .insert(newsPayload)
+          .select("id")
+          .single();
         if (error) throw error;
         newsId = data!.id;
       }
@@ -321,7 +335,8 @@ function PregacoesPage() {
       ...d,
       points: d.points.map((p, idx) => (idx === i ? { ...p, ...patch } : p)),
     }));
-  const addPoint = () => setDraft((d) => ({ ...d, points: [...d.points, { title: "", detail: "" }] }));
+  const addPoint = () =>
+    setDraft((d) => ({ ...d, points: [...d.points, { title: "", detail: "" }] }));
   const removePoint = (i: number) =>
     setDraft((d) => ({ ...d, points: d.points.filter((_, idx) => idx !== i) }));
 
@@ -407,9 +422,16 @@ function PregacoesPage() {
                       )}
                     </div>
                     <h3 className="mt-3 font-serif text-xl leading-tight">{s.theme || s.title}</h3>
-                    {s.base_verse && <p className="mt-1 text-sm text-muted-foreground">{s.base_verse}</p>}
+                    {s.base_verse && (
+                      <p className="mt-1 text-sm text-muted-foreground">{s.base_verse}</p>
+                    )}
                     <div className="mt-4 flex items-center gap-2 pt-3 border-t border-border">
-                      <Button size="sm" variant="outline" className="flex-1" onClick={() => openEditor(s)}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1"
+                        onClick={() => openEditor(s)}
+                      >
                         <Pencil className="h-4 w-4" /> Abrir
                       </Button>
                       <Button
@@ -449,7 +471,11 @@ function PregacoesPage() {
               <Save className="h-4 w-4" /> Salvar
             </Button>
             <Button disabled={publish.isPending} onClick={() => publish.mutate()}>
-              {publish.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {publish.isPending ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
               Publicar no feed
             </Button>
           </div>
@@ -461,7 +487,8 @@ function PregacoesPage() {
           <div className="space-y-5">
             <div className="space-y-2 rounded-xl border border-border bg-card/40 p-4">
               <Label className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-primary animate-pulse" /> Link do YouTube da pregação
+                <Sparkles className="h-4 w-4 text-primary animate-pulse" /> Link do YouTube da
+                pregação
               </Label>
               <div className="flex gap-2">
                 <Input
@@ -471,7 +498,11 @@ function PregacoesPage() {
                   placeholder="https://youtu.be/..."
                 />
                 <Button variant="outline" disabled={ytLoading} onClick={() => fetchYouTube()}>
-                  {ytLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
+                  {ytLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Sparkles className="h-4 w-4 mr-2" />
+                  )}
                   {ytLoading ? "Processando..." : "Buscar e Resumir"}
                 </Button>
               </div>

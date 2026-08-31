@@ -21,7 +21,6 @@ import { CheckinQrDialog } from "@/components/kids/checkin-qr-dialog";
 import { KidsPhoto } from "@/components/kids/kids-photo";
 import { EmergencyAlertButton } from "@/components/kids/emergency-alert-button";
 
-
 interface CheckinBoardProps {
   session: KidsSession;
   children: KidsChild[];
@@ -46,10 +45,7 @@ export function CheckinBoard({ session, children }: CheckinBoardProps) {
     refetchInterval: 20000,
   });
 
-  const byChild = useMemo(
-    () => new Map((checkins ?? []).map((c) => [c.child_id, c])),
-    [checkins],
-  );
+  const byChild = useMemo(() => new Map((checkins ?? []).map((c) => [c.child_id, c])), [checkins]);
 
   const checkIn = useMutation({
     mutationFn: async (child: KidsChild) => {
@@ -111,10 +107,10 @@ export function CheckinBoard({ session, children }: CheckinBoardProps) {
                   />
                   <div className="min-w-0">
                     <h4 className="font-serif text-lg truncate">{childDisplayName(child)}</h4>
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
-                    {KIDS_CLASSROOM_LABEL[child.classroom] ?? child.classroom}
-                    {age !== null ? ` · ${age} anos` : ""}
-                  </div>
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
+                      {KIDS_CLASSROOM_LABEL[child.classroom] ?? child.classroom}
+                      {age !== null ? ` · ${age} anos` : ""}
+                    </div>
                   </div>
                 </div>
                 {checkin && (
@@ -144,7 +140,11 @@ export function CheckinBoard({ session, children }: CheckinBoardProps) {
 
               <div className="mt-4 flex items-center gap-2">
                 {!checkin && (
-                  <Button size="sm" onClick={() => checkIn.mutate(child)} disabled={checkIn.isPending}>
+                  <Button
+                    size="sm"
+                    onClick={() => checkIn.mutate(child)}
+                    disabled={checkIn.isPending}
+                  >
                     <Sticker className="h-3.5 w-3.5" /> Fazer check-in
                   </Button>
                 )}

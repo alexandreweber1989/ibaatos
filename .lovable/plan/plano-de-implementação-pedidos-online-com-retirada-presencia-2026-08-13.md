@@ -5,15 +5,18 @@ Ajustar a seção "Fases Concluídas" (Roadmap) no dashboard e garantir que a ex
 ## Alterações Propostas
 
 ### Frontend e Texto
+
 - **Dashboard (`src/routes/_authenticated/dashboard.tsx`)**:
   - Renomear o item "rbca — menus dinâmicos por cargo" (ou similar) no Roadmap para "Pedidos online: reserva com retirada na igreja".
-  - *Nota*: O usuário mencionou "parte 8", que no dashboard corresponde à seção de Roadmap.
+  - _Nota_: O usuário mencionou "parte 8", que no dashboard corresponde à seção de Roadmap.
 
 ### Ajustes nas Lojas (Livraria e Cantina)
+
 - Validar se o fluxo de "retirada na igreja" já está claro nos componentes `LivrariaCatalog` e `CantinaMenus`.
 - Adicionar/reforçar o aviso de retirada presencial nos rodapés dos pedidos.
 
 ## Detalhes Técnicos
+
 - Edição do array de strings no componente `Dashboard` na rota `/_authenticated/dashboard`.
 - Verificação de RLS nas tabelas `orders` e `canteen_reservations` para garantir que apenas o dono e admins acessem os dados.
 
@@ -24,6 +27,7 @@ Ajustar a seção "Fases Concluídas" (Roadmap) no dashboard e garantir que a ex
 **Padrão utilizado:** Feature Refinement / UX Alignment
 
 **Sub-agentes ativados:**
+
 - **UI Architect** — [X] Executado
 - **Supabase Engineer** — [-] Não necessário
 - **Code Auditor** — [X] Executado

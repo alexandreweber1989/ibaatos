@@ -24,9 +24,9 @@ export class GlobalErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
-    reportLovableError(error, { 
+    reportLovableError(error, {
       componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -41,7 +41,8 @@ export class GlobalErrorBoundary extends Component<Props, State> {
             <div className="space-y-2">
               <h1 className="font-serif text-3xl font-bold tracking-tight">Algo não deu certo</h1>
               <p className="text-muted-foreground leading-relaxed">
-                Houve um erro inesperado na plataforma. Já fomos notificados e estamos trabalhando nisso.
+                Houve um erro inesperado na plataforma. Já fomos notificados e estamos trabalhando
+                nisso.
               </p>
             </div>
             {this.state.error && (
@@ -49,9 +50,9 @@ export class GlobalErrorBoundary extends Component<Props, State> {
                 {this.state.error.message}
               </pre>
             )}
-            <Button 
-              onClick={() => window.location.reload()} 
-              variant="outline" 
+            <Button
+              onClick={() => window.location.reload()}
+              variant="outline"
               className="rounded-full px-8"
             >
               <RotateCcw className="mr-2 h-4 w-4" />

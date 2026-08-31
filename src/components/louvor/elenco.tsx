@@ -13,8 +13,20 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { QueryError } from "./visao-geral";
 
 interface MusicianDraft {
@@ -52,13 +64,16 @@ function MusicianDialog({
   const toggle = (fn: string) =>
     setDraft((d) => ({
       ...d,
-      functions: d.functions.includes(fn) ? d.functions.filter((f) => f !== fn) : [...d.functions, fn],
+      functions: d.functions.includes(fn)
+        ? d.functions.filter((f) => f !== fn)
+        : [...d.functions, fn],
     }));
 
   const save = useMutation({
     mutationFn: async () => {
       if (!draft.user_id) throw new Error("Selecione o irmão ou irmã.");
-      if (draft.functions.length === 0) throw new Error("Marque ao menos uma função ou instrumento.");
+      if (draft.functions.length === 0)
+        throw new Error("Marque ao menos uma função ou instrumento.");
       const payload = {
         ministry_id: LOUVOR_MINISTRY_ID,
         user_id: draft.user_id,
@@ -80,7 +95,16 @@ function MusicianDialog({
   });
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) { setDraft(initial); setQ(""); } }}>
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        setOpen(o);
+        if (o) {
+          setDraft(initial);
+          setQ("");
+        }
+      }}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-[88vh] overflow-y-auto">
         <DialogHeader>
@@ -92,12 +116,22 @@ function MusicianDialog({
           <div className="space-y-2">
             <Label>Pessoa (cadastro de Membros)</Label>
             {!initial.id && (
-              <Input placeholder="Buscar pelo nome" value={q} onChange={(e) => setQ(e.target.value)} />
+              <Input
+                placeholder="Buscar pelo nome"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+              />
             )}
             <Select value={draft.user_id} onValueChange={(v) => setDraft({ ...draft, user_id: v })}>
-              <SelectTrigger><SelectValue placeholder="Selecione o membro" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione o membro" />
+              </SelectTrigger>
               <SelectContent className="max-h-60">
-                {options.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}
+                {options.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>
+                    {p.full_name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -127,11 +161,19 @@ function MusicianDialog({
 
           <div className="space-y-2">
             <Label>Observações</Label>
-            <Textarea rows={3} placeholder="Disponibilidade, tom de voz, equipamento próprio..." value={draft.notes} onChange={(e) => setDraft({ ...draft, notes: e.target.value })} />
+            <Textarea
+              rows={3}
+              placeholder="Disponibilidade, tom de voz, equipamento próprio..."
+              value={draft.notes}
+              onChange={(e) => setDraft({ ...draft, notes: e.target.value })}
+            />
           </div>
 
           <div className="flex items-center gap-3">
-            <Switch checked={draft.is_active} onCheckedChange={(v) => setDraft({ ...draft, is_active: v })} />
+            <Switch
+              checked={draft.is_active}
+              onCheckedChange={(v) => setDraft({ ...draft, is_active: v })}
+            />
             <Label className="text-sm">Disponível para escala</Label>
           </div>
 
@@ -165,7 +207,13 @@ export function Elenco() {
 
   if (error) return <QueryError error={error as Error} />;
   if (isLoading) {
-    return <div className="grid sm:grid-cols-2 gap-3">{[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-40 rounded-sm" />)}</div>;
+    return (
+      <div className="grid sm:grid-cols-2 gap-3">
+        {[0, 1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-40 rounded-sm" />
+        ))}
+      </div>
+    );
   }
 
   const takenIds = (musicians ?? []).map((m) => m.user_id);
@@ -173,7 +221,10 @@ export function Elenco() {
   const card = (m: Musician) => {
     const part = history?.[m.user_id];
     return (
-      <div key={m.id} className="flex items-start justify-between gap-3 border border-border bg-background rounded-sm p-3">
+      <div
+        key={m.id}
+        className="flex items-start justify-between gap-3 border border-border bg-background rounded-sm p-3"
+      >
         <div className="flex items-start gap-3">
           <span className="h-9 w-9 shrink-0 rounded-sm bg-muted grid place-items-center font-mono text-[10px] tracking-widest">
             {initials(m.profile?.full_name ?? "?")}
@@ -191,10 +242,25 @@ export function Elenco() {
           <div className="flex gap-1">
             <MusicianDialog
               takenIds={takenIds}
-              initial={{ id: m.id, user_id: m.user_id, functions: m.functions ?? [], notes: m.notes ?? "", is_active: m.is_active }}
-              trigger={<Button variant="ghost" size="icon" aria-label="Editar integrante"><Pencil className="h-4 w-4" /></Button>}
+              initial={{
+                id: m.id,
+                user_id: m.user_id,
+                functions: m.functions ?? [],
+                notes: m.notes ?? "",
+                is_active: m.is_active,
+              }}
+              trigger={
+                <Button variant="ghost" size="icon" aria-label="Editar integrante">
+                  <Pencil className="h-4 w-4" />
+                </Button>
+              }
             />
-            <Button variant="ghost" size="icon" aria-label="Remover integrante" onClick={() => remove.mutate(m.id)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Remover integrante"
+              onClick={() => remove.mutate(m.id)}
+            >
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>
@@ -207,14 +273,18 @@ export function Elenco() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground max-w-2xl">
-          O elenco reúne os irmãos por instrumento e voz. Na aba de escalas você escolhe, função por função,
-          quem serve em cada domingo.
+          O elenco reúne os irmãos por instrumento e voz. Na aba de escalas você escolhe, função por
+          função, quem serve em cada domingo.
         </p>
         {canManage && (
           <MusicianDialog
             takenIds={takenIds}
             initial={emptyDraft}
-            trigger={<Button><UserPlus className="h-4 w-4" /> Adicionar ao louvor</Button>}
+            trigger={
+              <Button>
+                <UserPlus className="h-4 w-4" /> Adicionar ao louvor
+              </Button>
+            }
           />
         )}
       </div>
@@ -240,12 +310,16 @@ export function Elenco() {
         })}
       </div>
 
-      {(musicians ?? []).some((m) => (m.functions ?? []).every((f) => !WORSHIP_FUNCTIONS.includes(f as never))) && (
+      {(musicians ?? []).some((m) =>
+        (m.functions ?? []).every((f) => !WORSHIP_FUNCTIONS.includes(f as never)),
+      ) && (
         <section className="border border-border bg-card rounded-sm p-5 space-y-3">
           <h3 className="font-serif text-2xl leading-none">Outras funções</h3>
           <div className="space-y-2">
             {(musicians ?? [])
-              .filter((m) => (m.functions ?? []).every((f) => !WORSHIP_FUNCTIONS.includes(f as never)))
+              .filter((m) =>
+                (m.functions ?? []).every((f) => !WORSHIP_FUNCTIONS.includes(f as never)),
+              )
               .map(card)}
           </div>
         </section>

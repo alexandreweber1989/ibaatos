@@ -150,18 +150,28 @@ export function RedeDialog({ rede, trigger }: { rede?: RedeRecord; trigger?: Rea
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-3xl">{isEdit ? "Editar rede" : "Nova rede"}</DialogTitle>
+          <DialogTitle className="font-serif text-3xl">
+            {isEdit ? "Editar rede" : "Nova rede"}
+          </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Nome</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Rede Jovens" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Rede Jovens"
+            />
           </div>
           <ChurchSelect value={churchId} onChange={setChurchId} />
 
           <div className="space-y-2">
             <Label>Público-alvo</Label>
-            <Input value={audience} onChange={(e) => setAudience(e.target.value)} placeholder="18 a 29 anos" />
+            <Input
+              value={audience}
+              onChange={(e) => setAudience(e.target.value)}
+              placeholder="18 a 29 anos"
+            />
           </div>
           <div className="space-y-2">
             <Label>
@@ -177,7 +187,11 @@ export function RedeDialog({ rede, trigger }: { rede?: RedeRecord; trigger?: Rea
           </div>
           <div className="space-y-2">
             <Label>Descrição</Label>
-            <Textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
 
           <Button className="w-full" disabled={save.isPending} onClick={() => save.mutate()}>

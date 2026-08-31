@@ -52,11 +52,11 @@ export function MemberRolesDialog({ userId, fullName }: { userId: string; fullNa
         supabase.from("mesas").select("id, name").order("name"),
       ]);
       return {
-        ministries: (m.data ?? []).map(x => ({ value: x.id, label: x.name })),
-        redes: (r.data ?? []).map(x => ({ value: x.id, label: x.name })),
-        mesas: (me.data ?? []).map(x => ({ value: x.id, label: x.name })),
+        ministries: (m.data ?? []).map((x) => ({ value: x.id, label: x.name })),
+        redes: (r.data ?? []).map((x) => ({ value: x.id, label: x.name })),
+        mesas: (me.data ?? []).map((x) => ({ value: x.id, label: x.name })),
       };
-    }
+    },
   });
 
   // Carrega lideranças atuais
@@ -70,11 +70,11 @@ export function MemberRolesDialog({ userId, fullName }: { userId: string; fullNa
         supabase.from("mesa_members").select("mesa_id").eq("user_id", userId),
       ]);
       return {
-        ministries: (m.data ?? []).map(x => x.ministry_id),
-        redes: (r.data ?? []).map(x => x.rede_id),
-        mesas: (me.data ?? []).map(x => x.mesa_id),
+        ministries: (m.data ?? []).map((x) => x.ministry_id),
+        redes: (r.data ?? []).map((x) => x.rede_id),
+        mesas: (me.data ?? []).map((x) => x.mesa_id),
       };
-    }
+    },
   });
 
   useEffect(() => {
@@ -165,7 +165,7 @@ export function MemberRolesDialog({ userId, fullName }: { userId: string; fullNa
             <Users className="h-5 w-5" />
             <h3 className="font-serif text-lg">Liderança de Grupos</h3>
           </div>
-          
+
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Ministérios que lidera</Label>

@@ -67,7 +67,10 @@ export function AddressManager({ mesaId }: { mesaId: string }) {
 
   const remove = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("mesa_addresses" as any).delete().eq("id", id);
+      const { error } = await supabase
+        .from("mesa_addresses" as any)
+        .delete()
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -76,7 +79,7 @@ export function AddressManager({ mesaId }: { mesaId: string }) {
     },
     onError: (e: Error) => toast.error(e.message),
   });
-  
+
   const setMain = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
@@ -155,12 +158,10 @@ export function AddressManager({ mesaId }: { mesaId: string }) {
               />
             </div>
             <div className="flex items-center gap-2 col-span-2 py-1">
-              <Switch
-                id="is-main"
-                checked={isMain}
-                onCheckedChange={setIsMain}
-              />
-              <Label htmlFor="is-main" className="text-xs cursor-pointer">Definir como endereço principal</Label>
+              <Switch id="is-main" checked={isMain} onCheckedChange={setIsMain} />
+              <Label htmlFor="is-main" className="text-xs cursor-pointer">
+                Definir como endereço principal
+              </Label>
             </div>
           </div>
           <div className="flex gap-2 justify-end pt-2">
@@ -168,7 +169,11 @@ export function AddressManager({ mesaId }: { mesaId: string }) {
               Cancelar
             </Button>
             <Button size="sm" onClick={() => add.mutate()} disabled={add.isPending}>
-              {add.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" /> : <Plus className="h-3.5 w-3.5 mr-1" />}
+              {add.isPending ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+              ) : (
+                <Plus className="h-3.5 w-3.5 mr-1" />
+              )}
               Adicionar
             </Button>
           </div>
@@ -213,12 +218,7 @@ export function AddressManager({ mesaId }: { mesaId: string }) {
                     <Star className="h-4 w-4" />
                   </Button>
                 )}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-primary"
-                  asChild
-                >
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" asChild>
                   <a
                     href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addr.full_address)}`}
                     target="_blank"

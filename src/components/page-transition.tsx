@@ -18,9 +18,7 @@ const LABELS: Record<string, string> = {
 };
 
 function labelFor(pathname: string): string {
-  const key = Object.keys(LABELS).find(
-    (k) => pathname === k || pathname.startsWith(k + "/"),
-  );
+  const key = Object.keys(LABELS).find((k) => pathname === k || pathname.startsWith(k + "/"));
   return key ? LABELS[key] : "Atos";
 }
 
@@ -55,7 +53,6 @@ const REVEAL_MS = 340;
 const SETTLE_MS = 50;
 /** Teto de segurança: nunca segura a cortina além disso. */
 const MAX_HOLD_MS = 2500;
-
 
 function pickVariant(exclude?: Variant): Variant {
   const pool = VARIANTS.filter((v) => v !== exclude);
@@ -146,10 +143,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!wipe || wipe.phase !== "reveal") return;
     const id = wipe.id;
-    const timer = window.setTimeout(
-      () => setWipe((w) => (w && w.id === id ? null : w)),
-      REVEAL_MS,
-    );
+    const timer = window.setTimeout(() => setWipe((w) => (w && w.id === id ? null : w)), REVEAL_MS);
     return () => window.clearTimeout(timer);
   }, [wipe]);
 
@@ -170,11 +164,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         >
           <div className="pt-pieces">
             {Array.from({ length: PIECES[wipe.variant] }).map((_, i) => (
-              <span
-                key={i}
-                className="pt-piece"
-                style={{ "--i": i } as React.CSSProperties}
-              />
+              <span key={i} className="pt-piece" style={{ "--i": i } as React.CSSProperties} />
             ))}
           </div>
           <div className="pt-word">

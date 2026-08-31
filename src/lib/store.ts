@@ -74,9 +74,11 @@ export function pixPayload({ key, name, city, amountCents, txid }: PixInput): st
   return partial + crc16(partial);
 }
 
-
 export const ORDER_STATUS: Record<string, { label: string; className: string }> = {
-  aguardando_pagamento: { label: "Aguardando pagamento", className: "bg-muted text-muted-foreground" },
+  aguardando_pagamento: {
+    label: "Aguardando pagamento",
+    className: "bg-muted text-muted-foreground",
+  },
   pago: { label: "Pronto para retirada", className: "bg-primary text-primary-foreground" },
   entregue: { label: "Entregue", className: "bg-muted text-muted-foreground" },
   cancelado: { label: "Cancelado", className: "bg-destructive/10 text-destructive" },

@@ -13,6 +13,7 @@ Implement a visual and functional integration of Sunday Services (Live Streams) 
 ## Proposed Changes
 
 ### Backend & Logic
+
 - **New Server Functions**:
   - `getYoutubeContent`: Fetch the latest videos from both specific channel sections (streams and podcasts).
   - `syncYoutubeVideos`: (Admin only) A manual trigger to refresh the cache.
@@ -21,6 +22,7 @@ Implement a visual and functional integration of Sunday Services (Live Streams) 
   - Add RLS and grants.
 
 ### UI Components
+
 - **Media Hub Refinement (`src/routes/_authenticated/midia.tsx`)**:
   - Add "Cultos de Domingo" and "Estudos Bíblicos (Mesacast)" as primary categories.
   - Create a `YoutubeVideoCard` component with a modern "Neo-Tech" look.
@@ -29,6 +31,7 @@ Implement a visual and functional integration of Sunday Services (Live Streams) 
   - Add a dedicated section for "Último Estudo Bíblico" to encourage engagement.
 
 ### Automation & AI
+
 - **Sermon AI Enhancement**:
   - Integrate the existing AI Summarization tool to automatically process these new videos when they are synced, generating summaries for members.
 

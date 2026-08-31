@@ -92,7 +92,12 @@ export function MemberToolbar({
             placeholder="Situação"
             options={MEMBERSHIP_STATUS}
           />
-          <Picker value={filters.gender} onChange={(v) => set({ gender: v })} placeholder="Sexo" options={GENDERS} />
+          <Picker
+            value={filters.gender}
+            onChange={(v) => set({ gender: v })}
+            placeholder="Sexo"
+            options={GENDERS}
+          />
         </div>
         <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
           <Picker

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/api/public/youtube-metadata")({
     handlers: {
       GET: async ({ request }) => {
         const target = new URL(request.url).searchParams.get("url") ?? "";
-        
+
         try {
           const { getYoutubeMetadata } = await import("@/lib/youtube.server");
           const finalData = await getYoutubeMetadata(target);
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/api/public/youtube-metadata")({
           console.error("[YouTube Metadata] API Error:", error);
           return new Response(
             JSON.stringify({ error: error.message || "Falha ao processar metadados." }),
-            { status: 500, headers: { "Content-Type": "application/json" } }
+            { status: 500, headers: { "Content-Type": "application/json" } },
           );
         }
       },

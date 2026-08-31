@@ -236,10 +236,14 @@ export function EventForm({
             <div className="space-y-2">
               <Label>Tipo</Label>
               <Select value={form.kind} onValueChange={(v) => set("kind", v as EventKind)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   {Object.entries(KIND_LABEL).map(([v, l]) => (
-                    <SelectItem key={v} value={v}>{l}</SelectItem>
+                    <SelectItem key={v} value={v}>
+                      {l}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -247,10 +251,14 @@ export function EventForm({
             <div className="space-y-2">
               <Label>Situação</Label>
               <Select value={form.status} onValueChange={(v) => set("status", v as EventStatus)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   {Object.entries(STATUS_LABEL).map(([v, l]) => (
-                    <SelectItem key={v} value={v}>{l}</SelectItem>
+                    <SelectItem key={v} value={v}>
+                      {l}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -262,12 +270,18 @@ export function EventForm({
               <Label>Público</Label>
               <Select
                 value={form.scope}
-                onValueChange={(v) => setForm((f) => ({ ...f, scope: v as EventScope, target_id: "" }))}
+                onValueChange={(v) =>
+                  setForm((f) => ({ ...f, scope: v as EventScope, target_id: "" }))
+                }
               >
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   {Object.entries(SCOPE_LABEL).map(([v, l]) => (
-                    <SelectItem key={v} value={v}>{l}</SelectItem>
+                    <SelectItem key={v} value={v}>
+                      {l}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -276,10 +290,14 @@ export function EventForm({
               <div className="space-y-2">
                 <Label>{SCOPE_LABEL[form.scope]}</Label>
                 <Select value={form.target_id} onValueChange={(v) => set("target_id", v)}>
-                  <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
                   <SelectContent>
                     {targetOptions.map((t: { id: string; name: string }) => (
-                      <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -353,8 +371,8 @@ export function EventForm({
               </div>
               <div className="flex-1 space-y-3">
                 <p className="text-xs text-muted-foreground">
-                  Envie o card criado pelo ministério de Mídia (JPG, PNG ou WEBP, até 8 MB) ou cole o
-                  link de uma arte já publicada.
+                  Envie o card criado pelo ministério de Mídia (JPG, PNG ou WEBP, até 8 MB) ou cole
+                  o link de uma arte já publicada.
                 </p>
                 <input
                   ref={fileRef}
@@ -407,10 +425,7 @@ export function EventForm({
             </label>
             <label className="flex items-center justify-between border border-border rounded-sm px-4 py-3">
               <span className="text-sm font-medium">Destacar na agenda</span>
-              <Switch
-                checked={form.is_featured}
-                onCheckedChange={(v) => set("is_featured", v)}
-              />
+              <Switch checked={form.is_featured} onCheckedChange={(v) => set("is_featured", v)} />
             </label>
           </div>
 
@@ -436,7 +451,9 @@ export function EventForm({
                     value={form.reminder_lead_time}
                     onValueChange={(v) => set("reminder_lead_time", v)}
                   >
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="15">15 minutos</SelectItem>
                       <SelectItem value="30">30 minutos</SelectItem>
@@ -451,7 +468,9 @@ export function EventForm({
                     value={form.reminder_type}
                     onValueChange={(v) => set("reminder_type", v as any)}
                   >
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="push">Notificação Push</SelectItem>
                       <SelectItem value="email">E-mail</SelectItem>

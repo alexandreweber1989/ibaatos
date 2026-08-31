@@ -20,7 +20,9 @@ export function MinhasEscalas() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("worship_schedule_assignments")
-        .select("id, function_name, status, response_note, schedule:worship_schedules!inner(id, title, schedule_type, event_date, start_time, location, status)")
+        .select(
+          "id, function_name, status, response_note, schedule:worship_schedules!inner(id, title, schedule_type, event_date, start_time, location, status)",
+        )
         .eq("user_id", user!.id);
       if (error) throw error;
       return (data as any[]).filter((a) => a.schedule?.status !== "rascunho");
@@ -43,12 +45,18 @@ export function MinhasEscalas() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const sorted = [...(data ?? [])].sort((a, b) => a.schedule.event_date.localeCompare(b.schedule.event_date));
+  const sorted = [...(data ?? [])].sort((a, b) =>
+    a.schedule.event_date.localeCompare(b.schedule.event_date),
+  );
 
   if (error) return <QueryError error={error as Error} />;
 
   if (sorted.length === 0) {
-    return <p className="text-sm text-muted-foreground">Você não está escalado em nenhum culto ou ensaio no momento.</p>;
+    return (
+      <p className="text-sm text-muted-foreground">
+        Você não está escalado em nenhum culto ou ensaio no momento.
+      </p>
+    );
   }
 
   return (
@@ -58,8 +66,8 @@ export function MinhasEscalas() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                {SCHEDULE_TYPE_LABELS[a.schedule.schedule_type]} · {formatDate(a.schedule.event_date)} ·{" "}
-                {formatTime(a.schedule.start_time)}
+                {SCHEDULE_TYPE_LABELS[a.schedule.schedule_type]} ·{" "}
+                {formatDate(a.schedule.event_date)} · {formatTime(a.schedule.start_time)}
                 {a.schedule.location ? ` · ${a.schedule.location}` : ""}
               </div>
               <h3 className="font-serif text-3xl leading-none mt-1">{a.schedule.title}</h3>
@@ -67,7 +75,9 @@ export function MinhasEscalas() {
                 Sua função: {a.function_name}
               </div>
             </div>
-            <span className={`px-2 py-1 rounded-sm font-mono text-[10px] uppercase tracking-widest ${ASSIGNMENT_STATUS[a.status].className}`}>
+            <span
+              className={`px-2 py-1 rounded-sm font-mono text-[10px] uppercase tracking-widest ${ASSIGNMENT_STATUS[a.status].className}`}
+            >
               {ASSIGNMENT_STATUS[a.status].label}
             </span>
           </div>
@@ -82,7 +92,10 @@ export function MinhasEscalas() {
               <Button onClick={() => respond.mutate({ id: a.id, status: "confirmado" })}>
                 <Check className="h-4 w-4" /> Confirmar
               </Button>
-              <Button variant="outline" onClick={() => respond.mutate({ id: a.id, status: "recusado" })}>
+              <Button
+                variant="outline"
+                onClick={() => respond.mutate({ id: a.id, status: "recusado" })}
+              >
                 <X className="h-4 w-4" /> Não posso
               </Button>
             </div>

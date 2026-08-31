@@ -25,7 +25,7 @@ export const processSermon = createServerFn({ method: "POST" })
     try {
       // Importação dinâmica para manter o bundle do cliente limpo
       const { generateSermonSummary } = await import("./sermon-ai.server");
-      
+
       return await generateSermonSummary(data.youtubeUrl);
     } catch (error) {
       console.error("Erro no processamento da pregação:", error);

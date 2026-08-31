@@ -25,7 +25,12 @@ export type FamilyLink = {
   relative_id: string;
   relation: FamilyRelation;
   note: string | null;
-  relative: { id: string; full_name: string; gender: string | null; birth_date: string | null } | null;
+  relative: {
+    id: string;
+    full_name: string;
+    gender: string | null;
+    birth_date: string | null;
+  } | null;
   /** Somente para filhos: o outro genitor cadastrado, quando existir. */
   otherParent?: { id: string; full_name: string } | null;
 };
@@ -54,7 +59,9 @@ export function useFamilyLinks(personId?: string, enabled = true) {
       if (childIds.length) {
         const { data: parents } = await supabase
           .from("family_links")
-          .select("person_id, relative_id, relation, relative:profiles!family_links_relative_id_fkey(id, full_name)")
+          .select(
+            "person_id, relative_id, relation, relative:profiles!family_links_relative_id_fkey(id, full_name)",
+          )
           .in("person_id", childIds)
           .in("relation", ["pai", "mae"]);
         for (const link of links) {
@@ -71,10 +78,20 @@ export function useFamilyLinks(personId?: string, enabled = true) {
 }
 
 /** Ordena por relevância pastoral: cônjuge, filhos, pais, demais. */
-const ORDER: Record<string, number> = { conjuge: 0, filho: 1, pai: 2, mae: 3, irmao: 4, avo: 5, neto: 6, outro: 7 };
+const ORDER: Record<string, number> = {
+  conjuge: 0,
+  filho: 1,
+  pai: 2,
+  mae: 3,
+  irmao: 4,
+  avo: 5,
+  neto: 6,
+  outro: 7,
+};
 export function sortFamily(links: FamilyLink[]): FamilyLink[] {
   return [...links].sort(
-    (a, b) => (ORDER[a.relation] ?? 9) - (ORDER[b.relation] ?? 9) ||
+    (a, b) =>
+      (ORDER[a.relation] ?? 9) - (ORDER[b.relation] ?? 9) ||
       (a.relative?.full_name ?? "").localeCompare(b.relative?.full_name ?? ""),
   );
 }

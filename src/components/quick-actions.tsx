@@ -1,6 +1,20 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Plus, X, Users, CalendarDays, Network, UtensilsCrossed, Baby, BookOpen, Coffee, Megaphone, Newspaper, Presentation, Sprout } from "lucide-react";
+import {
+  Plus,
+  X,
+  Users,
+  CalendarDays,
+  Network,
+  UtensilsCrossed,
+  Baby,
+  BookOpen,
+  Coffee,
+  Megaphone,
+  Newspaper,
+  Presentation,
+  Sprout,
+} from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 const ACTIONS = [

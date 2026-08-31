@@ -112,7 +112,9 @@ export function Operacao() {
           </Button>
         }
       >
-        {!data?.cardapio && <EmptyLine>Nenhum cardápio publicado para os próximos cultos.</EmptyLine>}
+        {!data?.cardapio && (
+          <EmptyLine>Nenhum cardápio publicado para os próximos cultos.</EmptyLine>
+        )}
         {data?.cardapio && (
           <div>
             <div className="font-serif text-2xl">{data.cardapio.title}</div>

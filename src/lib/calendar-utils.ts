@@ -2,9 +2,11 @@ import { type ChurchEvent } from "./agenda";
 
 export function generateGoogleCalendarUrl(event: ChurchEvent): string {
   const start = new Date(event.starts_at).toISOString().replace(/-|:|\.\d+/g, "");
-  const end = event.ends_at 
+  const end = event.ends_at
     ? new Date(event.ends_at).toISOString().replace(/-|:|\.\d+/g, "")
-    : new Date(new Date(event.starts_at).getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, "");
+    : new Date(new Date(event.starts_at).getTime() + 60 * 60 * 1000)
+        .toISOString()
+        .replace(/-|:|\.\d+/g, "");
 
   const url = new URL("https://www.google.com/calendar/render");
   url.searchParams.append("action", "TEMPLATE");
@@ -12,13 +14,13 @@ export function generateGoogleCalendarUrl(event: ChurchEvent): string {
   url.searchParams.append("dates", `${start}/${end}`);
   if (event.description) url.searchParams.append("details", event.description);
   if (event.location) url.searchParams.append("location", event.location);
-  
+
   return url.toString();
 }
 
 export function generateOutlookUrl(event: ChurchEvent): string {
   const start = new Date(event.starts_at).toISOString();
-  const end = event.ends_at 
+  const end = event.ends_at
     ? new Date(event.ends_at).toISOString()
     : new Date(new Date(event.starts_at).getTime() + 60 * 60 * 1000).toISOString();
 
@@ -30,15 +32,17 @@ export function generateOutlookUrl(event: ChurchEvent): string {
   url.searchParams.append("enddt", end);
   if (event.description) url.searchParams.append("body", event.description);
   if (event.location) url.searchParams.append("location", event.location);
-  
+
   return url.toString();
 }
 
 export function generateICalData(event: ChurchEvent): string {
   const start = new Date(event.starts_at).toISOString().replace(/-|:|\.\d+/g, "");
-  const end = event.ends_at 
+  const end = event.ends_at
     ? new Date(event.ends_at).toISOString().replace(/-|:|\.\d+/g, "")
-    : new Date(new Date(event.starts_at).getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, "");
+    : new Date(new Date(event.starts_at).getTime() + 60 * 60 * 1000)
+        .toISOString()
+        .replace(/-|:|\.\d+/g, "");
 
   const lines = [
     "BEGIN:VCALENDAR",
@@ -50,7 +54,7 @@ export function generateICalData(event: ChurchEvent): string {
     event.description ? `DESCRIPTION:${event.description.replace(/\n/g, "\\n")}` : "",
     event.location ? `LOCATION:${event.location}` : "",
     "END:VEVENT",
-    "END:VCALENDAR"
+    "END:VCALENDAR",
   ].filter(Boolean);
 
   return lines.join("\n");

@@ -113,10 +113,11 @@ export function useOnboardingOverview(limit = 60) {
     const mine = (query.data?.progress ?? []).filter(
       (r: any) => r.person_id === p.id && r.completed_at,
     );
-    const lastAt = mine
-      .map((r: any) => r.completed_at as string)
-      .sort()
-      .pop() ?? null;
+    const lastAt =
+      mine
+        .map((r: any) => r.completed_at as string)
+        .sort()
+        .pop() ?? null;
     return { person: p, done: mine.length, total, lastAt };
   });
 

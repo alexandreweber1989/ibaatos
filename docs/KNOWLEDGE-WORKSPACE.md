@@ -109,7 +109,7 @@ rodar mais de uma vez sem risco.
 **RLS — regras que já custaram caro:**
 
 1. **Recursão infinita.** Se a policy da tabela A consulta a tabela B, e a de B
-   consulta A, o Postgres estoura com *"infinite recursion detected in policy"*.
+   consulta A, o Postgres estoura com _"infinite recursion detected in policy"_.
    Aconteceu entre `redes`, `mesas` e `mesa_members`. **Solução:** mover a
    checagem para funções `SECURITY DEFINER` (que não reavaliam RLS por dentro),
    como `can_view_mesa`, `can_view_rede`, `shares_group`, `is_leadership`.

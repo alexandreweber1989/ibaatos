@@ -106,10 +106,10 @@ export function useMarcarLido() {
     mutationFn: async ({ announcementId, userId }: { announcementId: string; userId: string }) => {
       const { error } = await supabase
         .from("announcement_reads")
-        .upsert(
-          { announcement_id: announcementId, user_id: userId } as any,
-          { onConflict: "announcement_id,user_id", ignoreDuplicates: true },
-        );
+        .upsert({ announcement_id: announcementId, user_id: userId } as any, {
+          onConflict: "announcement_id,user_id",
+          ignoreDuplicates: true,
+        });
       if (error) throw error;
     },
     onSuccess: () => {

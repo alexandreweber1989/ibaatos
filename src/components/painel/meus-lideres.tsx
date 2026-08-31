@@ -17,7 +17,7 @@ interface LeaderRow {
   groupKind: "ministério" | "rede" | "mesa";
 }
 
-/** 
+/**
  * Exibe os responsáveis pelos grupos que o membro participa (ministérios, redes, mesas).
  * Focado em facilitar o contato via WhatsApp para o liderado.
  */
@@ -32,7 +32,10 @@ export function MeusLideres() {
 
       // 1. Buscar participações do usuário
       const [mins, redes, mesas] = await Promise.all([
-        supabase.from("ministry_members").select("ministry_id, ministries(name)").eq("user_id", user.id),
+        supabase
+          .from("ministry_members")
+          .select("ministry_id, ministries(name)")
+          .eq("user_id", user.id),
         supabase.from("rede_members").select("rede_id, redes(name)").eq("user_id", user.id),
         supabase.from("mesa_members").select("mesa_id, mesas(name)").eq("user_id", user.id),
       ]);
@@ -47,14 +50,20 @@ export function MeusLideres() {
       if (minIds.length > 0) {
         const { data } = await supabase
           .from("ministry_members")
-          .select("user_id, function_name, ministries(name), profiles:profiles!inner(full_name, phone, gender, church_function)")
+          .select(
+            "user_id, function_name, ministries(name), profiles:profiles!inner(full_name, phone, gender, church_function)",
+          )
           .in("ministry_id", minIds)
           .filter("function_name", "ilike", "respons%");
-        
+
         data?.forEach((row: any) => {
           results.push({
             userId: row.user_id,
-            name: displayMemberName(row.profiles.full_name, row.profiles.church_function, row.profiles.gender),
+            name: displayMemberName(
+              row.profiles.full_name,
+              row.profiles.church_function,
+              row.profiles.gender,
+            ),
             phone: row.profiles.phone,
             churchFunction: row.profiles.church_function,
             gender: row.profiles.gender,
@@ -67,14 +76,20 @@ export function MeusLideres() {
       if (redeIds.length > 0) {
         const { data } = await supabase
           .from("rede_members")
-          .select("user_id, role, redes(name), profiles:profiles!inner(full_name, phone, gender, church_function)")
+          .select(
+            "user_id, role, redes(name), profiles:profiles!inner(full_name, phone, gender, church_function)",
+          )
           .in("rede_id", redeIds)
           .in("role", ["pastor", "apascentador", "lider"]);
-        
+
         data?.forEach((row: any) => {
           results.push({
             userId: row.user_id,
-            name: displayMemberName(row.profiles.full_name, row.profiles.church_function, row.profiles.gender),
+            name: displayMemberName(
+              row.profiles.full_name,
+              row.profiles.church_function,
+              row.profiles.gender,
+            ),
             phone: row.profiles.phone,
             churchFunction: row.profiles.church_function,
             gender: row.profiles.gender,
@@ -87,14 +102,20 @@ export function MeusLideres() {
       if (mesaIds.length > 0) {
         const { data } = await supabase
           .from("mesa_members")
-          .select("user_id, role, mesas(name), profiles:profiles!inner(full_name, phone, gender, church_function)")
+          .select(
+            "user_id, role, mesas(name), profiles:profiles!inner(full_name, phone, gender, church_function)",
+          )
           .in("mesa_id", mesaIds)
           .in("role", ["pastor", "apascentador", "lider"]);
-        
+
         data?.forEach((row: any) => {
           results.push({
             userId: row.user_id,
-            name: displayMemberName(row.profiles.full_name, row.profiles.church_function, row.profiles.gender),
+            name: displayMemberName(
+              row.profiles.full_name,
+              row.profiles.church_function,
+              row.profiles.gender,
+            ),
             phone: row.profiles.phone,
             churchFunction: row.profiles.church_function,
             gender: row.profiles.gender,
@@ -119,8 +140,8 @@ export function MeusLideres() {
   if (!isLoading && (!leaders || leaders.length === 0)) return null;
 
   return (
-    <PanelSection 
-      label="Apoio e Cuidado" 
+    <PanelSection
+      label="Apoio e Cuidado"
       title="Meus Líderes"
       className="animate-in fade-in slide-in-from-bottom-2 duration-500"
     >
@@ -130,10 +151,15 @@ export function MeusLideres() {
         <ul className="grid sm:grid-cols-2 gap-3">
           {leaders?.map((l) => {
             const phone = l.phone?.replace(/\D/g, "");
-            const Icon = l.groupKind === "mesa" ? UtensilsCrossed : (l.groupKind === "rede" ? Compass : ShieldCheck);
-            
+            const Icon =
+              l.groupKind === "mesa"
+                ? UtensilsCrossed
+                : l.groupKind === "rede"
+                  ? Compass
+                  : ShieldCheck;
+
             return (
-              <li 
+              <li
                 key={`${l.userId}-${l.groupName}`}
                 className="flex items-center gap-3 border border-border rounded-sm p-3 hover:bg-muted/30 transition-colors"
               >
@@ -147,9 +173,9 @@ export function MeusLideres() {
                 </div>
                 {phone && (
                   <Button size="icon" variant="ghost" className="shrink-0" asChild>
-                    <a 
-                      href={`https://wa.me/55${phone}`} 
-                      target="_blank" 
+                    <a
+                      href={`https://wa.me/55${phone}`}
+                      target="_blank"
                       rel="noreferrer"
                       title={`Falar com ${l.name}`}
                     >

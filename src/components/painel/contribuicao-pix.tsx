@@ -167,7 +167,7 @@ export function ContribuicaoPix() {
           </div>
         ) : (
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] items-start">
-              <div className="grid grid-cols-1 gap-5">
+            <div className="grid grid-cols-1 gap-5">
               <div className="flex gap-2">
                 {(["dizimo", "oferta"] as Tipo[]).map((t) => (
                   <button
@@ -222,11 +222,22 @@ export function ContribuicaoPix() {
                 </div>
                 <div className="font-mono text-sm break-all">{pixKey}</div>
                 <div className="grid grid-cols-1 sm:flex sm:flex-row gap-3">
-                  <Button variant="outline" className="w-full sm:flex-1 h-11" onClick={() => copy(pixKey, "key")}>
-                    {copied === "key" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  <Button
+                    variant="outline"
+                    className="w-full sm:flex-1 h-11"
+                    onClick={() => copy(pixKey, "key")}
+                  >
+                    {copied === "key" ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
                     Copiar chave
                   </Button>
-                  <Button className="w-full sm:flex-1 h-11" onClick={() => copy(payload, "payload")}>
+                  <Button
+                    className="w-full sm:flex-1 h-11"
+                    onClick={() => copy(payload, "payload")}
+                  >
                     {copied === "payload" ? (
                       <Check className="h-4 w-4" />
                     ) : (

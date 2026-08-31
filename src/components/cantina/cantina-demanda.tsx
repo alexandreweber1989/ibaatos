@@ -80,14 +80,22 @@ export function CantinaDemanda() {
                   <div className="flex items-start justify-between mb-8">
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
-                        <Badge variant="outline" className="font-mono text-[9px] uppercase tracking-widest border-primary/30 text-primary px-3 py-1">
-                          {dateObj.toLocaleDateString("pt-BR", { day: '2-digit', month: '2-digit' })}
+                        <Badge
+                          variant="outline"
+                          className="font-mono text-[9px] uppercase tracking-widest border-primary/30 text-primary px-3 py-1"
+                        >
+                          {dateObj.toLocaleDateString("pt-BR", {
+                            day: "2-digit",
+                            month: "2-digit",
+                          })}
                         </Badge>
                         <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                          {dateObj.toLocaleDateString("pt-BR", { weekday: 'long' })}
+                          {dateObj.toLocaleDateString("pt-BR", { weekday: "long" })}
                         </span>
                       </div>
-                      <h3 className="font-serif text-2xl tracking-tight text-foreground/90 leading-none">{menu.title}</h3>
+                      <h3 className="font-serif text-2xl tracking-tight text-foreground/90 leading-none">
+                        {menu.title}
+                      </h3>
                     </div>
                     <div className="h-10 w-10 rounded-2xl bg-primary/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <TrendingUp className="h-5 w-5 text-primary" />
@@ -110,11 +118,15 @@ export function CantinaDemanda() {
                               </span>
                             </div>
                             <div className="h-2 bg-muted/50 rounded-full overflow-hidden border border-border/20">
-                              <motion.div 
+                              <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${Math.round((qtd / maior) * 100)}%` }}
-                                transition={{ duration: 1, delay: idx * 0.1 + lineIdx * 0.05 + 0.5, ease: "easeOut" }}
-                                className="h-full bg-primary/80 shadow-[0_0_8px_rgba(var(--primary),0.2)]" 
+                                transition={{
+                                  duration: 1,
+                                  delay: idx * 0.1 + lineIdx * 0.05 + 0.5,
+                                  ease: "easeOut",
+                                }}
+                                className="h-full bg-primary/80 shadow-[0_0_8px_rgba(var(--primary),0.2)]"
                               />
                             </div>
                           </div>
@@ -122,11 +134,15 @@ export function CantinaDemanda() {
                       </div>
                     )}
                   </div>
-                  
+
                   {linhas.length > 0 && (
                     <div className="mt-8 pt-6 border-t border-border/50 flex justify-between items-center">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Popularidade por item</span>
-                      <span className="text-xs font-serif text-foreground/50">{doMenu.length} porções totais</span>
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+                        Popularidade por item
+                      </span>
+                      <span className="text-xs font-serif text-foreground/50">
+                        {doMenu.length} porções totais
+                      </span>
                     </div>
                   )}
                 </motion.section>

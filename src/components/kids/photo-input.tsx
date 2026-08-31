@@ -146,10 +146,20 @@ export function PhotoInput({
               disabled={busy}
               onClick={() => fileRef.current?.click()}
             >
-              {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+              {busy ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Upload className="h-3.5 w-3.5" />
+              )}
               Enviar foto
             </Button>
-            <Button type="button" size="sm" variant="outline" disabled={busy} onClick={() => void openCamera()}>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              disabled={busy}
+              onClick={() => void openCamera()}
+            >
               <Camera className="h-3.5 w-3.5" /> Tirar foto
             </Button>
             {value && (

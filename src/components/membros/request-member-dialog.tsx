@@ -94,7 +94,11 @@ export function RequestMemberDialog() {
               placeholder="Mesa, rede ou ministério de origem, vínculo com a igreja…"
             />
           </div>
-          <Button className="w-full" disabled={mutation.isPending} onClick={() => mutation.mutate()}>
+          <Button
+            className="w-full"
+            disabled={mutation.isPending}
+            onClick={() => mutation.mutate()}
+          >
             Enviar solicitação
           </Button>
         </div>

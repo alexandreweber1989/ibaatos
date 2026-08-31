@@ -58,7 +58,7 @@ export function LivrariaCatalog() {
         .filter((l): l is { product: Product; qty: number } => Boolean(l.product) && l.qty > 0),
     [cart, products],
   );
-  
+
   const total = lines.reduce((sum, l) => sum + l.product.price_cents * l.qty, 0);
 
   const setQty = (id: string, delta: number) =>
@@ -99,7 +99,10 @@ export function LivrariaCatalog() {
     return (
       <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="h-[400px] rounded-3xl bg-muted/20 animate-pulse border border-border/50" />
+          <div
+            key={i}
+            className="h-[400px] rounded-3xl bg-muted/20 animate-pulse border border-border/50"
+          />
         ))}
       </div>
     );
@@ -107,15 +110,12 @@ export function LivrariaCatalog() {
 
   return (
     <div className="grid lg:grid-cols-[1fr_380px] gap-8 items-start">
-      <motion.div 
-        layout
-        className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6"
-      >
+      <motion.div layout className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
         <AnimatePresence mode="popLayout">
           {products?.map((p, idx) => {
             const soldOut = p.track_stock && p.stock <= 0;
             const inCart = cart[p.id] ?? 0;
-            
+
             return (
               <motion.div
                 key={p.id}
@@ -126,49 +126,59 @@ export function LivrariaCatalog() {
                 className={cn(
                   "group relative bg-card border border-border/50 rounded-3xl overflow-hidden flex flex-col transition-all duration-300",
                   "hover:shadow-2xl hover:shadow-primary/5 hover:border-primary/20",
-                  inCart > 0 && "ring-2 ring-primary/20 border-primary/30"
+                  inCart > 0 && "ring-2 ring-primary/20 border-primary/30",
                 )}
               >
                 <div className="aspect-[4/3] bg-muted/30 flex items-center justify-center overflow-hidden relative">
                   {p.image_url ? (
-                    <motion.img 
+                    <motion.img
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.6 }}
-                      src={p.image_url} 
-                      alt={p.name} 
-                      loading="lazy" 
-                      className="h-full w-full object-cover" 
+                      src={p.image_url}
+                      alt={p.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
                     />
                   ) : (
                     <Package className="h-12 w-12 text-muted-foreground/30" />
                   )}
-                  
+
                   {soldOut && (
                     <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] flex items-center justify-center">
-                      <Badge variant="destructive" className="font-mono uppercase tracking-widest text-[10px] px-3">
+                      <Badge
+                        variant="destructive"
+                        className="font-mono uppercase tracking-widest text-[10px] px-3"
+                      >
                         Esgotado
                       </Badge>
                     </div>
                   )}
 
                   <div className="absolute top-4 left-4">
-                    <Badge variant="secondary" className="bg-background/80 backdrop-blur-md border-border/50 font-mono text-[9px] uppercase tracking-widest px-2 py-0">
+                    <Badge
+                      variant="secondary"
+                      className="bg-background/80 backdrop-blur-md border-border/50 font-mono text-[9px] uppercase tracking-widest px-2 py-0"
+                    >
                       {p.category}
                     </Badge>
                   </div>
                 </div>
 
                 <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="font-serif text-2xl leading-tight group-hover:text-primary transition-colors">{p.name}</h3>
+                  <h3 className="font-serif text-2xl leading-tight group-hover:text-primary transition-colors">
+                    {p.name}
+                  </h3>
                   {p.description && (
                     <p className="mt-2 text-sm text-muted-foreground line-clamp-2 font-light leading-relaxed">
                       {p.description}
                     </p>
                   )}
-                  
+
                   <div className="mt-auto pt-6 flex items-center justify-between">
                     <div>
-                      <span className="font-serif text-2xl text-foreground">{formatBRL(p.price_cents)}</span>
+                      <span className="font-serif text-2xl text-foreground">
+                        {formatBRL(p.price_cents)}
+                      </span>
                       {p.track_stock && !soldOut && (
                         <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mt-1 opacity-60">
                           {p.stock} em estoque
@@ -180,27 +190,29 @@ export function LivrariaCatalog() {
                       <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-2xl border border-border/50">
                         {inCart > 0 ? (
                           <>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              className="h-9 w-9 rounded-xl hover:bg-background hover:text-primary" 
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-9 w-9 rounded-xl hover:bg-background hover:text-primary"
                               onClick={() => setQty(p.id, -1)}
                             >
                               <Minus className="h-4 w-4" />
                             </Button>
-                            <span className="w-8 text-center font-mono text-sm font-bold">{inCart}</span>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              className="h-9 w-9 rounded-xl hover:bg-background hover:text-primary" 
+                            <span className="w-8 text-center font-mono text-sm font-bold">
+                              {inCart}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-9 w-9 rounded-xl hover:bg-background hover:text-primary"
                               onClick={() => setQty(p.id, 1)}
                             >
                               <Plus className="h-4 w-4" />
                             </Button>
                           </>
                         ) : (
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             className="rounded-xl px-4 h-9 shadow-lg shadow-primary/20"
                             onClick={() => setQty(p.id, 1)}
                           >
@@ -216,7 +228,7 @@ export function LivrariaCatalog() {
             );
           })}
         </AnimatePresence>
-        
+
         {products && products.length === 0 && (
           <div className="col-span-full py-20 text-center border-2 border-dashed border-border/50 rounded-3xl">
             <Package className="h-12 w-12 text-muted-foreground/20 mx-auto mb-4" />
@@ -234,14 +246,16 @@ export function LivrariaCatalog() {
         >
           {/* Decorative elements */}
           <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
-          
+
           <div className="relative">
             <div className="flex items-center gap-3 mb-8">
               <div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center">
                 <ShoppingBag className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary/60 block">Checkout</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary/60 block">
+                  Checkout
+                </span>
                 <span className="font-serif text-xl">Seu Pedido</span>
               </div>
             </div>
@@ -259,9 +273,9 @@ export function LivrariaCatalog() {
               <div className="space-y-6">
                 <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
                   {lines.map((l) => (
-                    <motion.div 
+                    <motion.div
                       layout
-                      key={l.product.id} 
+                      key={l.product.id}
                       className="flex items-center justify-between gap-4 text-sm bg-muted/30 p-3 rounded-2xl border border-border/50"
                     >
                       <div className="flex items-center gap-3 min-w-0">
@@ -274,7 +288,9 @@ export function LivrariaCatalog() {
                         </div>
                         <div className="min-w-0">
                           <p className="font-serif truncate">{l.product.name}</p>
-                          <p className="font-mono text-[10px] text-muted-foreground uppercase">{l.qty} unidades</p>
+                          <p className="font-mono text-[10px] text-muted-foreground uppercase">
+                            {l.qty} unidades
+                          </p>
                         </div>
                       </div>
                       <span className="font-mono font-medium text-primary">
@@ -286,13 +302,17 @@ export function LivrariaCatalog() {
 
                 <div className="pt-6 border-t border-border/50">
                   <div className="flex items-baseline justify-between mb-6">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Total Final</span>
-                    <span className="font-serif text-4xl text-foreground tracking-tighter">{formatBRL(total)}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                      Total Final
+                    </span>
+                    <span className="font-serif text-4xl text-foreground tracking-tighter">
+                      {formatBRL(total)}
+                    </span>
                   </div>
-                  
-                  <Button 
-                    className="w-full h-14 rounded-2xl text-lg font-serif shadow-xl shadow-primary/20 active:scale-[0.98] transition-transform" 
-                    disabled={checkout.isPending} 
+
+                  <Button
+                    className="w-full h-14 rounded-2xl text-lg font-serif shadow-xl shadow-primary/20 active:scale-[0.98] transition-transform"
+                    disabled={checkout.isPending}
                     onClick={() => checkout.mutate()}
                   >
                     {checkout.isPending ? "Processando..." : "Pagar via PIX"}
@@ -301,7 +321,8 @@ export function LivrariaCatalog() {
                   <div className="mt-6 flex gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/10">
                     <Info className="h-5 w-5 text-primary flex-shrink-0" />
                     <p className="text-[11px] text-primary/80 leading-relaxed">
-                      Pagamento via PIX no CNPJ da igreja. Retirada <strong>presencial</strong> com o código gerado após a confirmação.
+                      Pagamento via PIX no CNPJ da igreja. Retirada <strong>presencial</strong> com
+                      o código gerado após a confirmação.
                     </p>
                   </div>
                 </div>

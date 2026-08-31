@@ -68,8 +68,8 @@ function NoticiasPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {news?.map((post) => (
-              <Card 
-                key={post.id} 
+              <Card
+                key={post.id}
                 className="group overflow-hidden border-border/50 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/5 transition-all duration-500 flex flex-col cursor-pointer"
                 onClick={() => {
                   if (isAdmin) {
@@ -98,8 +98,15 @@ function NoticiasPage() {
                 </div>
                 <CardHeader className="flex-1 space-y-3">
                   <div className="flex items-center gap-3 text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
-                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {post.published_at ? new Date(post.published_at).toLocaleDateString("pt-BR") : "Recent"}</span>
-                    <span className="flex items-center gap-1"><User className="h-3 w-3" /> Comunicação</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />{" "}
+                      {post.published_at
+                        ? new Date(post.published_at).toLocaleDateString("pt-BR")
+                        : "Recent"}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <User className="h-3 w-3" /> Comunicação
+                    </span>
                   </div>
                   <CardTitle className="text-2xl font-serif leading-tight group-hover:text-orange-500 transition-colors">
                     {post.title}
@@ -109,8 +116,12 @@ function NoticiasPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <Button variant="ghost" className="w-full group/btn font-mono text-[10px] uppercase tracking-widest border border-border/50 hover:bg-orange-500 hover:text-white transition-all">
-                    Ler matéria completa <ArrowRight className="h-3 w-3 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                  <Button
+                    variant="ghost"
+                    className="w-full group/btn font-mono text-[10px] uppercase tracking-widest border border-border/50 hover:bg-orange-500 hover:text-white transition-all"
+                  >
+                    Ler matéria completa{" "}
+                    <ArrowRight className="h-3 w-3 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
                 </CardContent>
               </Card>

@@ -85,10 +85,10 @@ function MembrosPage() {
   if (loading) {
     return (
       <div className="flex flex-col min-h-full">
-        <PageHeader 
-          eyebrow="Carregando..." 
-          title="Membros" 
-          description="Aguarde enquanto preparamos a listagem da membresia." 
+        <PageHeader
+          eyebrow="Carregando..."
+          title="Membros"
+          description="Aguarde enquanto preparamos a listagem da membresia."
         />
         <PageBody>
           <RowsSkeleton rows={10} />
@@ -100,7 +100,6 @@ function MembrosPage() {
   if (!loading && !isAdmin) {
     throw new Error("Acesso negado. Apenas administradores gerais podem gerenciar membros.");
   }
-
 
   const canRequest = true; // Sempre true se chegou aqui
   const removeMember = useServerFn(deleteMemberAccount);
@@ -122,7 +121,6 @@ function MembrosPage() {
       return data as Profile[];
     },
   });
-
 
   /** Vínculos (ministérios, mesas, redes) de todos os membros, para colorir os cards. */
   const { data: affiliations } = useAffiliations();
@@ -192,7 +190,8 @@ function MembrosPage() {
     const rows = (data ?? []).filter((p) => {
       const haystack = [p.full_name, p.email, p.phone, p.city].join(" ").toLowerCase();
       if (term && !haystack.includes(term)) return false;
-      if (filters.status !== "all" && (p.membership_status ?? "ativo") !== filters.status) return false;
+      if (filters.status !== "all" && (p.membership_status ?? "ativo") !== filters.status)
+        return false;
       if (filters.gender !== "all" && p.gender !== filters.gender) return false;
       if (!matchesAgeBand(p.birth_date, filters.age)) return false;
       if (filters.baptized === "yes" && !p.is_baptized) return false;
@@ -202,7 +201,8 @@ function MembrosPage() {
     });
     const byAge = (p: Profile) => ageFrom(p.birth_date) ?? 999;
     return [...rows].sort((a, b) => {
-      if (filters.sort === "recent") return String(b.created_at).localeCompare(String(a.created_at));
+      if (filters.sort === "recent")
+        return String(b.created_at).localeCompare(String(a.created_at));
       if (filters.sort === "age_asc") return byAge(a) - byAge(b);
       if (filters.sort === "age_desc") return byAge(b) - byAge(a);
       return String(a.full_name ?? "").localeCompare(String(b.full_name ?? ""), "pt-BR");
@@ -253,7 +253,6 @@ function MembrosPage() {
           </div>
         )}
         {isAdmin && <MemberStats members={(data ?? []) as any} />}
-
 
         <MemberToolbar
           filters={filters}
@@ -324,7 +323,10 @@ function MembrosPage() {
                 {pageRows.map((p) => {
                   const userRoles = roles?.filter((r) => r.user_id === p.id) ?? [];
                   return (
-                    <tr key={p.id} className="border-t border-border hover:bg-muted/30 transition-colors">
+                    <tr
+                      key={p.id}
+                      className="border-t border-border hover:bg-muted/30 transition-colors"
+                    >
                       {isAdmin && (
                         <td className="px-4 py-3">
                           <Checkbox
@@ -338,12 +340,17 @@ function MembrosPage() {
                         </td>
                       )}
                       <td className="px-4 py-3">
-                        <button className="flex items-center gap-3 text-left" onClick={() => setDetail(p)}>
+                        <button
+                          className="flex items-center gap-3 text-left"
+                          onClick={() => setDetail(p)}
+                        >
                           <span className="size-9 rounded-sm bg-muted grid place-items-center font-mono text-xs shrink-0">
                             {initialsOf(p.full_name)}
                           </span>
                           <span>
-                            <span className="block font-medium hover:underline">{displayMemberName(p.full_name, p.church_function, p.gender)}</span>
+                            <span className="block font-medium hover:underline">
+                              {displayMemberName(p.full_name, p.church_function, p.gender)}
+                            </span>
                             <span className="block text-xs text-muted-foreground">
                               {p.city ?? "Cidade não informada"}
                             </span>
@@ -354,9 +361,15 @@ function MembrosPage() {
                         <span className="block">{p.email ?? "—"}</span>
                         <span className="block text-xs">{p.phone ?? "—"}</span>
                       </td>
-                      <td className="px-4 py-3 text-muted-foreground">{ageFrom(p.birth_date) ?? "—"}</td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        {ageFrom(p.birth_date) ?? "—"}
+                      </td>
                       <td className="px-4 py-3">
-                        <Badge variant={(p.membership_status ?? "ativo") === "ativo" ? "default" : "secondary"}>
+                        <Badge
+                          variant={
+                            (p.membership_status ?? "ativo") === "ativo" ? "default" : "secondary"
+                          }
+                        >
                           {labelOf(MEMBERSHIP_STATUS, p.membership_status ?? "ativo")}
                         </Badge>
                       </td>
@@ -365,7 +378,8 @@ function MembrosPage() {
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button size="sm" variant="outline">
-                                {userRoles.filter((r) => r.role !== "membro").length || "—"} papel(is)
+                                {userRoles.filter((r) => r.role !== "membro").length || "—"}{" "}
+                                papel(is)
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="start">
@@ -378,7 +392,11 @@ function MembrosPage() {
                                     key={role}
                                     onSelect={(e) => {
                                       e.preventDefault();
-                                      toggleRole.mutate({ userId: p.id, role, existingId: existing?.id });
+                                      toggleRole.mutate({
+                                        userId: p.id,
+                                        role,
+                                        existingId: existing?.id,
+                                      });
                                     }}
                                   >
                                     <span className="mr-2">{existing ? "✓" : "○"}</span>
@@ -420,7 +438,10 @@ function MembrosPage() {
                 })}
                 {pageRows.length === 0 && (
                   <tr>
-                    <td colSpan={isAdmin ? 7 : 5} className="px-4 py-10 text-center text-muted-foreground">
+                    <td
+                      colSpan={isAdmin ? 7 : 5}
+                      className="px-4 py-10 text-center text-muted-foreground"
+                    >
                       Nenhum membro encontrado com esses filtros.
                     </td>
                   </tr>
@@ -460,7 +481,12 @@ function MembrosPage() {
               Página {current} de {totalPages}
             </span>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled={current === 1} onClick={() => setPage(current - 1)}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={current === 1}
+                onClick={() => setPage(current - 1)}
+              >
                 Anterior
               </Button>
               <Button

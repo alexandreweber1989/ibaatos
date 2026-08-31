@@ -37,7 +37,9 @@ export const Route = createFileRoute("/api/public/youtube-oembed")({
           );
         } catch (e) {
           return new Response(
-            JSON.stringify({ error: e instanceof Error ? e.message : "Falha ao consultar o YouTube." }),
+            JSON.stringify({
+              error: e instanceof Error ? e.message : "Falha ao consultar o YouTube.",
+            }),
             { status: 502, headers: { "Content-Type": "application/json" } },
           );
         }

@@ -99,8 +99,8 @@ export function GlobalSearch() {
       </button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput 
-          placeholder="Pesquisar membro, ministério, mesa, louvor..." 
+        <CommandInput
+          placeholder="Pesquisar membro, ministério, mesa, louvor..."
           className="font-medium"
         />
         <CommandList>

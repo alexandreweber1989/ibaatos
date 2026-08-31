@@ -33,7 +33,9 @@ export function ChurchSelect({ value, onChange, label = "Igreja" }: ChurchSelect
       <Label>{label}</Label>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger>
-          <SelectValue placeholder={churches?.length ? "Selecione a igreja" : "Cadastre uma igreja primeiro"} />
+          <SelectValue
+            placeholder={churches?.length ? "Selecione a igreja" : "Cadastre uma igreja primeiro"}
+          />
         </SelectTrigger>
         <SelectContent className="max-h-60">
           {churches?.map((c) => (

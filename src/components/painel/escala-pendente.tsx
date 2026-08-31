@@ -62,8 +62,8 @@ export function EscalaPendente() {
           <li key={a.id} className="space-y-2">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                {SCHEDULE_TYPE_LABELS[a.schedule.schedule_type]} · {formatDate(a.schedule.event_date)} ·{" "}
-                {formatTime(a.schedule.start_time)}
+                {SCHEDULE_TYPE_LABELS[a.schedule.schedule_type]} ·{" "}
+                {formatDate(a.schedule.event_date)} · {formatTime(a.schedule.start_time)}
                 {a.schedule.location ? ` · ${a.schedule.location}` : ""}
               </div>
               <div className="font-serif text-2xl leading-tight">{a.schedule.title}</div>
@@ -81,7 +81,10 @@ export function EscalaPendente() {
               <Button onClick={() => respond.mutate({ id: a.id, status: "confirmado" })}>
                 <Check className="h-4 w-4" /> Vou participar
               </Button>
-              <Button variant="outline" onClick={() => respond.mutate({ id: a.id, status: "recusado" })}>
+              <Button
+                variant="outline"
+                onClick={() => respond.mutate({ id: a.id, status: "recusado" })}
+              >
                 <X className="h-4 w-4" /> Não vou poder
               </Button>
             </div>

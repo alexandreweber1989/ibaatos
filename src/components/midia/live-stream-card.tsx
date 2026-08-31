@@ -35,14 +35,14 @@ export function LiveStreamCard() {
             </p>
           </div>
         )}
-        
+
         {status.isLive && (
           <Badge className="absolute top-4 left-4 bg-red-600 animate-pulse border-none">
             <Radio className="h-3 w-3 mr-1.5" /> AO VIVO
           </Badge>
         )}
       </div>
-      
+
       <CardHeader className="p-5">
         <div className="flex justify-between items-start gap-4">
           <div>
@@ -60,7 +60,7 @@ export function LiveStreamCard() {
           </Button>
         </div>
       </CardHeader>
-      
+
       <CardContent className="px-5 pb-5 pt-0">
         <Button className="w-full bg-red-600 hover:bg-red-700 text-white gap-2" asChild>
           <a href={status.liveUrl} target="_blank" rel="noreferrer">

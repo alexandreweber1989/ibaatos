@@ -38,13 +38,13 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
         .eq("mesa_id", mesa.id);
       if (error) throw error;
       const dataArray = data as any[];
-      
+
       // Auto-selecionar o endereço principal se nenhum estiver selecionado
       if (!addressId && dataArray.length > 0) {
-        const main = dataArray.find(a => a.is_main);
+        const main = dataArray.find((a) => a.is_main);
         if (main) setAddressId(main.id);
       }
-      
+
       return dataArray;
     },
   });
@@ -52,15 +52,17 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
   const createEvent = useMutation({
     mutationFn: async () => {
       if (!date || !time) throw new Error("Data e hora são obrigatórias.");
-      
-      const selectedAddress = addresses?.find(a => a.id === addressId);
-      const locationLabel = selectedAddress 
+
+      const selectedAddress = addresses?.find((a) => a.id === addressId);
+      const locationLabel = selectedAddress
         ? `${selectedAddress.label}: ${selectedAddress.street}, ${selectedAddress.number}`
         : mesa.meeting_location;
 
       const startsAt = new Date(`${date}T${time}:00`).toISOString();
       // Assume 2 horas de duração
-      const endsAt = new Date(new Date(`${date}T${time}:00`).getTime() + 2 * 60 * 60 * 1000).toISOString();
+      const endsAt = new Date(
+        new Date(`${date}T${time}:00`).getTime() + 2 * 60 * 60 * 1000,
+      ).toISOString();
 
       const { error } = await supabase.from("events").insert({
         title: `Reunião - ${mesa.name}`,
@@ -72,9 +74,8 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
         scope: "mesa" as any,
         mesa_id: mesa.id,
         mesa_address_id: addressId || null,
-        created_by: (await supabase.auth.getUser()).data.user?.id
+        created_by: (await supabase.auth.getUser()).data.user?.id,
       } as any);
-
 
       if (error) throw error;
     },
@@ -102,7 +103,7 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
             Agendar Reunião
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -110,9 +111,9 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
                 <CalendarPlus className="h-3.5 w-3.5 text-muted-foreground" />
                 Data
               </Label>
-              <Input 
-                type="date" 
-                value={date} 
+              <Input
+                type="date"
+                value={date}
                 onChange={(e) => setDate(e.target.value)}
                 className="bg-background/50"
               />
@@ -122,9 +123,9 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
                 <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                 Hora
               </Label>
-              <Input 
-                type="time" 
-                value={time} 
+              <Input
+                type="time"
+                value={time}
                 onChange={(e) => setTime(e.target.value)}
                 className="bg-background/50"
               />
@@ -138,14 +139,20 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
             </Label>
             <Select value={addressId} onValueChange={setAddressId}>
               <SelectTrigger className="bg-background/50">
-                <SelectValue placeholder={loadingAddresses ? "Carregando locais..." : "Selecione um local"} />
+                <SelectValue
+                  placeholder={loadingAddresses ? "Carregando locais..." : "Selecione um local"}
+                />
               </SelectTrigger>
               <SelectContent>
                 {addresses?.map((addr) => (
                   <SelectItem key={addr.id} value={addr.id}>
                     <div className="flex items-center gap-2">
                       {addr.label}: {addr.street}, {addr.number}
-                      {addr.is_main && <span className="text-[10px] bg-primary/20 text-primary px-1 rounded font-bold uppercase">Padrão</span>}
+                      {addr.is_main && (
+                        <span className="text-[10px] bg-primary/20 text-primary px-1 rounded font-bold uppercase">
+                          Padrão
+                        </span>
+                      )}
                     </div>
                   </SelectItem>
                 ))}
@@ -161,8 +168,8 @@ export function MesaEventDialog({ mesa }: { mesa: any }) {
             </p>
           </div>
 
-          <Button 
-            className="w-full h-11 text-lg font-serif mt-4" 
+          <Button
+            className="w-full h-11 text-lg font-serif mt-4"
             onClick={() => createEvent.mutate()}
             disabled={createEvent.isPending}
           >

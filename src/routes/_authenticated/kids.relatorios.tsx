@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { 
-  Baby, 
-  Calendar, 
-  Download, 
-  FileText, 
-  Filter, 
-  Search, 
+import {
+  Baby,
+  Calendar,
+  Download,
+  FileText,
+  Filter,
+  Search,
   Users,
   CheckCircle2,
-  XCircle
+  XCircle,
 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,17 +33,16 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  KIDS_CLASSROOM_LABEL, 
-  childDisplayName,
-  shortTime 
-} from "@/lib/kids";
+import { KIDS_CLASSROOM_LABEL, childDisplayName, shortTime } from "@/lib/kids";
 
 export const Route = createFileRoute("/_authenticated/kids/relatorios")({
   head: () => ({
     meta: [
       { title: "Relatórios Kids — Igreja Batista Atos" },
-      { name: "description", content: "Histórico de presença e relatórios do ministério infantil." },
+      {
+        name: "description",
+        content: "Histórico de presença e relatórios do ministério infantil.",
+      },
     ],
   }),
   component: KidsReportsPage,
@@ -60,11 +59,13 @@ function KidsReportsPage() {
     queryFn: async () => {
       let query = supabase
         .from("kids_checkins")
-        .select(`
+        .select(
+          `
           *,
           child:kids_children(*),
           session:kids_sessions(*)
-        `)
+        `,
+        )
         .order("checked_in_at", { ascending: false });
 
       if (dateFrom) query = query.gte("checked_in_at", `${dateFrom}T00:00:00`);
@@ -72,24 +73,34 @@ function KidsReportsPage() {
 
       const { data, error } = await query;
       if (error) throw error;
-      
+
       let filtered = data || [];
       if (classroom !== "all") {
         filtered = filtered.filter((c: any) => c.child?.classroom === classroom);
       }
-      
+
       return filtered;
     },
   });
 
-  const filteredData = checkins?.filter((c: any) => 
-    childDisplayName(c.child).toLowerCase().includes(search.toLowerCase())
-  ) || [];
+  const filteredData =
+    checkins?.filter((c: any) =>
+      childDisplayName(c.child).toLowerCase().includes(search.toLowerCase()),
+    ) || [];
 
   const exportCsv = () => {
     if (!filteredData.length) return;
-    
-    const headers = ["Data", "Criança", "Turma", "Entrada", "Saída", "Responsável (Entrada)", "Responsável (Saída)", "Status"];
+
+    const headers = [
+      "Data",
+      "Criança",
+      "Turma",
+      "Entrada",
+      "Saída",
+      "Responsável (Entrada)",
+      "Responsável (Saída)",
+      "Status",
+    ];
     const rows = filteredData.map((c: any) => [
       new Date(c.checked_in_at).toLocaleDateString("pt-BR"),
       childDisplayName(c.child),
@@ -98,18 +109,18 @@ function KidsReportsPage() {
       shortTime(c.checked_out_at),
       c.dropped_by_name || "",
       c.picked_up_by_name || "",
-      c.status
+      c.status,
     ]);
 
     const csvContent = [
       headers.join(","),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(",")),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", `presenca_kids_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute("download", `presenca_kids_${new Date().toISOString().split("T")[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -138,7 +149,9 @@ function KidsReportsPage() {
             <CardContent>
               <div className="grid gap-4 md:grid-cols-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">Buscar</label>
+                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">
+                    Buscar
+                  </label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -150,7 +163,9 @@ function KidsReportsPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">Turma</label>
+                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">
+                    Turma
+                  </label>
                   <Select value={classroom} onValueChange={setClassroom}>
                     <SelectTrigger className="rounded-xl">
                       <SelectValue placeholder="Todas" />
@@ -158,13 +173,17 @@ function KidsReportsPage() {
                     <SelectContent className="rounded-xl">
                       <SelectItem value="all">Todas as turmas</SelectItem>
                       {Object.entries(KIDS_CLASSROOM_LABEL).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>{label}</SelectItem>
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">De</label>
+                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">
+                    De
+                  </label>
                   <Input
                     type="date"
                     className="rounded-xl"
@@ -173,7 +192,9 @@ function KidsReportsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">Até</label>
+                  <label className="text-xs font-mono uppercase tracking-widest text-muted-foreground ml-1">
+                    Até
+                  </label>
                   <Input
                     type="date"
                     className="rounded-xl"
@@ -189,38 +210,60 @@ function KidsReportsPage() {
             <Table>
               <TableHeader className="bg-muted/50">
                 <TableRow className="hover:bg-transparent border-primary/5">
-                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">Data</TableHead>
-                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">Criança</TableHead>
-                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">Turma</TableHead>
-                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">Horários</TableHead>
-                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">Responsáveis</TableHead>
-                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">Status</TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">
+                    Data
+                  </TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">
+                    Criança
+                  </TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">
+                    Turma
+                  </TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">
+                    Horários
+                  </TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">
+                    Responsáveis
+                  </TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-widest">
+                    Status
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isLoading ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="h-32 text-center text-muted-foreground italic">
+                    <TableCell
+                      colSpan={6}
+                      className="h-32 text-center text-muted-foreground italic"
+                    >
                       Carregando histórico...
                     </TableCell>
                   </TableRow>
                 ) : filteredData.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="h-32 text-center text-muted-foreground italic">
+                    <TableCell
+                      colSpan={6}
+                      className="h-32 text-center text-muted-foreground italic"
+                    >
                       Nenhum registro encontrado para os filtros selecionados.
                     </TableCell>
                   </TableRow>
                 ) : (
                   filteredData.map((c: any) => (
-                    <TableRow key={c.id} className="hover:bg-primary/5 border-primary/5 transition-colors">
+                    <TableRow
+                      key={c.id}
+                      className="hover:bg-primary/5 border-primary/5 transition-colors"
+                    >
                       <TableCell className="font-mono text-xs">
                         {new Date(c.checked_in_at).toLocaleDateString("pt-BR")}
                       </TableCell>
-                      <TableCell className="font-serif">
-                        {childDisplayName(c.child)}
-                      </TableCell>
+                      <TableCell className="font-serif">{childDisplayName(c.child)}</TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="text-[10px] uppercase tracking-widest rounded-lg font-mono">
+                        <Badge
+                          variant="outline"
+                          className="text-[10px] uppercase tracking-widest rounded-lg font-mono"
+                        >
                           {KIDS_CLASSROOM_LABEL[c.child?.classroom] || c.child?.classroom}
                         </Badge>
                       </TableCell>

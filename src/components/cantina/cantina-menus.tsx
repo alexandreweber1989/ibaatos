@@ -146,7 +146,8 @@ export function CantinaMenus() {
         </div>
         <h3 className="text-2xl font-serif mb-2">Cardápio Indisponível</h3>
         <p className="text-muted-foreground max-w-md mx-auto leading-relaxed">
-          Ainda não temos um cardápio publicado para o próximo culto. Fique atento às comunicações da sua Mesa.
+          Ainda não temos um cardápio publicado para o próximo culto. Fique atento às comunicações
+          da sua Mesa.
         </p>
       </div>
     );
@@ -157,22 +158,39 @@ export function CantinaMenus() {
       {/* Hero Header */}
       <section className="relative h-64 md:h-80 rounded-[2.5rem] overflow-hidden group shadow-2xl shadow-black/20">
         {activeMenu.art_url ? (
-          <img src={activeMenu.art_url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt={activeMenu.title} />
+          <img
+            src={activeMenu.art_url}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            alt={activeMenu.title}
+          />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/5 to-background border border-primary/20" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
           <div className="flex items-center gap-3 mb-3">
-            <Badge variant="secondary" className="bg-primary/20 text-primary-foreground backdrop-blur-xl border-primary/30 font-mono text-[10px] uppercase tracking-widest px-3">
+            <Badge
+              variant="secondary"
+              className="bg-primary/20 text-primary-foreground backdrop-blur-xl border-primary/30 font-mono text-[10px] uppercase tracking-widest px-3"
+            >
               Cardápio da Semana
             </Badge>
             <div className="flex items-center gap-2 text-white/60 font-mono text-[10px] uppercase tracking-widest">
               <Clock className="h-3 w-3" />
-              {new Date(activeMenu.service_date).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+              {new Date(activeMenu.service_date).toLocaleDateString("pt-BR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
             </div>
           </div>
-          <h2 className="text-4xl md:text-6xl font-serif text-white tracking-tight">{activeMenu.title}</h2>
-          {activeMenu.notes && <p className="text-white/70 mt-4 max-w-2xl font-light italic leading-relaxed">{activeMenu.notes}</p>}
+          <h2 className="text-4xl md:text-6xl font-serif text-white tracking-tight">
+            {activeMenu.title}
+          </h2>
+          {activeMenu.notes && (
+            <p className="text-white/70 mt-4 max-w-2xl font-light italic leading-relaxed">
+              {activeMenu.notes}
+            </p>
+          )}
         </div>
       </section>
 
@@ -189,65 +207,93 @@ export function CantinaMenus() {
             categories.map((cat) => (
               <section key={cat} className="space-y-8">
                 <div className="flex items-center gap-4">
-                  <h3 className="text-2xl font-serif text-foreground/90 pr-4 bg-background z-10">{cat}</h3>
+                  <h3 className="text-2xl font-serif text-foreground/90 pr-4 bg-background z-10">
+                    {cat}
+                  </h3>
                   <div className="h-px bg-border/50 flex-1" />
                 </div>
-                
+
                 <div className="grid md:grid-cols-2 gap-6">
-                  {menuItems?.filter(i => i.category === cat).map((item, idx) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className={cn(
-                        "group bg-card border border-border/50 rounded-3xl p-5 flex gap-5 transition-all duration-300",
-                        "hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20",
-                        selectedItems[item.id] > 0 && "ring-2 ring-primary/20 border-primary/30 bg-primary/5"
-                      )}
-                    >
-                      <div className="h-24 w-24 rounded-2xl bg-muted/30 overflow-hidden flex-shrink-0 relative">
-                        {item.image_url ? (
-                          <img src={item.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={item.name} />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Utensils className="h-6 w-6 text-muted-foreground/30" />
-                          </div>
+                  {menuItems
+                    ?.filter((i) => i.category === cat)
+                    .map((item, idx) => (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className={cn(
+                          "group bg-card border border-border/50 rounded-3xl p-5 flex gap-5 transition-all duration-300",
+                          "hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20",
+                          selectedItems[item.id] > 0 &&
+                            "ring-2 ring-primary/20 border-primary/30 bg-primary/5",
                         )}
-                      </div>
-                      
-                      <div className="flex-1 flex flex-col justify-between py-1">
-                        <div>
-                          <h4 className="font-serif text-xl leading-none mb-2">{item.name}</h4>
-                          <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed font-light">
-                            {item.description}
-                          </p>
+                      >
+                        <div className="h-24 w-24 rounded-2xl bg-muted/30 overflow-hidden flex-shrink-0 relative">
+                          {item.image_url ? (
+                            <img
+                              src={item.image_url}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              alt={item.name}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Utensils className="h-6 w-6 text-muted-foreground/30" />
+                            </div>
+                          )}
                         </div>
-                        
-                        <div className="flex items-center justify-between mt-4">
-                          <span className="font-serif text-lg text-primary">{formatBRL(item.price_cents)}</span>
-                          
-                          <div className="flex items-center gap-1 bg-background/50 p-1 rounded-xl border border-border/50">
-                            {selectedItems[item.id] > 0 ? (
-                              <>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary" onClick={() => setQty(item.id, -1)}>
-                                  <Minus className="h-3 w-3" />
-                                </Button>
-                                <span className="w-6 text-center font-mono text-xs font-bold">{selectedItems[item.id]}</span>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary" onClick={() => setQty(item.id, 1)}>
+
+                        <div className="flex-1 flex flex-col justify-between py-1">
+                          <div>
+                            <h4 className="font-serif text-xl leading-none mb-2">{item.name}</h4>
+                            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed font-light">
+                              {item.description}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center justify-between mt-4">
+                            <span className="font-serif text-lg text-primary">
+                              {formatBRL(item.price_cents)}
+                            </span>
+
+                            <div className="flex items-center gap-1 bg-background/50 p-1 rounded-xl border border-border/50">
+                              {selectedItems[item.id] > 0 ? (
+                                <>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary"
+                                    onClick={() => setQty(item.id, -1)}
+                                  >
+                                    <Minus className="h-3 w-3" />
+                                  </Button>
+                                  <span className="w-6 text-center font-mono text-xs font-bold">
+                                    {selectedItems[item.id]}
+                                  </span>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary"
+                                    onClick={() => setQty(item.id, 1)}
+                                  >
+                                    <Plus className="h-3 w-3" />
+                                  </Button>
+                                </>
+                              ) : (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary"
+                                  onClick={() => setQty(item.id, 1)}
+                                >
                                   <Plus className="h-3 w-3" />
                                 </Button>
-                              </>
-                            ) : (
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 hover:text-primary" onClick={() => setQty(item.id, 1)}>
-                                <Plus className="h-3 w-3" />
-                              </Button>
-                            )}
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    ))}
                 </div>
               </section>
             ))
@@ -262,14 +308,16 @@ export function CantinaMenus() {
             className="bg-card border border-border/50 rounded-[2.5rem] p-8 shadow-2xl shadow-black/10 relative overflow-hidden"
           >
             <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl opacity-50" />
-            
+
             <div className="relative space-y-8">
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Utensils className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary/60 block">Reserva</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary/60 block">
+                    Reserva
+                  </span>
                   <span className="font-serif text-2xl">Sua Mesa</span>
                 </div>
               </div>
@@ -288,7 +336,7 @@ export function CantinaMenus() {
                   <div className="space-y-3 max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
                     <AnimatePresence mode="popLayout">
                       {Object.entries(selectedItems).map(([id, qty]) => {
-                        const item = menuItems?.find(i => i.id === id);
+                        const item = menuItems?.find((i) => i.id === id);
                         if (!item) return null;
                         return (
                           <motion.div
@@ -301,13 +349,17 @@ export function CantinaMenus() {
                           >
                             <div className="min-w-0">
                               <p className="font-serif text-sm truncate">{item.name}</p>
-                              <p className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">{qty}x {formatBRL(item.price_cents)}</p>
+                              <p className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">
+                                {qty}x {formatBRL(item.price_cents)}
+                              </p>
                             </div>
                             <div className="flex items-center gap-3 ml-4">
-                              <span className="font-mono text-sm font-bold text-primary">{formatBRL(item.price_cents * qty)}</span>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
+                              <span className="font-mono text-sm font-bold text-primary">
+                                {formatBRL(item.price_cents * qty)}
+                              </span>
+                              <Button
+                                variant="ghost"
+                                size="icon"
                                 className="h-6 w-6 rounded-md opacity-0 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive transition-all"
                                 onClick={() => setQty(id, -qty)}
                               >
@@ -322,12 +374,16 @@ export function CantinaMenus() {
 
                   <div className="pt-8 border-t border-border/50">
                     <div className="flex items-baseline justify-between mb-8">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Total da Reserva</span>
-                      <span className="font-serif text-4xl text-foreground tracking-tighter">{formatBRL(total)}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                        Total da Reserva
+                      </span>
+                      <span className="font-serif text-4xl text-foreground tracking-tighter">
+                        {formatBRL(total)}
+                      </span>
                     </div>
 
-                    <Button 
-                      className="w-full h-16 rounded-2xl text-xl font-serif shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95" 
+                    <Button
+                      className="w-full h-16 rounded-2xl text-xl font-serif shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95"
                       disabled={reserve.isPending}
                       onClick={() => reserve.mutate()}
                     >
@@ -337,9 +393,12 @@ export function CantinaMenus() {
                     <div className="mt-8 flex gap-4 p-5 bg-primary/5 rounded-[1.5rem] border border-primary/10">
                       <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0" />
                       <div>
-                        <p className="text-xs font-serif text-foreground mb-1">Pagamento no local</p>
+                        <p className="text-xs font-serif text-foreground mb-1">
+                          Pagamento no local
+                        </p>
                         <p className="text-[10px] text-muted-foreground leading-relaxed">
-                          Sua reserva garante a disponibilidade. O pagamento é feito diretamente na cantina na hora da retirada.
+                          Sua reserva garante a disponibilidade. O pagamento é feito diretamente na
+                          cantina na hora da retirada.
                         </p>
                       </div>
                     </div>

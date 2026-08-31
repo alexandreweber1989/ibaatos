@@ -36,10 +36,7 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [open, setOpen] = useState(false);
 
-  const selected = useMemo(
-    () => options.filter((o) => value.includes(o.value)),
-    [options, value],
-  );
+  const selected = useMemo(() => options.filter((o) => value.includes(o.value)), [options, value]);
 
   const toggle = (val: string) =>
     onValueChange(value.includes(val) ? value.filter((v) => v !== val) : [...value, val]);
@@ -56,9 +53,7 @@ export function MultiSelect({
             className="w-full justify-between font-normal"
           >
             <span className={cn("truncate", selected.length === 0 && "text-muted-foreground")}>
-              {selected.length === 0
-                ? placeholder
-                : `${selected.length} selecionado(s)`}
+              {selected.length === 0 ? placeholder : `${selected.length} selecionado(s)`}
             </span>
             <ChevronsUpDown className="h-4 w-4 opacity-50" />
           </Button>
@@ -70,11 +65,7 @@ export function MultiSelect({
               <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
               <CommandGroup>
                 {options.map((o) => (
-                  <CommandItem
-                    key={o.value}
-                    value={o.label}
-                    onSelect={() => toggle(o.value)}
-                  >
+                  <CommandItem key={o.value} value={o.label} onSelect={() => toggle(o.value)}>
                     <Check
                       className={cn(
                         "h-4 w-4",

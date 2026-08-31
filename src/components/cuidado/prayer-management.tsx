@@ -69,7 +69,8 @@ export function PrayerManagement() {
     },
   });
 
-  if (isLoading) return <LoadingRegion label="Carregando pedidos de oração..." children={<div />} />;
+  if (isLoading)
+    return <LoadingRegion label="Carregando pedidos de oração..." children={<div />} />;
 
   if (!requests || requests.length === 0) {
     return (

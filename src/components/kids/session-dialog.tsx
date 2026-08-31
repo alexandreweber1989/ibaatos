@@ -111,7 +111,11 @@ export function SessionDialog({
           </div>
           <div className="space-y-2">
             <Label>Sala</Label>
-            <Input value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Ex.: Sala 2" />
+            <Input
+              value={room}
+              onChange={(e) => setRoom(e.target.value)}
+              placeholder="Ex.: Sala 2"
+            />
           </div>
           <ChurchSelect value={churchId} onChange={setChurchId} />
           <div className="space-y-2">

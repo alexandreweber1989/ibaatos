@@ -89,9 +89,10 @@ export function VisitorQueue({ session, churchId }: VisitorQueueProps) {
             special_needs: req.special_needs,
             photo_consent: req.photo_consent,
             can_leave_alone: false,
-            notes: [req.notes, req.other_pickup ? `Também podem retirar: ${req.other_pickup}` : null]
-              .filter(Boolean)
-              .join(" · ") || null,
+            notes:
+              [req.notes, req.other_pickup ? `Também podem retirar: ${req.other_pickup}` : null]
+                .filter(Boolean)
+                .join(" · ") || null,
           })
           .select("id")
           .single();
@@ -311,7 +312,9 @@ function QrDialog() {
             </Button>
             <Button variant="outline" size="sm" asChild>
               <a href={`${url}?kiosk=1`} target="_blank" rel="noreferrer">
-                <span><Check className="h-3.5 w-3.5 inline-block" /> Abrir no tablet (quiosque)</span>
+                <span>
+                  <Check className="h-3.5 w-3.5 inline-block" /> Abrir no tablet (quiosque)
+                </span>
               </a>
             </Button>
           </div>

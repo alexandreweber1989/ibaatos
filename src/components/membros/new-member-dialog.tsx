@@ -27,8 +27,7 @@ export function NewMemberDialog() {
   const create = useServerFn(createMemberAccount);
 
   const mutation = useMutation({
-    mutationFn: async () =>
-      create({ data: { full_name: fullName, email, phone, password } }),
+    mutationFn: async () => create({ data: { full_name: fullName, email, phone, password } }),
     onSuccess: () => {
       toast.success("Membro criado com acesso à plataforma.");
       setOpen(false);
@@ -45,7 +44,9 @@ export function NewMemberDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button><Plus className="h-4 w-4" /> Novo membro</Button>
+        <Button>
+          <Plus className="h-4 w-4" /> Novo membro
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -71,7 +72,11 @@ export function NewMemberDialog() {
             <Label>Senha inicial (mín. 8 caracteres)</Label>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <Button className="w-full" disabled={mutation.isPending} onClick={() => mutation.mutate()}>
+          <Button
+            className="w-full"
+            disabled={mutation.isPending}
+            onClick={() => mutation.mutate()}
+          >
             Criar membro
           </Button>
         </div>

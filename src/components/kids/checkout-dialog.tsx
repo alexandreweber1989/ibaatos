@@ -59,9 +59,11 @@ export function CheckoutPanel({ checkin, childName, onDone }: CheckoutPanelProps
   const confirm = useMutation({
     mutationFn: async () => {
       if (code.trim().toUpperCase() !== checkin.security_code)
-        throw new Error("Código de segurança incorreto. Peça ao responsável para mostrar o código no celular.");
+        throw new Error(
+          "Código de segurança incorreto. Peça ao responsável para mostrar o código no celular.",
+        );
       if (!pickedBy.trim()) throw new Error("Selecione ou informe quem está retirando a criança.");
-      
+
       const { error } = await supabase
         .from("kids_checkins")
         .update({
@@ -127,7 +129,8 @@ export function CheckoutPanel({ checkin, childName, onDone }: CheckoutPanelProps
             <div className="flex items-center gap-3 p-4 text-destructive bg-destructive/5 rounded-2xl">
               <AlertTriangle className="h-5 w-5 shrink-0" />
               <p className="text-xs font-medium">
-                ALERTA: Nenhum responsável autorizado cadastrado. Não libere sem consultar a coordenação.
+                ALERTA: Nenhum responsável autorizado cadastrado. Não libere sem consultar a
+                coordenação.
               </p>
             </div>
           ) : (
@@ -157,7 +160,12 @@ export function CheckoutPanel({ checkin, childName, onDone }: CheckoutPanelProps
                   </div>
                 </div>
                 {g.phone && (
-                  <Button variant="ghost" size="icon" className="h-9 w-9 text-primary/60 hover:text-primary hover:bg-primary/10 rounded-xl" asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 text-primary/60 hover:text-primary hover:bg-primary/10 rounded-xl"
+                    asChild
+                  >
                     <a
                       href={`https://wa.me/55${g.phone.replace(/\D/g, "")}?text=${encodeURIComponent(
                         `Olá ${g.full_name}, aqui é do Kids da Igreja Atos. ${childName} está saindo da sala agora.`,
@@ -166,7 +174,9 @@ export function CheckoutPanel({ checkin, childName, onDone }: CheckoutPanelProps
                       rel="noopener noreferrer"
                       title="WhatsApp"
                     >
-                      <span><MessageSquare className="h-4 w-4" /></span>
+                      <span>
+                        <MessageSquare className="h-4 w-4" />
+                      </span>
                     </a>
                   </Button>
                 )}
@@ -202,9 +212,9 @@ export function CheckoutPanel({ checkin, childName, onDone }: CheckoutPanelProps
         </div>
       </div>
 
-      <Button 
-        className="w-full h-14 rounded-2xl text-lg font-serif shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 active:scale-[0.98] transition-all" 
-        onClick={() => confirm.mutate()} 
+      <Button
+        className="w-full h-14 rounded-2xl text-lg font-serif shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 active:scale-[0.98] transition-all"
+        onClick={() => confirm.mutate()}
         disabled={confirm.isPending || !code || !pickedBy}
       >
         {confirm.isPending ? "Confirmando..." : "Finalizar Retirada"}
@@ -224,8 +234,13 @@ export function CheckoutDialog({ checkin, childName }: CheckoutDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline" className="rounded-xl border-primary/10 hover:bg-primary/5 hover:text-primary transition-all group">
-          <LogOut className="mr-1.5 h-3.5 w-3.5 group-hover:-translate-x-0.5 transition-transform" /> Entregar
+        <Button
+          size="sm"
+          variant="outline"
+          className="rounded-xl border-primary/10 hover:bg-primary/5 hover:text-primary transition-all group"
+        >
+          <LogOut className="mr-1.5 h-3.5 w-3.5 group-hover:-translate-x-0.5 transition-transform" />{" "}
+          Entregar
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto rounded-[2rem] border-primary/5 p-6 sm:p-8 scrollbar-thin">

@@ -10,9 +10,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface SongDraft {
   id?: string;
@@ -52,7 +63,6 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
   const [isImporting, setIsImporting] = useState(false);
   const qc = useQueryClient();
 
-
   const save = useMutation({
     mutationFn: async () => {
       if (!draft.title.trim()) throw new Error("Informe o título da música.");
@@ -80,7 +90,13 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
   });
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) setDraft(initial); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        setOpen(o);
+        if (o) setDraft(initial);
+      }}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl max-h-[88vh] overflow-y-auto">
         <DialogHeader>
@@ -92,49 +108,84 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Título</Label>
-              <Input value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
+              <Input
+                value={draft.title}
+                onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+              />
             </div>
             <div className="space-y-2">
               <Label>Artista / autor</Label>
-              <Input value={draft.artist} onChange={(e) => setDraft({ ...draft, artist: e.target.value })} />
+              <Input
+                value={draft.artist}
+                onChange={(e) => setDraft({ ...draft, artist: e.target.value })}
+              />
             </div>
           </div>
           <div className="grid sm:grid-cols-4 gap-4">
             <div className="space-y-2">
               <Label>Tom</Label>
-              <Select value={draft.song_key} onValueChange={(v) => setDraft({ ...draft, song_key: v })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+              <Select
+                value={draft.song_key}
+                onValueChange={(v) => setDraft({ ...draft, song_key: v })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent className="max-h-60">
-                  {SONG_KEYS.map((k) => <SelectItem key={k} value={k}>{k}</SelectItem>)}
+                  {SONG_KEYS.map((k) => (
+                    <SelectItem key={k} value={k}>
+                      {k}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
               <Label>BPM</Label>
-              <Input type="number" value={draft.bpm} onChange={(e) => setDraft({ ...draft, bpm: e.target.value })} />
+              <Input
+                type="number"
+                value={draft.bpm}
+                onChange={(e) => setDraft({ ...draft, bpm: e.target.value })}
+              />
             </div>
             <div className="space-y-2">
               <Label>Andamento</Label>
               <Select value={draft.tempo} onValueChange={(v) => setDraft({ ...draft, tempo: v })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(TEMPO_LABELS).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
+                  {Object.entries(TEMPO_LABELS).map(([v, l]) => (
+                    <SelectItem key={v} value={v}>
+                      {l}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
               <Label>Tema</Label>
-              <Input value={draft.theme} onChange={(e) => setDraft({ ...draft, theme: e.target.value })} />
+              <Input
+                value={draft.theme}
+                onChange={(e) => setDraft({ ...draft, theme: e.target.value })}
+              />
             </div>
           </div>
           <div className="space-y-2">
             <Label>Tags (separadas por vírgula)</Label>
-            <Input placeholder="adoracao, celebracao" value={draft.tags} onChange={(e) => setDraft({ ...draft, tags: e.target.value })} />
+            <Input
+              placeholder="adoracao, celebracao"
+              value={draft.tags}
+              onChange={(e) => setDraft({ ...draft, tags: e.target.value })}
+            />
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Link do YouTube</Label>
-              <Input value={draft.youtube_url} onChange={(e) => setDraft({ ...draft, youtube_url: e.target.value })} />
+              <Input
+                value={draft.youtube_url}
+                onChange={(e) => setDraft({ ...draft, youtube_url: e.target.value })}
+              />
             </div>
             <div className="space-y-2">
               <Label>Link do CifraClub / partitura</Label>
@@ -148,11 +199,17 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
                   type="button"
                   variant="secondary"
                   size="icon"
-                  disabled={isImporting || (!draft.sheet_url.includes("cifraclub.com.br") && !draft.sheet_url.includes("cifras.com.br"))}
+                  disabled={
+                    isImporting ||
+                    (!draft.sheet_url.includes("cifraclub.com.br") &&
+                      !draft.sheet_url.includes("cifras.com.br"))
+                  }
                   onClick={async () => {
                     setIsImporting(true);
                     try {
-                      const res = await fetch(`/api/public/import-cifra?url=${encodeURIComponent(draft.sheet_url)}`);
+                      const res = await fetch(
+                        `/api/public/import-cifra?url=${encodeURIComponent(draft.sheet_url)}`,
+                      );
                       const data = await res.json();
                       if (data.error) throw new Error(data.error);
 
@@ -176,7 +233,11 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
                   }}
                   title="Importar automaticamente via link"
                 >
-                  {isImporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
+                  {isImporting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Wand2 className="h-4 w-4" />
+                  )}
                 </Button>
                 {draft.sheet_url && (
                   <a href={draft.sheet_url} target="_blank" rel="noreferrer">
@@ -194,8 +255,8 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
               Importar cifra
             </div>
             <p className="text-xs text-muted-foreground">
-              Abra a página no CifraClub, copie a cifra e cole abaixo. O sistema separa letra e acordes,
-              detecta o tom e deixa tudo pronto para transposição.
+              Abra a página no CifraClub, copie a cifra e cole abaixo. O sistema separa letra e
+              acordes, detecta o tom e deixa tudo pronto para transposição.
             </p>
             <Textarea
               rows={5}
@@ -218,7 +279,8 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
                   ...d,
                   title: d.title || parsed.title || "",
                   artist: d.artist || parsed.artist || "",
-                  song_key: parsed.key && SONG_KEYS.includes(parsed.key as never) ? parsed.key : d.song_key,
+                  song_key:
+                    parsed.key && SONG_KEYS.includes(parsed.key as never) ? parsed.key : d.song_key,
                   chords: parsed.chords,
                   lyrics: parsed.lyrics,
                 }));
@@ -242,10 +304,17 @@ export function SongDialog({ initial, trigger }: { initial: SongDraft; trigger: 
           </div>
           <div className="space-y-2">
             <Label>Letra</Label>
-            <Textarea rows={6} value={draft.lyrics} onChange={(e) => setDraft({ ...draft, lyrics: e.target.value })} />
+            <Textarea
+              rows={6}
+              value={draft.lyrics}
+              onChange={(e) => setDraft({ ...draft, lyrics: e.target.value })}
+            />
           </div>
           <div className="flex items-center gap-3">
-            <Switch checked={draft.is_active} onCheckedChange={(v) => setDraft({ ...draft, is_active: v })} />
+            <Switch
+              checked={draft.is_active}
+              onCheckedChange={(v) => setDraft({ ...draft, is_active: v })}
+            />
             <Label className="text-sm">Ativa no repertório</Label>
           </div>
           <Button className="w-full" disabled={save.isPending} onClick={() => save.mutate()}>

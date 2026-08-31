@@ -161,7 +161,11 @@ export function MembershipRequestsPanel({ compact = false }: { compact?: boolean
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Senha inicial (mín. 8 caracteres)</Label>
-              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             <Button
               className="w-full"

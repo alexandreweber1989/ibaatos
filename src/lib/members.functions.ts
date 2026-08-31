@@ -69,7 +69,6 @@ const schema = z.object({
     .optional(),
 });
 
-
 /**
  * Cria a conta de acesso de um novo membro (auth + perfil).
  * Somente admin geral: a verificação usa o cliente autenticado do chamador,
@@ -111,26 +110,22 @@ export const createMemberAccount = createServerFn({ method: "POST" })
         ([, v]) => v !== undefined && v !== "" && !(Array.isArray(v) && v.length === 0),
       ),
     );
-    const { error: profileError } = await supabaseAdmin
-      .from("profiles")
-      .upsert(
-        {
-          id: userId,
-          full_name: data.full_name,
-          email: data.email,
-          phone: data.phone || null,
-          ...extra,
-        } as any,
-        { onConflict: "id" },
-      );
+    const { error: profileError } = await supabaseAdmin.from("profiles").upsert(
+      {
+        id: userId,
+        full_name: data.full_name,
+        email: data.email,
+        phone: data.phone || null,
+        ...extra,
+      } as any,
+      { onConflict: "id" },
+    );
     if (profileError) throw new Error(profileError.message);
 
     // Papel padrão de acesso à plataforma.
     await supabaseAdmin
       .from("user_roles")
       .upsert({ user_id: userId, role: "membro" } as never, { onConflict: "user_id,role" });
-
-
 
     return { id: userId };
   });
@@ -235,10 +230,9 @@ export const updateMemberRoles = createServerFn({ method: "POST" })
     if (data.roles.length > 0) {
       const { error: insError } = await supabaseAdmin
         .from("user_roles")
-        .upsert(
-          data.roles.map((role) => ({ user_id: data.user_id, role })) as never,
-          { onConflict: "user_id,role" },
-        );
+        .upsert(data.roles.map((role) => ({ user_id: data.user_id, role })) as never, {
+          onConflict: "user_id,role",
+        });
       if (insError) throw new Error(insError.message);
     }
 

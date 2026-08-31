@@ -1,5 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, PackageCheck, TrendingUp, Package, History, CheckCircle2 } from "lucide-react";
+import {
+  AlertTriangle,
+  PackageCheck,
+  TrendingUp,
+  Package,
+  History,
+  CheckCircle2,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -32,7 +39,11 @@ export function LivrariaEstoque() {
       const map = new Map<string, DemandRow>();
       (itens.data ?? []).forEach((i: any) => {
         if (i.orders?.status === "cancelado") return;
-        const row = map.get(i.product_name) ?? { name: i.product_name, quantity: 0, revenueCents: 0 };
+        const row = map.get(i.product_name) ?? {
+          name: i.product_name,
+          quantity: 0,
+          revenueCents: 0,
+        };
         row.quantity += i.quantity;
         row.revenueCents += i.quantity * i.unit_price_cents;
         map.set(i.product_name, row);
@@ -65,7 +76,12 @@ export function LivrariaEstoque() {
       <div className="grid sm:grid-cols-3 gap-6">
         <StatTile label="Saídas (90 dias)" value={totalVendido} icon={PackageCheck} />
         <StatTile label="Receita Estimada" value={formatBRL(receita)} icon={TrendingUp} />
-        <StatTile label="Itens Críticos" value={baixo.length} icon={AlertTriangle} hint="Estoque <= 3" />
+        <StatTile
+          label="Itens Críticos"
+          value={baixo.length}
+          icon={AlertTriangle}
+          hint="Estoque <= 3"
+        />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-10">
@@ -76,7 +92,9 @@ export function LivrariaEstoque() {
               <AlertTriangle className="h-5 w-5 text-destructive" />
             </div>
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground block">Reposição</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground block">
+                Reposição
+              </span>
               <h3 className="font-serif text-2xl tracking-tight">Estoque Crítico</h3>
             </div>
           </div>
@@ -84,17 +102,27 @@ export function LivrariaEstoque() {
           {baixo.length === 0 ? (
             <div className="py-12 text-center bg-muted/20 rounded-2xl border border-dashed border-border/50">
               <CheckCircle2 className="h-8 w-8 text-emerald-500/30 mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground font-light">Todos os itens ativos estão abastecidos.</p>
+              <p className="text-sm text-muted-foreground font-light">
+                Todos os itens ativos estão abastecidos.
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
               {baixo.map((p: any) => (
-                <div key={p.id} className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/50 group hover:border-destructive/30 transition-colors">
+                <div
+                  key={p.id}
+                  className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/50 group hover:border-destructive/30 transition-colors"
+                >
                   <span className="font-serif text-base">{p.name}</span>
-                  <Badge variant="outline" className={cn(
-                    "font-mono text-[9px] uppercase tracking-widest px-3 py-1",
-                    p.stock === 0 ? "border-destructive/30 text-destructive bg-destructive/5" : "border-amber-500/30 text-amber-600 bg-amber-50"
-                  )}>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "font-mono text-[9px] uppercase tracking-widest px-3 py-1",
+                      p.stock === 0
+                        ? "border-destructive/30 text-destructive bg-destructive/5"
+                        : "border-amber-500/30 text-amber-600 bg-amber-50",
+                    )}
+                  >
                     {p.stock === 0 ? "Esgotado" : `${p.stock} unidades`}
                   </Badge>
                 </div>
@@ -110,7 +138,9 @@ export function LivrariaEstoque() {
               <History className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground block">Performance</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground block">
+                Performance
+              </span>
               <h3 className="font-serif text-2xl tracking-tight">Mais Procurados</h3>
             </div>
           </div>
@@ -118,7 +148,9 @@ export function LivrariaEstoque() {
           {demanda.length === 0 ? (
             <div className="py-12 text-center bg-muted/20 rounded-2xl border border-dashed border-border/50">
               <TrendingUp className="h-8 w-8 text-muted-foreground/20 mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground font-light italic">Aguardando dados históricos...</p>
+              <p className="text-sm text-muted-foreground font-light italic">
+                Aguardando dados históricos...
+              </p>
             </div>
           ) : (
             <div className="space-y-6">
@@ -126,8 +158,8 @@ export function LivrariaEstoque() {
                 const max = demanda[0]?.quantity || 1;
                 const pct = Math.round((d.quantity / max) * 100);
                 return (
-                  <motion.div 
-                    key={d.name} 
+                  <motion.div
+                    key={d.name}
                     initial={{ width: 0, opacity: 0 }}
                     animate={{ width: "100%", opacity: 1 }}
                     transition={{ delay: idx * 0.1 }}
@@ -140,11 +172,11 @@ export function LivrariaEstoque() {
                       </span>
                     </div>
                     <div className="h-2 bg-muted/50 rounded-full overflow-hidden border border-border/30">
-                      <motion.div 
+                      <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${pct}%` }}
                         transition={{ duration: 1, ease: "easeOut", delay: idx * 0.1 + 0.3 }}
-                        className="h-full bg-primary shadow-[0_0_12px_rgba(var(--primary),0.3)]" 
+                        className="h-full bg-primary shadow-[0_0_12px_rgba(var(--primary),0.3)]"
                       />
                     </div>
                   </motion.div>

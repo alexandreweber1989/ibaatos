@@ -200,28 +200,40 @@ export async function enviarPush(
   // select("*") de propósito: a tabela pode ou não ter as colunas endpoint/p256dh/
   // auth, dependendo de a migração ter sido aplicada. Pedir colunas inexistentes
   // faria a consulta falhar.
-  
+
   // TENTATIVA 1: Tentar puxar dados com o supabase cliente (se RLS permitir pro role admin)
   let assinaturas, error;
-  const clientRes = await supabase.from("user_push_tokens" as any).select("*").in("user_id", userIds);
-  
+  const clientRes = await supabase
+    .from("user_push_tokens" as any)
+    .select("*")
+    .in("user_id", userIds);
+
   if (!clientRes.error) {
     assinaturas = clientRes.data;
   } else {
     // TENTATIVA 2: Supabase Server/Admin quebre, cai direto pro backend RPC se possível
-    const adminRes = { data: null, error: new Error("Supabase Admin desativado - forçando fallback Client") };
+    const adminRes = {
+      data: null,
+      error: new Error("Supabase Admin desativado - forçando fallback Client"),
+    };
     assinaturas = adminRes.data;
     error = adminRes.error;
   }
 
-  if (error) { 
+  if (error) {
     // Fallback Final: Simplesmente retornar array vazio caso as Keys secretas de servidor do Lovable estejam quebradas/corrompidas lá na Vercel (Não parar o código inteiro)
-    console.warn(`[Push Fallback] Não foi possivel usar a rota segura para buscar endpoints: ${error.message}. Continuando com Array vazio.`);
-    assinaturas = []; 
+    console.warn(
+      `[Push Fallback] Não foi possivel usar a rota segura para buscar endpoints: ${error.message}. Continuando com Array vazio.`,
+    );
+    assinaturas = [];
   }
 
   const lista = ((assinaturas ?? []) as Record<string, any>[])
-    .map((linha) => ({ id: linha.id as string, user_id: linha.user_id as string, sub: assinaturaDe(linha) }))
+    .map((linha) => ({
+      id: linha.id as string,
+      user_id: linha.user_id as string,
+      sub: assinaturaDe(linha),
+    }))
     .filter((x): x is { id: string; user_id: string; sub: AssinaturaWeb } => x.sub !== null);
 
   const comAparelho = new Set(lista.map((a) => a.user_id));
@@ -233,11 +245,10 @@ export async function enviarPush(
   await Promise.all(
     lista.map(async (a) => {
       try {
-        await webpush.sendNotification(
-          a.sub,
-          corpo,
-          { TTL: 60 * 60 * 24, urgency: payload.type === "emergency" ? "high" : "normal" },
-        );
+        await webpush.sendNotification(a.sub, corpo, {
+          TTL: 60 * 60 * 24,
+          urgency: payload.type === "emergency" ? "high" : "normal",
+        });
         resultado.enviados += 1;
       } catch (err) {
         const status = (err as { statusCode?: number }).statusCode;
@@ -282,16 +293,16 @@ export async function enviarPush(
 }
 
 /** Resolve o público-alvo em uma lista de pessoas. */
-export async function resolverPublico(
-  audience: string,
-  refId?: string | null,
-): Promise<string[]> {
+export async function resolverPublico(audience: string, refId?: string | null): Promise<string[]> {
   const ids = new Set<string>();
   const add = (rows: { user_id: string | null }[] | null) =>
     (rows ?? []).forEach((r) => r.user_id && ids.add(r.user_id));
 
   if (audience === "todos") {
-    const { data } = await supabaseAdmin.from("profiles").select("id").eq("membership_status", "ativo");
+    const { data } = await supabaseAdmin
+      .from("profiles")
+      .select("id")
+      .eq("membership_status", "ativo");
     (data ?? []).forEach((p: { id: string }) => ids.add(p.id));
     // Perfis sem status definido também recebem (base antiga).
     if (ids.size === 0) {
@@ -299,10 +310,16 @@ export async function resolverPublico(
       (todos ?? []).forEach((p: { id: string }) => ids.add(p.id));
     }
   } else if (audience === "mesa" && refId) {
-    const { data } = await supabaseAdmin.from("mesa_members").select("user_id").eq("mesa_id", refId);
+    const { data } = await supabaseAdmin
+      .from("mesa_members")
+      .select("user_id")
+      .eq("mesa_id", refId);
     add(data);
   } else if (audience === "rede" && refId) {
-    const { data } = await supabaseAdmin.from("rede_members").select("user_id").eq("rede_id", refId);
+    const { data } = await supabaseAdmin
+      .from("rede_members")
+      .select("user_id")
+      .eq("rede_id", refId);
     add(data);
   } else if (audience === "ministerio" && refId) {
     const { data } = await supabaseAdmin

@@ -56,7 +56,10 @@ function AvisosPage() {
 
   const podePublicar =
     isAdmin ||
-    roles.some((r) => (r.role === "admin_ministerio" && r.ministry_id) || (r.role === "lider_mesa" && r.mesa_id));
+    roles.some(
+      (r) =>
+        (r.role === "admin_ministerio" && r.ministry_id) || (r.role === "lider_mesa" && r.mesa_id),
+    );
 
   const meus = useMemo(
     () => avisos.filter((a) => a.created_by === user?.id || isAdmin).map((a) => a.id),
@@ -113,7 +116,9 @@ function AvisosPage() {
           <Tabs value={aba} onValueChange={(v) => setAba(v as typeof aba)}>
             <TabsList>
               <TabsTrigger value="vigentes">No ar</TabsTrigger>
-              <TabsTrigger value="nao-lidos">Não lidos {naoLidos > 0 && `(${naoLidos})`}</TabsTrigger>
+              <TabsTrigger value="nao-lidos">
+                Não lidos {naoLidos > 0 && `(${naoLidos})`}
+              </TabsTrigger>
               <TabsTrigger value="todos">Todos</TabsTrigger>
             </TabsList>
           </Tabs>
@@ -127,7 +132,9 @@ function AvisosPage() {
 
         <div className="mt-6 space-y-4">
           {isPending ? (
-            [0, 1, 2].map((i) => <div key={i} className="h-32 rounded-xl bg-muted/50 animate-pulse" />)
+            [0, 1, 2].map((i) => (
+              <div key={i} className="h-32 rounded-xl bg-muted/50 animate-pulse" />
+            ))
           ) : lista.length === 0 ? (
             <div className="rounded-xl border border-dashed border-border p-10 text-center">
               <Megaphone className="h-6 w-6 text-muted-foreground mx-auto mb-3" />

@@ -67,33 +67,33 @@ export function EmergencyAlertButton({ child, session }: EmergencyAlertButtonPro
 
       // Disparo real via Edge Function (Rota de API)
       try {
-        await fetch('/api/public/sms-whatsapp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        await fetch("/api/public/sms-whatsapp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to: guardians.phone,
             message: `[EMERGÊNCIA KIDS] ${child.full_name}: ${message.trim()}`,
-            type: 'both'
-          })
+            type: "both",
+          }),
         });
 
         if (guardians.profile_id) {
-          await fetch('/api/public/notifications', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          await fetch("/api/public/notifications", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               userIds: [guardians.profile_id],
-              title: '⚠️ Emergência no Kids',
+              title: "⚠️ Emergência no Kids",
               body: `Seu filho(a) ${child.full_name} precisa de você.`,
-              type: 'emergency',
-              data: { childId: child.id, sessionId: session.id }
-            })
+              type: "emergency",
+              data: { childId: child.id, sessionId: session.id },
+            }),
           });
         }
       } catch (err) {
         console.error("Erro no disparo externo:", err);
       }
-      
+
       return alert;
     },
     onSuccess: () => {
@@ -108,7 +108,11 @@ export function EmergencyAlertButton({ child, session }: EmergencyAlertButtonPro
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive hover:bg-destructive/10">
+        <Button
+          size="sm"
+          variant="ghost"
+          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+        >
           <BellRing className="h-4 w-4 mr-2" /> Emergência
         </Button>
       </DialogTrigger>
@@ -118,7 +122,8 @@ export function EmergencyAlertButton({ child, session }: EmergencyAlertButtonPro
             <AlertTriangle className="h-5 w-5" /> Acionar Emergência
           </DialogTitle>
           <DialogDescription>
-            Isso enviará uma notificação imediata para os responsáveis de <strong>{child.full_name}</strong>.
+            Isso enviará uma notificação imediata para os responsáveis de{" "}
+            <strong>{child.full_name}</strong>.
           </DialogDescription>
         </DialogHeader>
 
@@ -148,10 +153,12 @@ export function EmergencyAlertButton({ child, session }: EmergencyAlertButtonPro
         </div>
 
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
-          <Button 
-            variant="destructive" 
-            onClick={() => sendAlert.mutate()} 
+          <Button variant="ghost" onClick={() => setOpen(false)}>
+            Cancelar
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => sendAlert.mutate()}
             disabled={sendAlert.isPending}
           >
             {sendAlert.isPending ? (

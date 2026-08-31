@@ -18,32 +18,27 @@ const AGE_TEMPLATES = [
   {
     key: "birthday_message_crianca",
     max: 11,
-    text:
-      "Parabéns, {nome}! 🎈🎂 Hoje é o seu dia! Que Deus te encha de alegria, saúde e muitas brincadeiras. A Igreja Batista Atos te ama muito!",
+    text: "Parabéns, {nome}! 🎈🎂 Hoje é o seu dia! Que Deus te encha de alegria, saúde e muitas brincadeiras. A Igreja Batista Atos te ama muito!",
   },
   {
     key: "birthday_message_adolescente",
     max: 17,
-    text:
-      "Feliz aniversário, {nome}! 🎉 Que esse novo ano seja cheio de sonhos, amizades verdadeiras e da presença de Deus em cada passo. Conte sempre com a gente!",
+    text: "Feliz aniversário, {nome}! 🎉 Que esse novo ano seja cheio de sonhos, amizades verdadeiras e da presença de Deus em cada passo. Conte sempre com a gente!",
   },
   {
     key: "birthday_message_jovem",
     max: 29,
-    text:
-      "Feliz aniversário, {nome}! 🎉 Que Deus dirija os seus planos, abra portas e firme os seus passos nessa nova fase. A família da Igreja Batista Atos celebra com você!",
+    text: "Feliz aniversário, {nome}! 🎉 Que Deus dirija os seus planos, abra portas e firme os seus passos nessa nova fase. A família da Igreja Batista Atos celebra com você!",
   },
   {
     key: "birthday_message_adulto",
     max: 59,
-    text:
-      "Feliz aniversário, {nome}! 🙌 Que Deus abençoe a sua vida, a sua família e o seu trabalho com paz e provisão. É uma alegria caminhar com você na Igreja Batista Atos!",
+    text: "Feliz aniversário, {nome}! 🙌 Que Deus abençoe a sua vida, a sua família e o seu trabalho com paz e provisão. É uma alegria caminhar com você na Igreja Batista Atos!",
   },
   {
     key: "birthday_message_melhor_idade",
     max: 200,
-    text:
-      "Feliz aniversário, {nome}! 🙏 Gratidão a Deus pela sua história e pelo exemplo que o(a) senhor(a) é para nós. Que o Senhor lhe dê saúde e muitos anos de bênção. A Igreja Batista Atos celebra com o(a) senhor(a)!",
+    text: "Feliz aniversário, {nome}! 🙏 Gratidão a Deus pela sua história e pelo exemplo que o(a) senhor(a) é para nós. Que o Senhor lhe dê saúde e muitos anos de bênção. A Igreja Batista Atos celebra com o(a) senhor(a)!",
   },
 ] as const;
 
@@ -56,10 +51,7 @@ function buildMessage(template: string, nome: string) {
 }
 
 /** Escolhe o modelo conforme a idade, com o modelo geral como último recurso. */
-function templateForAge(
-  saved: Record<string, string>,
-  idade: number | null,
-): string {
+function templateForAge(saved: Record<string, string>, idade: number | null): string {
   if (idade !== null) {
     const band = AGE_TEMPLATES.find((b) => idade <= b.max);
     if (band) return saved[band.key] ?? band.text;
@@ -97,13 +89,14 @@ export function Aniversariantes() {
     },
   });
 
-
   const mes = String(new Date().getMonth() + 1).padStart(2, "0");
   const hojeDia = new Date().getDate();
 
   const lista = (data ?? [])
     .filter((p) => p.birth_date?.slice(5, 7) === mes)
-    .sort((a, b) => (a.birth_date ?? "").slice(8, 10).localeCompare((b.birth_date ?? "").slice(8, 10)));
+    .sort((a, b) =>
+      (a.birth_date ?? "").slice(8, 10).localeCompare((b.birth_date ?? "").slice(8, 10)),
+    );
 
   const aniversariantesHoje = lista.filter((p) => Number(p.birth_date!.slice(8, 10)) === hojeDia);
 
@@ -164,7 +157,12 @@ export function Aniversariantes() {
                   variant={hoje ? "default" : "ghost"}
                   className="h-8 px-2 shrink-0"
                 >
-                  <a href={link} target="_blank" rel="noreferrer" aria-label={`Parabenizar ${p.full_name}`}>
+                  <a
+                    href={link}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Parabenizar ${p.full_name}`}
+                  >
                     <MessageCircle className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only sm:ml-1 text-xs">Parabenizar</span>
                   </a>

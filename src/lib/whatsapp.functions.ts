@@ -16,14 +16,14 @@ export const sendWhatsAppNotification = createServerFn({ method: "POST" })
         childName: z.string(),
         type: z.enum(["checkin", "checkout"]),
       })
-      .parse(data)
+      .parse(data),
   )
   .handler(async ({ data }) => {
     console.log(`[WhatsApp Simulation] Sending ${data.type} to ${data.phone}: ${data.message}`);
-    
+
     // Aqui poderíamos registrar o log de envio no banco
     // const { error } = await supabaseAdmin.from('notification_logs').insert(...)
-    
+
     return { success: true, timestamp: new Date().toISOString() };
   });
 

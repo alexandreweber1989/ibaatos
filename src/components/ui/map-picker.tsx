@@ -1,11 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { 
-  MapContainer, 
-  TileLayer, 
-  Marker, 
-  useMap, 
-  useMapEvents 
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import { Search, MapPin, Loader2, Check, X } from "lucide-react";
 import { toast } from "sonner";
@@ -25,7 +19,7 @@ const DefaultIcon = L.icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
@@ -63,7 +57,11 @@ function ChangeView({ center }: { center: [number, number] }) {
   return null;
 }
 
-export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4552] }: MapPickerProps) {
+export function MapPicker({
+  onSelect,
+  onCancel,
+  initialCenter = [-24.9555, -53.4552],
+}: MapPickerProps) {
   const [position, setPosition] = useState<[number, number]>(initialCenter);
   const [address, setAddress] = useState<AddressData | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -74,7 +72,7 @@ export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4
     setLoading(true);
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`,
       );
       const data = await res.json();
       if (data && data.address) {
@@ -86,7 +84,7 @@ export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4
           state: addr.state || "",
           full: data.display_name,
           lat,
-          lng
+          lng,
         };
         setAddress(newAddress);
         setSearchQuery(newAddress.full);
@@ -106,7 +104,7 @@ export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4
     try {
       // Prioridade: buscar como endereço completo no Brasil
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&countrycodes=br&addressdetails=1&q=${encodeURIComponent(searchQuery)}&limit=5`
+        `https://nominatim.openstreetmap.org/search?format=json&countrycodes=br&addressdetails=1&q=${encodeURIComponent(searchQuery)}&limit=5`,
       );
       const data = await res.json();
       if (data && data.length > 0) {
@@ -115,7 +113,7 @@ export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4
         const lat = parseFloat(item.lat);
         const lng = parseFloat(item.lon);
         setPosition([lat, lng]);
-        
+
         // Mapeia o endereço retornado pela busca para evitar novo reverse geocode se possível
         const addr = item.address;
         const newAddress: AddressData = {
@@ -125,7 +123,7 @@ export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4
           state: addr.state || "",
           full: item.display_name,
           lat,
-          lng
+          lng,
         };
         setAddress(newAddress);
         setSearchQuery(newAddress.full);
@@ -168,28 +166,32 @@ export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4
             onClick={() => handleSearch()}
             disabled={isSearching}
           >
-            {isSearching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+            {isSearching ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Search className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
 
       <div className="flex-1 relative z-0">
-        <MapContainer
-          center={position}
-          zoom={15}
-          className="h-full w-full"
-        >
+        <MapContainer center={position} zoom={15} className="h-full w-full">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={position} draggable={true} eventHandlers={{
-            dragend: (e) => {
-              const marker = e.target;
-              const pos = marker.getLatLng();
-              handleLocationSelect(pos.lat, pos.lng);
-            }
-          }} />
+          <Marker
+            position={position}
+            draggable={true}
+            eventHandlers={{
+              dragend: (e) => {
+                const marker = e.target;
+                const pos = marker.getLatLng();
+                handleLocationSelect(pos.lat, pos.lng);
+              },
+            }}
+          />
           <MapEvents onLocationSelect={handleLocationSelect} />
           <ChangeView center={position} />
         </MapContainer>
@@ -208,22 +210,19 @@ export function MapPicker({ onSelect, onCancel, initialCenter = [-24.9555, -53.4
               <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
               <div className="min-w-0">
                 <p className="font-semibold text-foreground">Local selecionado:</p>
-                <p className="text-muted-foreground truncate">{address?.full || "Clique no mapa para selecionar"}</p>
+                <p className="text-muted-foreground truncate">
+                  {address?.full || "Clique no mapa para selecionar"}
+                </p>
               </div>
             </div>
             <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="flex-1" 
-                onClick={onCancel}
-              >
+              <Button variant="outline" size="sm" className="flex-1" onClick={onCancel}>
                 <X className="h-4 w-4 mr-2" /> Cancelar
               </Button>
-              <Button 
-                size="sm" 
-                className="flex-1" 
-                disabled={!address || loading} 
+              <Button
+                size="sm"
+                className="flex-1"
+                disabled={!address || loading}
                 onClick={() => address && onSelect(address)}
               >
                 <Check className="h-4 w-4 mr-2" /> Confirmar Local

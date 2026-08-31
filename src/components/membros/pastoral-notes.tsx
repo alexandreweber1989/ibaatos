@@ -101,7 +101,10 @@ export function PastoralNotes({ personId, enabled }: { personId: string; enabled
             onChange={(e) => setContent(e.target.value)}
           />
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <Select value={visibility} onValueChange={(v) => setVisibility(v as "pastoral" | "autor")}>
+            <Select
+              value={visibility}
+              onValueChange={(v) => setVisibility(v as "pastoral" | "autor")}
+            >
               <SelectTrigger className="h-8 w-56 text-xs">
                 <SelectValue />
               </SelectTrigger>

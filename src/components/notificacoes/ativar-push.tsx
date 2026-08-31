@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { BellRing, BellOff, Smartphone, ShieldAlert, Check, Loader2, Share, Send } from "lucide-react";
+import {
+  BellRing,
+  BellOff,
+  Smartphone,
+  ShieldAlert,
+  Check,
+  Loader2,
+  Share,
+  Send,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -74,7 +83,8 @@ export function AtivarPush({ compact = false }: { compact?: boolean }) {
     try {
       const r: any = await enviarNotificacaoTeste();
       if (r?.enviados > 0) toast.success("Enviada! O aviso deve aparecer em instantes.");
-      else if (r?.semAparelho > 0) toast.error("Nenhum aparelho ativo encontrado. Ative acima e tente de novo.");
+      else if (r?.semAparelho > 0)
+        toast.error("Nenhum aparelho ativo encontrado. Ative acima e tente de novo.");
       else toast.error("Não foi possível entregar. Confira as chaves VAPID no ambiente.");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Falha ao enviar o teste.");
@@ -149,7 +159,11 @@ export function AtivarPush({ compact = false }: { compact?: boolean }) {
         <div className="flex shrink-0 items-center gap-2">
           {ativo && (
             <Button variant="ghost" onClick={testar} disabled={testando}>
-              {testando ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {testando ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
               Testar
             </Button>
           )}

@@ -48,7 +48,11 @@ export function NotificationsBell() {
         .eq("user_id", user!.id)
         .eq("status", "pendente");
       if (minhasEscalas.count)
-        items.push({ label: "Escalas aguardando sua resposta", count: minhasEscalas.count, to: "/louvor" });
+        items.push({
+          label: "Escalas aguardando sua resposta",
+          count: minhasEscalas.count,
+          to: "/louvor",
+        });
 
       if (isAdmin) {
         const pedidos = await supabase
@@ -56,7 +60,11 @@ export function NotificationsBell() {
           .select("id", { count: "exact", head: true })
           .eq("status", "pendente");
         if (pedidos.count)
-          items.push({ label: "Pedidos de cadastro para aprovar", count: pedidos.count, to: "/dashboard" });
+          items.push({
+            label: "Pedidos de cadastro para aprovar",
+            count: pedidos.count,
+            to: "/dashboard",
+          });
       }
 
       if (isLivrariaAdmin) {
@@ -65,7 +73,11 @@ export function NotificationsBell() {
           .select("id", { count: "exact", head: true })
           .eq("status", "pendente");
         if (pedidos.count)
-          items.push({ label: "Pedidos da livraria a confirmar", count: pedidos.count, to: "/livraria" });
+          items.push({
+            label: "Pedidos da livraria a confirmar",
+            count: pedidos.count,
+            to: "/livraria",
+          });
       }
 
       if (isCantinaAdmin) {
@@ -74,7 +86,11 @@ export function NotificationsBell() {
           .select("id", { count: "exact", head: true })
           .eq("status", "reservado");
         if (reservas.count)
-          items.push({ label: "Reservas da cantina para separar", count: reservas.count, to: "/cantina" });
+          items.push({
+            label: "Reservas da cantina para separar",
+            count: reservas.count,
+            to: "/cantina",
+          });
       }
 
       return items;
@@ -105,7 +121,10 @@ export function NotificationsBell() {
           <ul className="divide-y divide-border">
             {(data ?? []).map((p) => (
               <li key={p.label}>
-                <Link to={p.to} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/50">
+                <Link
+                  to={p.to}
+                  className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/50"
+                >
                   <span className="text-sm">{p.label}</span>
                   <span className="font-mono text-sm text-primary">{p.count}</span>
                 </Link>

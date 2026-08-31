@@ -6,13 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import {
   Dialog,
   DialogContent,
@@ -50,7 +44,10 @@ export const GlobalBroadcast = () => {
     enabled: open && precisaGrupo,
     queryFn: async () => {
       const tabela = audience === "mesa" ? "mesas" : audience === "rede" ? "redes" : "ministries";
-      const { data, error } = await supabase.from(tabela as any).select("id, name").order("name");
+      const { data, error } = await supabase
+        .from(tabela as any)
+        .select("id, name")
+        .order("name");
       if (error) throw error;
       return (data ?? []) as unknown as { id: string; name: string }[];
     },
@@ -119,7 +116,9 @@ export const GlobalBroadcast = () => {
           <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
             <Megaphone className="h-6 w-6" />
           </div>
-          <DialogTitle className="font-serif text-2xl tracking-tight">Enviar notificação</DialogTitle>
+          <DialogTitle className="font-serif text-2xl tracking-tight">
+            Enviar notificação
+          </DialogTitle>
           <DialogDescription>
             Chega como alerta no celular de quem ativou as notificações.
           </DialogDescription>
@@ -218,7 +217,12 @@ export const GlobalBroadcast = () => {
                 Prévia no celular
               </p>
               <div className="flex gap-3">
-                <img src="/icons/icon-192.png" alt="" className="h-9 w-9 rounded-lg" loading="lazy" />
+                <img
+                  src="/icons/icon-192.png"
+                  alt=""
+                  className="h-9 w-9 rounded-lg"
+                  loading="lazy"
+                />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">{title || "Título do alerta"}</p>
                   <p className="line-clamp-2 text-xs text-muted-foreground">
@@ -238,7 +242,11 @@ export const GlobalBroadcast = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)} disabled={broadcastMutation.isPending}>
+          <Button
+            variant="ghost"
+            onClick={() => setOpen(false)}
+            disabled={broadcastMutation.isPending}
+          >
             Cancelar
           </Button>
           <Button

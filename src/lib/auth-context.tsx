@@ -37,7 +37,6 @@ interface AuthState {
   /** Qualquer nível de liderança (equipe pastoral + líderes de mesa). */
   isLeadership: boolean;
   signOut: () => Promise<void>;
-
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -95,11 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .from("user_roles")
           .select("role, ministry_id, mesa_id")
           .eq("user_id", session.user.id),
-        supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .maybeSingle()
+        supabase.from("profiles").select("*").eq("id", session.user.id).maybeSingle(),
       ]);
 
       if (!active) return;
@@ -137,8 +132,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     churchFunction === "lider" ||
     roles.some((r) => r.role === "lider_mesa" || r.role === "admin_ministerio");
 
-
-
   const value: AuthState = {
     user: session?.user ?? null,
     session,
@@ -146,7 +139,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     profile,
     loading,
     isAdmin,
-    isMinistryAdmin: (id) => isAdmin || roles.some((r) => r.role === "admin_ministerio" && r.ministry_id === id),
+    isMinistryAdmin: (id) =>
+      isAdmin || roles.some((r) => r.role === "admin_ministerio" && r.ministry_id === id),
     isMesaLeader: (id) => isAdmin || roles.some((r) => r.role === "lider_mesa" && r.mesa_id === id),
     isLivrariaAdmin: isAdmin || roles.some((r) => r.role === "admin_livraria"),
     isCantinaAdmin: isAdmin || roles.some((r) => r.role === "admin_cantina"),

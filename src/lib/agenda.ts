@@ -2,13 +2,7 @@
 
 export type EventScope = "igreja" | "ministerio" | "rede" | "mesa";
 export type EventStatus = "rascunho" | "publicado" | "cancelado" | "concluido";
-export type EventKind =
-  | "culto"
-  | "ensaio"
-  | "reuniao"
-  | "evento"
-  | "acao_social"
-  | "treinamento";
+export type EventKind = "culto" | "ensaio" | "reuniao" | "evento" | "acao_social" | "treinamento";
 export type RsvpStatus = "vou" | "nao_vou" | "talvez";
 
 export interface ChurchEvent {

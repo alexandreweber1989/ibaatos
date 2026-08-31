@@ -7,23 +7,54 @@ interface Versiculo {
 }
 
 const VERSICULOS: Versiculo[] = [
-  { texto: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", referencia: "João 3:16" },
+  {
+    texto:
+      "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",
+    referencia: "João 3:16",
+  },
   { texto: "O Senhor é o meu pastor, nada me faltará.", referencia: "Salmos 23:1" },
   { texto: "Tudo posso naquele que me fortalece.", referencia: "Filipenses 4:13" },
-  { texto: "Não fui eu que lhe ordenei? Seja forte e corajoso! Não se apavore, nem se desanime, pois o Senhor, o seu Deus, estará com você por onde você andar.", referencia: "Josué 1:9" },
-  { texto: "Vinde a mim, todos os que estais cansados e oprimidos, e eu vos aliviarei.", referencia: "Mateus 11:28" },
-  { texto: "Mas os que esperam no Senhor renovarão as forças, subirão com asas como águias; correrão, e não se cansarão; caminharão, e não se fadigarão.", referencia: "Isaías 40:31" },
-  { texto: "Guardei no coração a tua palavra para não pecar contra ti.", referencia: "Salmos 119:11" },
-  { texto: "O meu mandamento é este: amem-se uns aos outros como eu os amei.", referencia: "João 15:12" },
-  { texto: "Porque sou eu que conheço os planos que tenho para vocês, diz o Senhor, planos de fazê-los prosperar e não de causar dano, planos de dar a vocês esperança e um futuro.", referencia: "Jeremias 29:11" },
-  { texto: "E sabemos que todas as coisas contribuem juntamente para o bem daqueles que amam a Deus, daqueles que são chamados segundo o seu propósito.", referencia: "Romanos 8:28" },
+  {
+    texto:
+      "Não fui eu que lhe ordenei? Seja forte e corajoso! Não se apavore, nem se desanime, pois o Senhor, o seu Deus, estará com você por onde você andar.",
+    referencia: "Josué 1:9",
+  },
+  {
+    texto: "Vinde a mim, todos os que estais cansados e oprimidos, e eu vos aliviarei.",
+    referencia: "Mateus 11:28",
+  },
+  {
+    texto:
+      "Mas os que esperam no Senhor renovarão as forças, subirão com asas como águias; correrão, e não se cansarão; caminharão, e não se fadigarão.",
+    referencia: "Isaías 40:31",
+  },
+  {
+    texto: "Guardei no coração a tua palavra para não pecar contra ti.",
+    referencia: "Salmos 119:11",
+  },
+  {
+    texto: "O meu mandamento é este: amem-se uns aos outros como eu os amei.",
+    referencia: "João 15:12",
+  },
+  {
+    texto:
+      "Porque sou eu que conheço os planos que tenho para vocês, diz o Senhor, planos de fazê-los prosperar e não de causar dano, planos de dar a vocês esperança e um futuro.",
+    referencia: "Jeremias 29:11",
+  },
+  {
+    texto:
+      "E sabemos que todas as coisas contribuem juntamente para o bem daqueles que amam a Deus, daqueles que são chamados segundo o seu propósito.",
+    referencia: "Romanos 8:28",
+  },
 ];
 
 export function VersiculoAnimado() {
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [displayRef, setDisplayRef] = useState("");
-  const [phase, setPhase] = useState<"typing-text" | "typing-ref" | "waiting" | "transitioning">("typing-text");
+  const [phase, setPhase] = useState<"typing-text" | "typing-ref" | "waiting" | "transitioning">(
+    "typing-text",
+  );
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -69,10 +100,10 @@ export function VersiculoAnimado() {
         <motion.div
           key={index}
           initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: phase === "transitioning" ? 0 : 1, 
+          animate={{
+            opacity: phase === "transitioning" ? 0 : 1,
             y: phase === "transitioning" ? -20 : 0,
-            filter: phase === "transitioning" ? "blur(10px)" : "blur(0px)"
+            filter: phase === "transitioning" ? "blur(10px)" : "blur(0px)",
           }}
           exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
           transition={{ duration: 0.8, ease: "easeInOut" }}

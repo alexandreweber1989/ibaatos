@@ -36,10 +36,7 @@ export async function checkinChildHandler(data: {
   return checkin;
 }
 
-export async function checkoutChildHandler(data: {
-  checkinId: string;
-  pickedUpByName?: string;
-}) {
+export async function checkoutChildHandler(data: { checkinId: string; pickedUpByName?: string }) {
   const { data: checkin, error } = await supabaseAdmin
     .from("kids_checkins")
     .update({

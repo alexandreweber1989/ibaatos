@@ -163,7 +163,6 @@ function MesasPage() {
                     <MesaMembersDialog mesaId={m.id} mesaName={m.name} />
                     <MesaEventDialog mesa={m} />
                     {isAdmin && <EditMesaButton mesa={m} />}
-
                   </div>
                 )}
                 <div className="mt-6 pt-4 border-t border-border space-y-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">

@@ -10,7 +10,9 @@ export interface StatMember {
 function Stat({ label, value, hint }: { label: string; value: string | number; hint?: string }) {
   return (
     <div className="border border-border bg-card p-4 rounded-sm">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</p>
+      <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        {label}
+      </p>
       <p className="font-serif text-3xl leading-none mt-2">{value}</p>
       {hint && <p className="text-xs text-muted-foreground mt-1">{hint}</p>}
     </div>
@@ -31,7 +33,11 @@ export function MemberStats({ members }: { members: StatMember[] }) {
   return (
     <div className="grid gap-3 grid-cols-2 lg:grid-cols-5 mb-8">
       <Stat label="Total" value={total} hint={`${homens}♂ · ${mulheres}♀`} />
-      <Stat label="Ativos" value={ativos} hint={total ? `${Math.round((ativos / total) * 100)}% da base` : undefined} />
+      <Stat
+        label="Ativos"
+        value={ativos}
+        hint={total ? `${Math.round((ativos / total) * 100)}% da base` : undefined}
+      />
       <Stat label="Fieis" value={batizados} hint="Batizados" />
       <Stat label="Celebração" value={aniversariantes} hint="Nascidos este mês" />
       <Stat label="Média" value={media ? `${media} anos` : "—"} hint="Perfil etário" />

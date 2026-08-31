@@ -65,8 +65,8 @@ export function ProximosEventos() {
         </div>
       ) : !data?.length ? (
         <p className="text-sm text-muted-foreground">
-          Nenhum evento publicado no momento. Assim que a liderança divulgar a próxima
-          programação, ela aparece aqui.
+          Nenhum evento publicado no momento. Assim que a liderança divulgar a próxima programação,
+          ela aparece aqui.
         </p>
       ) : (
         <ul className="space-y-3">

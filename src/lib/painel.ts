@@ -4,7 +4,10 @@
 export function formatDateBR(iso: string, opts?: Intl.DateTimeFormatOptions): string {
   const [y, m, d] = iso.split("-").map(Number);
   if (!y || !m || !d) return iso;
-  return new Date(y, m - 1, d).toLocaleDateString("pt-BR", opts ?? { day: "2-digit", month: "short" });
+  return new Date(y, m - 1, d).toLocaleDateString(
+    "pt-BR",
+    opts ?? { day: "2-digit", month: "short" },
+  );
 }
 
 /** Data de hoje em formato ISO local (yyyy-mm-dd). */

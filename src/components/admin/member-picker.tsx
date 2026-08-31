@@ -23,14 +23,19 @@ export interface MemberPickerProps {
 }
 
 function functionLabel(p: ProfileOption) {
-  return p.church_function ? CHURCH_FUNCTION_LABEL[p.church_function] ?? p.church_function : null;
+  return p.church_function ? (CHURCH_FUNCTION_LABEL[p.church_function] ?? p.church_function) : null;
 }
 
 /**
  * Busca por parte do nome e devolve nome completo + função na igreja.
  * Seleção múltipla e opcional (pode ficar vazia).
  */
-export function MemberPicker({ value, onChange, placeholder = "Buscar por parte do nome", label = "responsável(is)" }: MemberPickerProps) {
+export function MemberPicker({
+  value,
+  onChange,
+  placeholder = "Buscar por parte do nome",
+  label = "responsável(is)",
+}: MemberPickerProps) {
   const [open, setOpen] = useState(false);
   const { data: profiles, isLoading } = useProfileOptions();
 
@@ -54,9 +59,7 @@ export function MemberPicker({ value, onChange, placeholder = "Buscar por parte 
             className="w-full justify-between font-normal"
           >
             <span className={cn("truncate", selected.length === 0 && "text-muted-foreground")}>
-              {selected.length === 0
-                ? placeholder
-                : `${selected.length} ${label} selecionado(s)`}
+              {selected.length === 0 ? placeholder : `${selected.length} ${label} selecionado(s)`}
             </span>
             <ChevronsUpDown className="h-4 w-4 opacity-50" />
           </Button>
@@ -83,7 +86,9 @@ export function MemberPicker({ value, onChange, placeholder = "Buscar por parte 
                           value.includes(p.id) ? "opacity-100" : "opacity-0",
                         )}
                       />
-                      <span className="truncate">{displayMemberName(p.full_name, p.church_function, p.gender)}</span>
+                      <span className="truncate">
+                        {displayMemberName(p.full_name, p.church_function, p.gender)}
+                      </span>
                       {fn && (
                         <span className="ml-auto font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                           {fn}

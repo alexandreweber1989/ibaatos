@@ -42,16 +42,13 @@ export function GrupoDomingo({ scheduleId }: Props) {
   });
 
   const people = useMemo(
-    () =>
-      ((data?.assignments ?? []) as any[]).filter((a) => a.status !== "recusado"),
+    () => ((data?.assignments ?? []) as any[]).filter((a) => a.status !== "recusado"),
     [data],
   );
 
   const phones = useMemo(
     () =>
-      people
-        .map((p) => (p.profiles?.phone ?? "").replace(/\D/g, ""))
-        .filter((p) => p.length >= 10),
+      people.map((p) => (p.profiles?.phone ?? "").replace(/\D/g, "")).filter((p) => p.length >= 10),
     [people],
   );
 

@@ -125,7 +125,11 @@ export function EventCard({
 
           {!cancelled && (
             <div className="mt-4 flex items-center gap-2">
-              <AddToCalendar event={event} variant="ghost" className="h-8 px-2 text-muted-foreground hover:text-primary" />
+              <AddToCalendar
+                event={event}
+                variant="ghost"
+                className="h-8 px-2 text-muted-foreground hover:text-primary"
+              />
             </div>
           )}
 

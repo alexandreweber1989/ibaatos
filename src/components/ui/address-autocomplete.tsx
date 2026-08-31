@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { parseBrazilianAddress } from "@/lib/address-parser";
 
-const MapPicker = lazy(() => import("./map-picker").then(m => ({ default: m.MapPicker })));
+const MapPicker = lazy(() => import("./map-picker").then((m) => ({ default: m.MapPicker })));
 
 interface Suggestion {
   description: string;
@@ -33,7 +33,13 @@ interface Props {
   className?: string;
 }
 
-export function AddressAutocomplete({ value, onChange, onAddressSelect, placeholder, className }: Props) {
+export function AddressAutocomplete({
+  value,
+  onChange,
+  onAddressSelect,
+  placeholder,
+  className,
+}: Props) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
@@ -62,11 +68,12 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
     }
 
     const lowerValue = value.toLowerCase();
-    const filtered = suggestions.filter(s => 
-      s.description.toLowerCase().includes(lowerValue) ||
-      s.structured_formatting.main_text.toLowerCase().includes(lowerValue)
+    const filtered = suggestions.filter(
+      (s) =>
+        s.description.toLowerCase().includes(lowerValue) ||
+        s.structured_formatting.main_text.toLowerCase().includes(lowerValue),
     );
-    
+
     // Se não tiver sugestões locais compatíveis o suficiente, deixa as da última busca
     // ou espera o debounced fetch atualizar.
     if (filtered.length > 0) {
@@ -87,12 +94,12 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
       if (typeof window !== "undefined" && (window as any).google) {
         const service = new (window as any).google.maps.places.AutocompleteService();
         service.getPlacePredictions(
-          { 
-            input, 
-            componentRestrictions: { country: "br" }, 
+          {
+            input,
+            componentRestrictions: { country: "br" },
             types: ["address"],
             // Google Maps permite filtrar por tipos específicos e idiomas se configurado na biblioteca
-            language: "pt-BR"
+            language: "pt-BR",
           },
           (predictions: any, status: any) => {
             if (status === "OK" && predictions) {
@@ -103,7 +110,7 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
                   main_text: p.structured_formatting.main_text,
                   secondary_text: p.structured_formatting.secondary_text,
                 },
-                raw: p
+                raw: p,
               }));
               setSuggestions(mapped);
               setOpen(true);
@@ -111,7 +118,7 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
             } else {
               fetchFallback(input);
             }
-          }
+          },
         );
       } else {
         fetchFallback(input);
@@ -124,16 +131,19 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
 
   const fetchFallback = async (input: string) => {
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=br&q=${encodeURIComponent(input)}&limit=10`);
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=br&q=${encodeURIComponent(input)}&limit=10`,
+      );
       const data = await res.json();
       const mapped: Suggestion[] = data.map((item: any) => ({
         description: item.display_name,
         place_id: item.place_id.toString(),
         structured_formatting: {
-          main_text: item.address.road || item.address.pedestrian || item.display_name.split(",")[0],
+          main_text:
+            item.address.road || item.address.pedestrian || item.display_name.split(",")[0],
           secondary_text: item.display_name.split(",").slice(1).join(",").trim(),
         },
-        raw: item
+        raw: item,
       }));
       setSuggestions(mapped);
       if (mapped.length > 0) setOpen(true);
@@ -167,10 +177,10 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setActiveIndex(prev => (prev < filteredSuggestions.length - 1 ? prev + 1 : prev));
+      setActiveIndex((prev) => (prev < filteredSuggestions.length - 1 ? prev + 1 : prev));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActiveIndex(prev => (prev > 0 ? prev - 1 : 0));
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : 0));
     } else if (e.key === "Enter" && activeIndex >= 0) {
       e.preventDefault();
       handleSelect(filteredSuggestions[activeIndex]);
@@ -182,25 +192,29 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
   const handleSelect = async (suggestion: Suggestion) => {
     // Parser do input atual para manter o número se o usuário já digitou
     const currentParsed = parseBrazilianAddress(value);
-    
+
     setOpen(false);
-    
+
     let finalAddress = {
       street: suggestion.structured_formatting.main_text,
       number: currentParsed.number,
       neighborhood: "",
       city: "",
       state: "",
-      full: suggestion.description
+      full: suggestion.description,
     };
 
-    if (typeof window !== "undefined" && (window as any).google && suggestion.place_id.length > 20) {
+    if (
+      typeof window !== "undefined" &&
+      (window as any).google &&
+      suggestion.place_id.length > 20
+    ) {
       const geocoder = new (window as any).google.maps.Geocoder();
       geocoder.geocode({ placeId: suggestion.place_id }, (results: any, status: any) => {
         if (status === "OK" && results[0]) {
           const res = results[0];
           const components = res.address_components;
-          const getComp = (type: string) => 
+          const getComp = (type: string) =>
             components.find((c: any) => c.types.includes(type))?.long_name;
 
           finalAddress = {
@@ -209,9 +223,9 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
             neighborhood: getComp("sublocality_level_1") || getComp("neighborhood") || "",
             city: getComp("administrative_area_level_2") || getComp("locality") || "",
             state: getComp("administrative_area_level_1") || "",
-            full: res.formatted_address
+            full: res.formatted_address,
           };
-          
+
           onChange(formatAddressString(finalAddress));
           onAddressSelect?.(finalAddress);
         } else {
@@ -229,9 +243,9 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
         neighborhood: addr.suburb || addr.neighbourhood || addr.city_district || "",
         city: addr.city || addr.town || addr.village || "",
         state: addr.state || "",
-        full: suggestion.description
+        full: suggestion.description,
       };
-      
+
       onChange(formatAddressString(finalAddress));
       onAddressSelect?.(finalAddress);
     } else {
@@ -263,7 +277,7 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
             className={cn("pr-20 pl-9 transition-all focus:ring-primary", className)}
           />
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-          
+
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
             {value && (
               <Button
@@ -286,11 +300,11 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
             )}
           </div>
         </div>
-        
-        <Button 
-          type="button" 
-          variant="outline" 
-          size="icon" 
+
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
           className="shrink-0 hover:bg-muted"
           onClick={() => setMapOpen(true)}
           title="Selecionar no mapa"
@@ -307,13 +321,15 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
               Selecionar no Mapa
             </DialogTitle>
           </DialogHeader>
-          <Suspense fallback={
-            <div className="h-[500px] flex flex-col items-center justify-center gap-4 bg-background">
-              <Loader2 className="h-10 w-10 animate-spin text-primary" />
-              <p className="text-muted-foreground animate-pulse">Carregando mapa interativo...</p>
-            </div>
-          }>
-            <MapPicker 
+          <Suspense
+            fallback={
+              <div className="h-[500px] flex flex-col items-center justify-center gap-4 bg-background">
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                <p className="text-muted-foreground animate-pulse">Carregando mapa interativo...</p>
+              </div>
+            }
+          >
+            <MapPicker
               onCancel={() => setMapOpen(false)}
               onSelect={(addr) => {
                 onAddressSelect?.(addr);
@@ -344,14 +360,23 @@ export function AddressAutocomplete({ value, onChange, onAddressSelect, placehol
                   onMouseEnter={() => setActiveIndex(index)}
                   className={cn(
                     "px-4 py-3 cursor-pointer text-sm flex gap-3 transition-colors",
-                    activeIndex === index ? "bg-primary/10 text-primary" : "hover:bg-muted text-foreground"
+                    activeIndex === index
+                      ? "bg-primary/10 text-primary"
+                      : "hover:bg-muted text-foreground",
                   )}
                 >
                   <div className="shrink-0 mt-0.5">
-                    <MapPin className={cn("h-4 w-4", activeIndex === index ? "text-primary" : "text-muted-foreground")} />
+                    <MapPin
+                      className={cn(
+                        "h-4 w-4",
+                        activeIndex === index ? "text-primary" : "text-muted-foreground",
+                      )}
+                    />
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="font-semibold truncate">{s.structured_formatting.main_text}</span>
+                    <span className="font-semibold truncate">
+                      {s.structured_formatting.main_text}
+                    </span>
                     <span className="text-xs opacity-70 truncate">
                       {s.structured_formatting.secondary_text}
                     </span>

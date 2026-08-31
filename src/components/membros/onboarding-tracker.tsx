@@ -2,11 +2,7 @@ import { toast } from "sonner";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
-import {
-  useMemberOnboarding,
-  useOnboardingSteps,
-  useToggleOnboardingStep,
-} from "@/lib/onboarding";
+import { useMemberOnboarding, useOnboardingSteps, useToggleOnboardingStep } from "@/lib/onboarding";
 
 /**
  * Trilha de integração do membro. A liderança marca as etapas concluídas;
@@ -26,9 +22,7 @@ export function OnboardingTracker({
   const toggle = useToggleOnboardingStep(personId);
 
   const list = steps ?? [];
-  const doneIds = new Set(
-    (progress ?? []).filter((p) => p.completed_at).map((p) => p.step_id),
-  );
+  const doneIds = new Set((progress ?? []).filter((p) => p.completed_at).map((p) => p.step_id));
   const pct = list.length ? Math.round((doneIds.size / list.length) * 100) : 0;
 
   if (!list.length) {

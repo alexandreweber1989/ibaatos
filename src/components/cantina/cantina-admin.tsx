@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Pencil, Plus, Search, Filter, Utensils, CheckCircle2, XCircle, Upload, Loader2, X } from "lucide-react";
+import {
+  Pencil,
+  Plus,
+  Search,
+  Filter,
+  Utensils,
+  CheckCircle2,
+  XCircle,
+  Upload,
+  Loader2,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { formatBRL, RESERVATION_STATUS } from "@/lib/store";
@@ -10,11 +21,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-
 
 interface ItemDraft {
   id?: string;
@@ -65,25 +81,43 @@ function ItemDialog({ initial, trigger }: { initial: ItemDraft; trigger: React.R
   });
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) setDraft(initial); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        setOpen(o);
+        if (o) setDraft(initial);
+      }}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-3xl">{draft.id ? "Editar item" : "Novo item"}</DialogTitle>
+          <DialogTitle className="font-serif text-3xl">
+            {draft.id ? "Editar item" : "Novo item"}
+          </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Nome</Label>
-            <Input value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
+            <Input
+              value={draft.name}
+              onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+            />
           </div>
           <div className="space-y-2">
             <Label>Descrição</Label>
-            <Textarea rows={2} value={draft.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
+            <Textarea
+              rows={2}
+              value={draft.description}
+              onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Categoria</Label>
-              <Input value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value })} />
+              <Input
+                value={draft.category}
+                onChange={(e) => setDraft({ ...draft, category: e.target.value })}
+              />
             </div>
             <div className="space-y-2">
               <Label>Preço (R$)</Label>
@@ -91,7 +125,12 @@ function ItemDialog({ initial, trigger }: { initial: ItemDraft; trigger: React.R
                 type="number"
                 step="0.01"
                 value={(draft.price_cents / 100).toString()}
-                onChange={(e) => setDraft({ ...draft, price_cents: Math.round((Number(e.target.value) || 0) * 100) })}
+                onChange={(e) =>
+                  setDraft({
+                    ...draft,
+                    price_cents: Math.round((Number(e.target.value) || 0) * 100),
+                  })
+                }
               />
             </div>
           </div>
@@ -129,16 +168,16 @@ function ItemDialog({ initial, trigger }: { initial: ItemDraft; trigger: React.R
                         setUploading(true);
                         const ext = file.name.split(".").pop();
                         const path = `canteen/${crypto.randomUUID()}.${ext}`;
-                        
+
                         const { error: uploadError } = await supabase.storage
                           .from("store-assets")
                           .upload(path, file);
 
                         if (uploadError) throw uploadError;
 
-                        const { data: { publicUrl } } = supabase.storage
-                          .from("store-assets")
-                          .getPublicUrl(path);
+                        const {
+                          data: { publicUrl },
+                        } = supabase.storage.from("store-assets").getPublicUrl(path);
 
                         setDraft({ ...draft, image_url: publicUrl });
                         toast.success("Foto enviada com sucesso!");
@@ -158,20 +197,29 @@ function ItemDialog({ initial, trigger }: { initial: ItemDraft; trigger: React.R
                 </div>
               )}
               <div className="space-y-1">
-                <Label className="text-[10px] uppercase tracking-wider opacity-50">Ou cole uma URL</Label>
-                <Input 
-                  value={draft.image_url} 
+                <Label className="text-[10px] uppercase tracking-wider opacity-50">
+                  Ou cole uma URL
+                </Label>
+                <Input
+                  value={draft.image_url}
                   placeholder="https://exemplo.com/imagem.jpg"
-                  onChange={(e) => setDraft({ ...draft, image_url: e.target.value })} 
+                  onChange={(e) => setDraft({ ...draft, image_url: e.target.value })}
                 />
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Switch checked={draft.is_active} onCheckedChange={(v) => setDraft({ ...draft, is_active: v })} />
+            <Switch
+              checked={draft.is_active}
+              onCheckedChange={(v) => setDraft({ ...draft, is_active: v })}
+            />
             <Label className="text-sm">Item ativo</Label>
           </div>
-          <Button className="w-full" disabled={!draft.name || save.isPending} onClick={() => save.mutate()}>
+          <Button
+            className="w-full"
+            disabled={!draft.name || save.isPending}
+            onClick={() => save.mutate()}
+          >
             Salvar item
           </Button>
         </div>
@@ -184,7 +232,11 @@ export function CantinaAdminItems() {
   const { data } = useQuery({
     queryKey: ["canteen-items"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("canteen_items").select("*").order("category").order("name");
+      const { data, error } = await supabase
+        .from("canteen_items")
+        .select("*")
+        .order("category")
+        .order("name");
       if (error) throw error;
       return data;
     },
@@ -213,7 +265,10 @@ export function CantinaAdminItems() {
               <div className="flex items-center gap-4">
                 <div className="h-16 w-16 rounded-2xl bg-muted/30 overflow-hidden flex-shrink-0">
                   {i.image_url ? (
-                    <img src={i.image_url} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <img
+                      src={i.image_url}
+                      className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
                   ) : (
                     <div className="h-full w-full flex items-center justify-center text-muted-foreground/30">
                       <Utensils className="h-6 w-6" />
@@ -221,13 +276,20 @@ export function CantinaAdminItems() {
                   )}
                 </div>
                 <div>
-                  <Badge variant="secondary" className="bg-muted/50 font-mono text-[8px] uppercase tracking-widest border-border/50 px-2 py-0 mb-2">
+                  <Badge
+                    variant="secondary"
+                    className="bg-muted/50 font-mono text-[8px] uppercase tracking-widest border-border/50 px-2 py-0 mb-2"
+                  >
                     {i.category}
                   </Badge>
                   <div className="font-serif text-xl leading-none">{i.name}</div>
-                  <div className="font-mono text-sm mt-2 text-primary">{formatBRL(i.price_cents)}</div>
+                  <div className="font-mono text-sm mt-2 text-primary">
+                    {formatBRL(i.price_cents)}
+                  </div>
                   {!i.is_active && (
-                    <span className="inline-block mt-2 px-2 py-0.5 rounded font-mono text-[9px] uppercase bg-muted text-muted-foreground">Inativo</span>
+                    <span className="inline-block mt-2 px-2 py-0.5 rounded font-mono text-[9px] uppercase bg-muted text-muted-foreground">
+                      Inativo
+                    </span>
                   )}
                 </div>
               </div>
@@ -242,7 +304,11 @@ export function CantinaAdminItems() {
                   is_active: i.is_active,
                 }}
                 trigger={
-                  <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
+                  >
                     <Pencil className="h-4 w-4" />
                   </Button>
                 }
@@ -251,7 +317,6 @@ export function CantinaAdminItems() {
           ))}
         </AnimatePresence>
       </div>
-
     </div>
   );
 }
@@ -285,13 +350,21 @@ function MenuDialog() {
       if (chosen.length === 0) throw new Error("Selecione ao menos um item.");
       const { data: menu, error } = await supabase
         .from("canteen_menus")
-        .insert({ title, service_date: date, notes: notes || null, art_url: artUrl || null, status: "aberto" })
+        .insert({
+          title,
+          service_date: date,
+          notes: notes || null,
+          art_url: artUrl || null,
+          status: "aberto",
+        })
         .select("id")
         .single();
       if (error) throw error;
-      const { error: linkError } = await supabase.from("canteen_menu_items").insert(
-        chosen.map((i) => ({ menu_id: menu.id, item_id: i.id, price_cents: i.price_cents })),
-      );
+      const { error: linkError } = await supabase
+        .from("canteen_menu_items")
+        .insert(
+          chosen.map((i) => ({ menu_id: menu.id, item_id: i.id, price_cents: i.price_cents })),
+        );
       if (linkError) throw linkError;
     },
     onSuccess: () => {
@@ -319,7 +392,11 @@ function MenuDialog() {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Título</Label>
-            <Input placeholder="Culto de domingo à noite" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input
+              placeholder="Culto de domingo à noite"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Data</Label>
@@ -363,16 +440,16 @@ function MenuDialog() {
                         setUploading(true);
                         const ext = file.name.split(".").pop();
                         const path = `menus/${crypto.randomUUID()}.${ext}`;
-                        
+
                         const { error: uploadError } = await supabase.storage
                           .from("store-assets")
                           .upload(path, file);
 
                         if (uploadError) throw uploadError;
 
-                        const { data: { publicUrl } } = supabase.storage
-                          .from("store-assets")
-                          .getPublicUrl(path);
+                        const {
+                          data: { publicUrl },
+                        } = supabase.storage.from("store-assets").getPublicUrl(path);
 
                         setArtUrl(publicUrl);
                         toast.success("Banner enviado!");
@@ -392,11 +469,13 @@ function MenuDialog() {
                 </div>
               )}
               <div className="space-y-1">
-                <Label className="text-[10px] uppercase tracking-wider opacity-50">Ou cole a URL do banner</Label>
-                <Input 
-                  value={artUrl} 
+                <Label className="text-[10px] uppercase tracking-wider opacity-50">
+                  Ou cole a URL do banner
+                </Label>
+                <Input
+                  value={artUrl}
                   placeholder="https://exemplo.com/banner.jpg"
-                  onChange={(e) => setArtUrl(e.target.value)} 
+                  onChange={(e) => setArtUrl(e.target.value)}
                 />
               </div>
             </div>
@@ -405,18 +484,27 @@ function MenuDialog() {
             <Label>Itens do dia</Label>
             <div className="border border-border rounded-sm divide-y divide-border">
               {items?.map((i) => (
-                <label key={i.id} className="flex items-center gap-3 px-3 py-2 text-sm cursor-pointer">
+                <label
+                  key={i.id}
+                  className="flex items-center gap-3 px-3 py-2 text-sm cursor-pointer"
+                >
                   <Checkbox
                     checked={Boolean(selected[i.id])}
                     onCheckedChange={(v) => setSelected((s) => ({ ...s, [i.id]: Boolean(v) }))}
                   />
                   <span className="flex-1">{i.name}</span>
-                  <span className="font-mono text-muted-foreground">{formatBRL(i.price_cents)}</span>
+                  <span className="font-mono text-muted-foreground">
+                    {formatBRL(i.price_cents)}
+                  </span>
                 </label>
               ))}
             </div>
           </div>
-          <Button className="w-full" disabled={!title || create.isPending} onClick={() => create.mutate()}>
+          <Button
+            className="w-full"
+            disabled={!title || create.isPending}
+            onClick={() => create.mutate()}
+          >
             Publicar cardápio
           </Button>
         </div>
@@ -432,7 +520,9 @@ export function CantinaAdminMenus() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("canteen_menus")
-        .select("*, reservations:canteen_reservations(id, pickup_code, status, total_cents, user_id, items:canteen_reservation_items(id, item_name, quantity))")
+        .select(
+          "*, reservations:canteen_reservations(id, pickup_code, status, total_cents, user_id, items:canteen_reservation_items(id, item_name, quantity))",
+        )
         .order("service_date", { ascending: false });
       if (error) throw error;
       return data;
@@ -472,7 +562,9 @@ export function CantinaAdminMenus() {
           </div>
           <div>
             <h3 className="font-serif text-2xl tracking-tight">Gestão de Cardápios</h3>
-            <p className="text-xs text-muted-foreground font-light">Publique menus e acompanhe as reservas em tempo real.</p>
+            <p className="text-xs text-muted-foreground font-light">
+              Publique menus e acompanhe as reservas em tempo real.
+            </p>
           </div>
         </div>
         <MenuDialog />
@@ -487,7 +579,7 @@ export function CantinaAdminMenus() {
               totals.set(i.item_name, (totals.get(i.item_name) ?? 0) + i.quantity);
             }
           }
-          
+
           return (
             <motion.div
               key={menu.id}
@@ -501,24 +593,40 @@ export function CantinaAdminMenus() {
                 <div className="flex flex-wrap items-start justify-between gap-6">
                   <div className="space-y-2">
                     <div className="flex items-center gap-3">
-                      <Badge variant="outline" className={cn(
-                        "font-mono text-[9px] uppercase tracking-widest px-3 py-1",
-                        menu.status === "aberto" ? "border-emerald-500/30 text-emerald-600 bg-emerald-50" : "border-muted-foreground/30 text-muted-foreground bg-muted"
-                      )}>
+                      <Badge
+                        variant="outline"
+                        className={cn(
+                          "font-mono text-[9px] uppercase tracking-widest px-3 py-1",
+                          menu.status === "aberto"
+                            ? "border-emerald-500/30 text-emerald-600 bg-emerald-50"
+                            : "border-muted-foreground/30 text-muted-foreground bg-muted",
+                        )}
+                      >
                         {menu.status === "aberto" ? "Ativo no App" : "Encerrado"}
                       </Badge>
                       <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                        {new Date(menu.service_date + "T12:00:00").toLocaleDateString("pt-BR", { weekday: 'long', day: 'numeric', month: 'long' })}
+                        {new Date(menu.service_date + "T12:00:00").toLocaleDateString("pt-BR", {
+                          weekday: "long",
+                          day: "numeric",
+                          month: "long",
+                        })}
                       </span>
                     </div>
-                    <h3 className="font-serif text-3xl text-foreground tracking-tight">{menu.title}</h3>
+                    <h3 className="font-serif text-3xl text-foreground tracking-tight">
+                      {menu.title}
+                    </h3>
                   </div>
 
                   <div className="flex gap-3">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className="rounded-xl h-12 px-6 font-serif border-border/50 hover:bg-background"
-                      onClick={() => setMenuStatus.mutate({ id: menu.id, status: menu.status === "aberto" ? "encerrado" : "aberto" })}
+                      onClick={() =>
+                        setMenuStatus.mutate({
+                          id: menu.id,
+                          status: menu.status === "aberto" ? "encerrado" : "aberto",
+                        })
+                      }
                     >
                       {menu.status === "aberto" ? "Encerrar Reservas" : "Reabrir Reservas"}
                     </Button>
@@ -527,14 +635,23 @@ export function CantinaAdminMenus() {
 
                 {/* Production Summary */}
                 <div className="mt-10 bg-background/50 border border-border/50 rounded-3xl p-6">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary/60 block mb-4">Produção Necessária (Cozinha)</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary/60 block mb-4">
+                    Produção Necessária (Cozinha)
+                  </span>
                   {totals.size === 0 ? (
-                    <p className="text-sm text-muted-foreground font-light italic">Aguardando as primeiras reservas...</p>
+                    <p className="text-sm text-muted-foreground font-light italic">
+                      Aguardando as primeiras reservas...
+                    </p>
                   ) : (
                     <div className="flex flex-wrap gap-3">
                       {[...totals.entries()].map(([name, qty]) => (
-                        <div key={name} className="bg-card border border-border/50 rounded-2xl px-5 py-3 flex items-center gap-4 group/item hover:border-primary/30 transition-colors">
-                          <span className="font-serif text-3xl text-primary leading-none">{qty}</span>
+                        <div
+                          key={name}
+                          className="bg-card border border-border/50 rounded-2xl px-5 py-3 flex items-center gap-4 group/item hover:border-primary/30 transition-colors"
+                        >
+                          <span className="font-serif text-3xl text-primary leading-none">
+                            {qty}
+                          </span>
                           <span className="font-light text-sm text-foreground/80">{name}</span>
                         </div>
                       ))}
@@ -547,7 +664,9 @@ export function CantinaAdminMenus() {
               <div className="p-8">
                 <div className="flex items-center gap-4 mb-6">
                   <h4 className="font-serif text-xl">Fluxo de Retirada</h4>
-                  <Badge className="rounded-full bg-primary/10 text-primary border-none">{active.length} Reservas</Badge>
+                  <Badge className="rounded-full bg-primary/10 text-primary border-none">
+                    {active.length} Reservas
+                  </Badge>
                 </div>
 
                 <div className="space-y-4">
@@ -558,30 +677,40 @@ export function CantinaAdminMenus() {
                     </div>
                   ) : (
                     active.map((r: any) => (
-                      <div key={r.id} className="flex flex-wrap items-center justify-between gap-6 p-6 bg-muted/20 hover:bg-muted/40 rounded-2xl border border-border/30 transition-colors group/res">
+                      <div
+                        key={r.id}
+                        className="flex flex-wrap items-center justify-between gap-6 p-6 bg-muted/20 hover:bg-muted/40 rounded-2xl border border-border/30 transition-colors group/res"
+                      >
                         <div className="flex items-center gap-6">
                           <div className="h-12 w-12 rounded-xl bg-background border border-border/50 flex items-center justify-center font-serif text-2xl text-primary shadow-sm">
                             {r.pickup_code}
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-light text-foreground/70 mb-1">
-                              {(r.items ?? []).map((i: any) => `${i.quantity}× ${i.item_name}`).join(", ")}
+                              {(r.items ?? [])
+                                .map((i: any) => `${i.quantity}× ${i.item_name}`)
+                                .join(", ")}
                             </p>
-                            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">{formatBRL(r.total_cents)}</span>
+                            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+                              {formatBRL(r.total_cents)}
+                            </span>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-4">
-                          <Badge variant="outline" className={cn(
-                            "font-mono text-[9px] uppercase tracking-widest px-3 py-1",
-                            RESERVATION_STATUS[r.status].className
-                          )}>
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "font-mono text-[9px] uppercase tracking-widest px-3 py-1",
+                              RESERVATION_STATUS[r.status].className,
+                            )}
+                          >
                             {RESERVATION_STATUS[r.status].label}
                           </Badge>
-                          
+
                           {r.status === "reservado" && (
-                            <Button 
-                              size="sm" 
+                            <Button
+                              size="sm"
                               className="rounded-xl h-10 px-5 shadow-lg shadow-primary/10"
                               onClick={() => setResStatus.mutate({ id: r.id, status: "retirado" })}
                             >

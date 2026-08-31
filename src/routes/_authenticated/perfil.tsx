@@ -47,7 +47,11 @@ function PerfilPage() {
     queryKey: ["profile", user?.id],
     enabled: !!user?.id,
     queryFn: async () => {
-      const { data, error } = await supabase.from("profiles").select("*").eq("id", user!.id).maybeSingle();
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user!.id)
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -62,7 +66,11 @@ function PerfilPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Sua conta" title="Meu perfil" description={profile?.full_name ?? user?.email ?? ""} />
+      <PageHeader
+        eyebrow="Sua conta"
+        title="Meu perfil"
+        description={profile?.full_name ?? user?.email ?? ""}
+      />
       <PageBody>
         <div className="mb-8">
           <AtivarPush />
@@ -71,12 +79,15 @@ function PerfilPage() {
           <ProfileForm profile={profile ?? null} userId={user?.id} />
         </div>
         <div className="mb-6">
-          <Button variant="outline" onClick={() => setEditing(true)}>Abrir ficha em janela</Button>
+          <Button variant="outline" onClick={() => setEditing(true)}>
+            Abrir ficha em janela
+          </Button>
         </div>
         <div className="grid lg:grid-cols-2 gap-6">
-
           <div className="border border-border bg-card p-8 rounded-sm space-y-4 text-sm">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-primary">Dados pessoais</div>
+            <div className="font-mono text-[10px] uppercase tracking-widest text-primary">
+              Dados pessoais
+            </div>
             <Row label="Nome" value={profile?.full_name} />
             <Row label="E-mail" value={profile?.email ?? user?.email} />
             <Row label="Telefone" value={profile?.phone} />
@@ -87,7 +98,13 @@ function PerfilPage() {
             <Row
               label="Endereço"
               value={
-                [profile?.street, profile?.street_number, profile?.neighborhood, profile?.city, profile?.state]
+                [
+                  profile?.street,
+                  profile?.street_number,
+                  profile?.neighborhood,
+                  profile?.city,
+                  profile?.state,
+                ]
                   .filter(Boolean)
                   .join(", ") || null
               }
@@ -102,19 +119,29 @@ function PerfilPage() {
             />
           </div>
           <div className="border border-border bg-card p-8 rounded-sm space-y-4 text-sm">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-primary">Vida cristã</div>
+            <div className="font-mono text-[10px] uppercase tracking-widest text-primary">
+              Vida cristã
+            </div>
             <Row label="Conversão" value={formatDateBR(profile?.conversion_date)} />
             <Row label="Batizado" value={profile?.is_baptized ? "Sim" : "Não"} />
             <Row label="Data do batismo" value={formatDateBR(profile?.baptism_date)} />
             <Row label="Membro desde" value={formatDateBR(profile?.member_since)} />
-            <Row label="Forma de entrada" value={labelOf(MEMBERSHIP_TYPES, profile?.membership_type)} />
+            <Row
+              label="Forma de entrada"
+              value={labelOf(MEMBERSHIP_TYPES, profile?.membership_type)}
+            />
             <Row label="Situação" value={labelOf(MEMBERSHIP_STATUS, profile?.membership_status)} />
-            <Row label="Cursos" value={profile?.courses?.length ? profile.courses.join(", ") : null} />
+            <Row
+              label="Cursos"
+              value={profile?.courses?.length ? profile.courses.join(", ") : null}
+            />
             <Row label="Dons" value={profile?.gifts} />
             <Row label="Disponibilidade" value={profile?.availability} />
           </div>
           <div className="border border-border bg-card p-8 rounded-sm">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-primary mb-4">Seus papéis</div>
+            <div className="font-mono text-[10px] uppercase tracking-widest text-primary mb-4">
+              Seus papéis
+            </div>
             {isAdmin && (
               <div className="mb-4 flex items-center gap-2 text-primary">
                 <ShieldCheck className="h-4 w-4" />
@@ -123,7 +150,10 @@ function PerfilPage() {
             )}
             <ul className="space-y-2 text-sm">
               {roles.map((r, i) => (
-                <li key={i} className="flex items-center justify-between border-b border-border pb-2">
+                <li
+                  key={i}
+                  className="flex items-center justify-between border-b border-border pb-2"
+                >
                   <span>{roleLabel[r.role] ?? r.role}</span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                     {r.ministry_id ? "ministério" : r.mesa_id ? "mesa" : "global"}
@@ -135,7 +165,8 @@ function PerfilPage() {
               <div className="mt-6 pt-4 border-t border-border">
                 <p className="text-xs text-muted-foreground">
                   Ainda não há administrador geral definido nesta plataforma. Se esta conta é a da
-                  liderança, assuma a administração para liberar os botões de criação em todas as páginas.
+                  liderança, assuma a administração para liberar os botões de criação em todas as
+                  páginas.
                 </p>
                 <Button
                   className="mt-3"
@@ -163,7 +194,9 @@ function PerfilPage() {
 function Row({ label, value }: { label: string; value: any }) {
   return (
     <div className="flex items-baseline justify-between border-b border-border pb-3">
-      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
+      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        {label}
+      </div>
       <div>{value || <span className="text-muted-foreground">—</span>}</div>
     </div>
   );

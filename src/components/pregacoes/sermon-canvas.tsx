@@ -54,8 +54,22 @@ interface Palette {
 
 function palette(dark: boolean): Palette {
   return dark
-    ? { paper: "#141416", ink: "#F3F1EA", soft: "#A7A59E", line: "#2E2E33", band: "#1D1D20", chipInk: "#141416" }
-    : { paper: "#F5F3EE", ink: "#18181B", soft: "#57574F", line: "#DBD8CF", band: "#ECEAE3", chipInk: "#F5F3EE" };
+    ? {
+        paper: "#141416",
+        ink: "#F3F1EA",
+        soft: "#A7A59E",
+        line: "#2E2E33",
+        band: "#1D1D20",
+        chipInk: "#141416",
+      }
+    : {
+        paper: "#F5F3EE",
+        ink: "#18181B",
+        soft: "#57574F",
+        line: "#DBD8CF",
+        band: "#ECEAE3",
+        chipInk: "#F5F3EE",
+      };
 }
 
 function wrap(text: string, max: number): string[] {
@@ -88,13 +102,15 @@ function fmtDate(iso?: string): string {
 }
 
 function slugify(s: string): string {
-  return (s || "pregacao")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "")
-    .slice(0, 60) || "pregacao";
+  return (
+    (s || "pregacao")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "")
+      .slice(0, 60) || "pregacao"
+  );
 }
 
 /** Bloco de texto com quebra automática em várias linhas (tspans). */
@@ -207,14 +223,53 @@ function LayoutMapa({ d, P }: { d: SermonDraft; P: Palette }) {
     const badgeY = y + 34;
     return (
       <g key={`${side}-${idx}`}>
-        <rect x={x} y={y} width={nodeW} height={nodeH} rx={20} fill={P.paper} stroke={P.line} strokeWidth={2} />
+        <rect
+          x={x}
+          y={y}
+          width={nodeW}
+          height={nodeH}
+          rx={20}
+          fill={P.paper}
+          stroke={P.line}
+          strokeWidth={2}
+        />
         <circle cx={badgeX} cy={badgeY} r={19} fill={P.ink} />
-        <text x={badgeX} y={badgeY} fontFamily={MONO} fontSize={20} fontWeight={700} fill={P.chipInk} textAnchor="middle" dominantBaseline="central">
+        <text
+          x={badgeX}
+          y={badgeY}
+          fontFamily={MONO}
+          fontSize={20}
+          fontWeight={700}
+          fill={P.chipInk}
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
           {idx + 1}
         </text>
-        <TextLines text={p.title} x={x + 66} y={y + 42} size={26} lh={30} family={SERIF} fill={P.ink} weight={700} maxChars={24} maxLines={2} />
+        <TextLines
+          text={p.title}
+          x={x + 66}
+          y={y + 42}
+          size={26}
+          lh={30}
+          family={SERIF}
+          fill={P.ink}
+          weight={700}
+          maxChars={24}
+          maxLines={2}
+        />
         {p.detail ? (
-          <TextLines text={p.detail} x={x + 24} y={y + nodeH - 30} size={16} lh={19} family={SANS} fill={P.soft} maxChars={40} maxLines={2} />
+          <TextLines
+            text={p.detail}
+            x={x + 24}
+            y={y + nodeH - 30}
+            size={16}
+            lh={19}
+            family={SANS}
+            fill={P.soft}
+            maxChars={40}
+            maxLines={2}
+          />
         ) : null}
       </g>
     );
@@ -238,7 +293,16 @@ function LayoutMapa({ d, P }: { d: SermonDraft; P: Palette }) {
   return (
     <>
       <rect x={0} y={0} width={w} height={h} fill={P.paper} />
-      <rect x={30} y={30} width={w - 60} height={h - 60} rx={28} fill="none" stroke={P.line} strokeWidth={2} />
+      <rect
+        x={30}
+        y={30}
+        width={w - 60}
+        height={h - 60}
+        rx={28}
+        fill="none"
+        stroke={P.line}
+        strokeWidth={2}
+      />
 
       {/* Cabeçalho */}
       <Brandmark x={70} y={64} size={48} P={P} />
@@ -257,11 +321,35 @@ function LayoutMapa({ d, P }: { d: SermonDraft; P: Palette }) {
       {right.map((_, i) => connector(w - 300, rightYs[i], "r"))}
 
       {/* Nó central — o tema */}
-      <rect x={cx - centerW / 2} y={cy - centerH / 2} width={centerW} height={centerH} rx={26} fill={P.ink} />
-      <text x={cx} y={cy - centerH / 2 + 34} fontFamily={MONO} fontSize={13} fill={P.chipInk} textAnchor="middle" letterSpacing={3} opacity={0.7}>
+      <rect
+        x={cx - centerW / 2}
+        y={cy - centerH / 2}
+        width={centerW}
+        height={centerH}
+        rx={26}
+        fill={P.ink}
+      />
+      <text
+        x={cx}
+        y={cy - centerH / 2 + 34}
+        fontFamily={MONO}
+        fontSize={13}
+        fill={P.chipInk}
+        textAnchor="middle"
+        letterSpacing={3}
+        opacity={0.7}
+      >
         TEMA
       </text>
-      <text x={cx} y={cy + 8 - (themeLines.length - 1) * 26} fontFamily={SERIF} fontSize={46} fontWeight={800} fill={P.chipInk} textAnchor="middle">
+      <text
+        x={cx}
+        y={cy + 8 - (themeLines.length - 1) * 26}
+        fontFamily={SERIF}
+        fontSize={46}
+        fontWeight={800}
+        fill={P.chipInk}
+        textAnchor="middle"
+      >
         {themeLines.map((ln, i) => (
           <tspan key={i} x={cx} dy={i === 0 ? 0 : 52}>
             {ln}
@@ -277,7 +365,16 @@ function LayoutMapa({ d, P }: { d: SermonDraft; P: Palette }) {
       {d.base_verse ? (
         <g>
           <rect x={cx - 260} y={h - 130} width={520} height={64} rx={32} fill={P.ink} />
-          <text x={cx} y={h - 98} fontFamily={SANS} fontSize={22} fontWeight={600} fill={P.chipInk} textAnchor="middle" dominantBaseline="central">
+          <text
+            x={cx}
+            y={h - 98}
+            fontFamily={SANS}
+            fontSize={22}
+            fontWeight={600}
+            fill={P.chipInk}
+            textAnchor="middle"
+            dominantBaseline="central"
+          >
             {d.base_verse}
           </text>
         </g>
@@ -333,22 +430,52 @@ function LayoutInfografico({ d, P }: { d: SermonDraft; P: Palette }) {
         ))}
       </text>
       {d.base_verse ? (
-        <text x={80} y={300 + themeLines.length * 72 + 6} fontFamily={SANS} fontSize={24} fontStyle="italic" fill={P.soft}>
+        <text
+          x={80}
+          y={300 + themeLines.length * 72 + 6}
+          fontFamily={SANS}
+          fontSize={24}
+          fontStyle="italic"
+          fill={P.soft}
+        >
           {d.base_verse}
         </text>
       ) : null}
 
       {/* Pontos com espinha vertical numerada */}
       {rows.length > 1 ? (
-        <line x1={112} y1={rows[0].rowY + 6} x2={112} y2={rows[rows.length - 1].rowY + 6} stroke={P.line} strokeWidth={3} />
+        <line
+          x1={112}
+          y1={rows[0].rowY + 6}
+          x2={112}
+          y2={rows[rows.length - 1].rowY + 6}
+          stroke={P.line}
+          strokeWidth={3}
+        />
       ) : null}
       {rows.map(({ p, rowY, titleLines, detailLines }, i) => (
         <g key={i}>
           <circle cx={112} cy={rowY + 6} r={24} fill={P.ink} />
-          <text x={112} y={rowY + 6} fontFamily={MONO} fontSize={22} fontWeight={700} fill={P.chipInk} textAnchor="middle" dominantBaseline="central">
+          <text
+            x={112}
+            y={rowY + 6}
+            fontFamily={MONO}
+            fontSize={22}
+            fontWeight={700}
+            fill={P.chipInk}
+            textAnchor="middle"
+            dominantBaseline="central"
+          >
             {i + 1}
           </text>
-          <text x={168} y={rowY + 16} fontFamily={SERIF} fontSize={31} fontWeight={700} fill={P.ink}>
+          <text
+            x={168}
+            y={rowY + 16}
+            fontFamily={SERIF}
+            fontSize={31}
+            fontWeight={700}
+            fill={P.ink}
+          >
             {titleLines.map((ln, j) => (
               <tspan key={j} x={168} dy={j === 0 ? 0 : 36}>
                 {ln}
@@ -356,7 +483,13 @@ function LayoutInfografico({ d, P }: { d: SermonDraft; P: Palette }) {
             ))}
           </text>
           {detailLines.length ? (
-            <text x={168} y={rowY + 20 + titleLines.length * 34} fontFamily={SANS} fontSize={19} fill={P.soft}>
+            <text
+              x={168}
+              y={rowY + 20 + titleLines.length * 34}
+              fontFamily={SANS}
+              fontSize={19}
+              fill={P.soft}
+            >
               {detailLines.map((ln, j) => (
                 <tspan key={j} x={168} dy={j === 0 ? 0 : 25}>
                   {ln}
@@ -393,16 +526,41 @@ function LayoutArte({ d, P }: { d: SermonDraft; P: Palette }) {
   return (
     <>
       <rect x={0} y={0} width={w} height={h} fill={P.paper} />
-      <rect x={44} y={44} width={w - 88} height={h - 88} rx={26} fill="none" stroke={P.line} strokeWidth={2} />
+      <rect
+        x={44}
+        y={44}
+        width={w - 88}
+        height={h - 88}
+        rx={26}
+        fill="none"
+        stroke={P.line}
+        strokeWidth={2}
+      />
 
       {/* Topo — marca + igreja */}
       <Brandmark x={cx - 30} y={120} size={60} P={P} />
-      <text x={cx} y={224} fontFamily={MONO} fontSize={15} fill={P.soft} textAnchor="middle" letterSpacing={3}>
+      <text
+        x={cx}
+        y={224}
+        fontFamily={MONO}
+        fontSize={15}
+        fill={P.soft}
+        textAnchor="middle"
+        letterSpacing={3}
+      >
         {(d.churchName || "IGREJA BATISTA ATOS").toUpperCase()}
       </text>
 
       {/* Tema central */}
-      <text x={cx} y={themeStart} fontFamily={SERIF} fontSize={72} fontWeight={800} fill={P.ink} textAnchor="middle">
+      <text
+        x={cx}
+        y={themeStart}
+        fontFamily={SERIF}
+        fontSize={72}
+        fontWeight={800}
+        fill={P.ink}
+        textAnchor="middle"
+      >
         {themeLines.map((ln, i) => (
           <tspan key={i} x={cx} dy={i === 0 ? 0 : 80}>
             {ln}
@@ -411,7 +569,14 @@ function LayoutArte({ d, P }: { d: SermonDraft; P: Palette }) {
       </text>
 
       {/* Régua + versículo */}
-      <line x1={cx - 70} y1={themeStart + themeLines.length * 80 + 6} x2={cx + 70} y2={themeStart + themeLines.length * 80 + 6} stroke={P.ink} strokeWidth={3} />
+      <line
+        x1={cx - 70}
+        y1={themeStart + themeLines.length * 80 + 6}
+        x2={cx + 70}
+        y2={themeStart + themeLines.length * 80 + 6}
+        stroke={P.ink}
+        strokeWidth={3}
+      />
       {d.base_verse ? (
         <TextLines
           text={d.base_verse}
@@ -430,11 +595,27 @@ function LayoutArte({ d, P }: { d: SermonDraft; P: Palette }) {
 
       {/* Rodapé — pregador e data */}
       {d.preacher ? (
-        <text x={cx} y={h - 150} fontFamily={SANS} fontSize={22} fontWeight={600} fill={P.ink} textAnchor="middle">
+        <text
+          x={cx}
+          y={h - 150}
+          fontFamily={SANS}
+          fontSize={22}
+          fontWeight={600}
+          fill={P.ink}
+          textAnchor="middle"
+        >
           {d.preacher}
         </text>
       ) : null}
-      <text x={cx} y={h - 116} fontFamily={MONO} fontSize={15} fill={P.soft} textAnchor="middle" letterSpacing={1}>
+      <text
+        x={cx}
+        y={h - 116}
+        fontFamily={MONO}
+        fontSize={15}
+        fill={P.soft}
+        textAnchor="middle"
+        letterSpacing={1}
+      >
         {fmtDate(d.preached_on)}
       </text>
     </>
@@ -469,11 +650,18 @@ export async function svgToPngBlob(
   );
 }
 
-export function SermonCanvas({ draft, innerRef }: { draft: SermonDraft; innerRef?: Ref<SVGSVGElement> }) {
+export function SermonCanvas({
+  draft,
+  innerRef,
+}: {
+  draft: SermonDraft;
+  innerRef?: Ref<SVGSVGElement>;
+}) {
   const ref = useRef<SVGSVGElement>(null);
   const { w, h } = DIMS[draft.template];
   const P = palette(draft.dark);
-  const base = slugify(draft.theme || draft.title) + (draft.preached_on ? "-" + draft.preached_on : "");
+  const base =
+    slugify(draft.theme || draft.title) + (draft.preached_on ? "-" + draft.preached_on : "");
 
   const setSvg = (el: SVGSVGElement | null) => {
     ref.current = el;
@@ -493,7 +681,9 @@ export function SermonCanvas({ draft, innerRef }: { draft: SermonDraft; innerRef
   const exportSVG = () => {
     if (!ref.current) return;
     const xml = new XMLSerializer().serializeToString(ref.current);
-    const blob = new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n', xml], { type: "image/svg+xml" });
+    const blob = new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n', xml], {
+      type: "image/svg+xml",
+    });
     const url = URL.createObjectURL(blob);
     download(base + ".svg", url);
     setTimeout(() => URL.revokeObjectURL(url), 1500);

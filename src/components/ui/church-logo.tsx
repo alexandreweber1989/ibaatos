@@ -33,7 +33,7 @@ export function ChurchLogo({ className = "h-10 w-10" }: { className?: string }) 
           fontSize="70"
           fontWeight="800"
           textAnchor="middle"
-          style={{ fontFamily: 'var(--font-serif)' }}
+          style={{ fontFamily: "var(--font-serif)" }}
         >
           ATOS
         </text>

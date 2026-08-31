@@ -30,7 +30,7 @@ Ordem de prioridade, se você quiser assumir o controle:
 2. Aceita a permissão do navegador.
 
 **iPhone:** a Apple só entrega push para apps instalados. O membro precisa tocar
-em *Compartilhar → Adicionar à Tela de Início* e abrir o app por ali. O próprio
+em _Compartilhar → Adicionar à Tela de Início_ e abrir o app por ali. O próprio
 cartão exibe essa instrução automaticamente quando detecta iPhone.
 
 ## Como a igreja envia

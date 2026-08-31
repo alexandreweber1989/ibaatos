@@ -140,7 +140,11 @@ export function FamilyLinksEditor({ personId, canEdit }: { personId: string; can
                 ))}
               </SelectContent>
             </Select>
-            <Button type="button" onClick={() => add.mutate()} disabled={!selected || add.isPending}>
+            <Button
+              type="button"
+              onClick={() => add.mutate()}
+              disabled={!selected || add.isPending}
+            >
               Vincular
             </Button>
           </div>
@@ -160,7 +164,9 @@ export function FamilyLinksEditor({ personId, canEdit }: { personId: string; can
                   </li>
                 ))}
               {!candidates?.length && (
-                <li className="px-3 py-2 text-sm text-muted-foreground">Nenhum membro encontrado.</li>
+                <li className="px-3 py-2 text-sm text-muted-foreground">
+                  Nenhum membro encontrado.
+                </li>
               )}
             </ul>
           )}

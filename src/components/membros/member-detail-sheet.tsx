@@ -76,7 +76,10 @@ export function MemberDetailSheet({
     queryFn: async () => {
       const [mesas, mins, roles] = await Promise.all([
         supabase.from("mesa_members").select("mesas(name)").eq("user_id", id!),
-        supabase.from("ministry_members").select("function_name, ministries(name)").eq("user_id", id!),
+        supabase
+          .from("ministry_members")
+          .select("function_name, ministries(name)")
+          .eq("user_id", id!),
         supabase.from("user_roles").select("role").eq("user_id", id!),
       ]);
       return {
@@ -90,7 +93,13 @@ export function MemberDetailSheet({
   });
 
   if (!profile) return null;
-  const address = [profile.street, profile.street_number, profile.neighborhood, profile.city, profile.state]
+  const address = [
+    profile.street,
+    profile.street_number,
+    profile.neighborhood,
+    profile.city,
+    profile.state,
+  ]
     .filter(Boolean)
     .join(", ");
 
@@ -106,8 +115,12 @@ export function MemberDetailSheet({
               {initialsOf(profile.full_name)}
             </div>
             <div className="min-w-0">
-              <SheetTitle className="font-serif text-2xl truncate">{displayMemberName(profile.full_name, profile.church_function, profile.gender)}</SheetTitle>
-              <SheetDescription className="truncate">{profile.email ?? "Sem e-mail"}</SheetDescription>
+              <SheetTitle className="font-serif text-2xl truncate">
+                {displayMemberName(profile.full_name, profile.church_function, profile.gender)}
+              </SheetTitle>
+              <SheetDescription className="truncate">
+                {profile.email ?? "Sem e-mail"}
+              </SheetDescription>
             </div>
           </div>
           <div className="ficha-stagger flex flex-wrap gap-1.5 pt-3">
@@ -135,7 +148,9 @@ export function MemberDetailSheet({
               value={
                 profile.emergency_contact_name
                   ? `${profile.emergency_contact_name} — ${profile.emergency_contact_phone ?? ""} ${
-                      profile.emergency_contact_relation ? `(${profile.emergency_contact_relation})` : ""
+                      profile.emergency_contact_relation
+                        ? `(${profile.emergency_contact_relation})`
+                        : ""
                     }`
                   : null
               }
@@ -145,24 +160,32 @@ export function MemberDetailSheet({
           <Block title="Pessoal">
             <Line label="Estado civil" value={labelOf(MARITAL_STATUS, profile.marital_status)} />
             <Line label="Cônjuge" value={profile.spouse_name} />
-            <Line label="Filhos" value={profile.has_children ? `${profile.children_count ?? 0}` : null} />
+            <Line
+              label="Filhos"
+              value={profile.has_children ? `${profile.children_count ?? 0}` : null}
+            />
             <Line label="Profissão" value={profile.profession} />
             <Line label="Escolaridade" value={profile.education} />
           </Block>
           <Separator />
-          <Block title="Família">
-            {id && <FamilySummary personId={id} enabled={open} />}
-          </Block>
+          <Block title="Família">{id && <FamilySummary personId={id} enabled={open} />}</Block>
           <Separator />
           <Block title="Vida cristã">
             <Line label="Conversão" value={formatDateBR(profile.conversion_date)} />
             <Line label="Batismo" value={formatDateBR(profile.baptism_date)} />
             <Line label="Igreja do batismo" value={profile.baptism_church} />
             <Line label="Membro desde" value={formatDateBR(profile.member_since)} />
-            <Line label="Forma de entrada" value={labelOf(MEMBERSHIP_TYPES, profile.membership_type)} />
+            <Line
+              label="Forma de entrada"
+              value={labelOf(MEMBERSHIP_TYPES, profile.membership_type)}
+            />
             <Line
               label="Cursos"
-              value={Array.isArray(profile.courses) && profile.courses.length ? profile.courses.join(", ") : null}
+              value={
+                Array.isArray(profile.courses) && profile.courses.length
+                  ? profile.courses.join(", ")
+                  : null
+              }
             />
             <Line label="Dons" value={profile.gifts} />
             <Line label="Disponibilidade" value={profile.availability} />
@@ -178,7 +201,10 @@ export function MemberDetailSheet({
           <Separator />
           <Block title="Vínculos">
             <Line label="Mesas" value={links?.mesas.length ? links.mesas.join(", ") : "—"} />
-            <Line label="Ministérios" value={links?.ministries.length ? links.ministries.join(" | ") : "—"} />
+            <Line
+              label="Ministérios"
+              value={links?.ministries.length ? links.ministries.join(" | ") : "—"}
+            />
           </Block>
           {isPastoral && (
             <>

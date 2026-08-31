@@ -27,7 +27,11 @@ import {
 import { ChurchSelect } from "@/components/admin/church-select";
 import { KIDS_CLASSROOMS, suggestClassroom, type KidsChild } from "@/lib/kids";
 import { PhotoInput } from "@/components/kids/photo-input";
-import { GuardiansEditor, emptyGuardian, type GuardianDraft } from "@/components/kids/guardians-editor";
+import {
+  GuardiansEditor,
+  emptyGuardian,
+  type GuardianDraft,
+} from "@/components/kids/guardians-editor";
 
 interface ChildDialogProps {
   child?: KidsChild;
@@ -286,7 +290,11 @@ export function ChildDialog({ child, trigger }: ChildDialogProps) {
             </div>
             <div className="space-y-2">
               <Label>Observações gerais</Label>
-              <Textarea rows={2} value={form.notes} onChange={(e) => set("notes", e.target.value)} />
+              <Textarea
+                rows={2}
+                value={form.notes}
+                onChange={(e) => set("notes", e.target.value)}
+              />
             </div>
           </div>
 

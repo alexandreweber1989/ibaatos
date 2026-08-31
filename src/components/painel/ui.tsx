@@ -19,7 +19,12 @@ export function PanelSection({
   children: ReactNode;
 }) {
   return (
-    <section className={cn("border border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-sm transition-all duration-300 hover:shadow-md hover:border-border/80", className)}>
+    <section
+      className={cn(
+        "border border-border bg-card/50 backdrop-blur-sm rounded-xl shadow-sm transition-all duration-300 hover:shadow-md hover:border-border/80",
+        className,
+      )}
+    >
       <header className="flex flex-wrap items-end justify-between gap-3 px-4 sm:px-6 pt-5 sm:pt-6 pb-4 border-b border-border">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
@@ -56,7 +61,9 @@ export function StatTile({
           <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
         )}
       </div>
-      <div className="font-serif text-2xl sm:text-3xl md:text-4xl mt-4 sm:mt-6 leading-none tabular-nums truncate">{value}</div>
+      <div className="font-serif text-2xl sm:text-3xl md:text-4xl mt-4 sm:mt-6 leading-none tabular-nums truncate">
+        {value}
+      </div>
       <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-2">
         {label}
       </div>

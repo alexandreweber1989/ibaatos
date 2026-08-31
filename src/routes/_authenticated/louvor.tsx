@@ -27,19 +27,31 @@ function LouvorPage() {
         <Tabs defaultValue="overview" className="space-y-6">
           <div className="flex overflow-x-auto pb-1 scrollbar-none">
             <TabsList className="inline-flex h-auto p-1 bg-muted/50 backdrop-blur-sm border border-border/50 w-full sm:w-auto">
-              <TabsTrigger value="overview" className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background">
+              <TabsTrigger
+                value="overview"
+                className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background"
+              >
                 <LayoutDashboard className="h-4 w-4" />
                 <span className="hidden sm:inline">Visão Geral</span>
               </TabsTrigger>
-              <TabsTrigger value="repertorio" className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background">
+              <TabsTrigger
+                value="repertorio"
+                className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background"
+              >
                 <Music className="h-4 w-4" />
                 <span className="hidden sm:inline">Repertório</span>
               </TabsTrigger>
-              <TabsTrigger value="escalas" className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background">
+              <TabsTrigger
+                value="escalas"
+                className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background"
+              >
                 <CalendarDays className="h-4 w-4" />
                 <span className="hidden sm:inline">Escalas</span>
               </TabsTrigger>
-              <TabsTrigger value="elenco" className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background">
+              <TabsTrigger
+                value="elenco"
+                className="flex-1 sm:flex-none gap-2 px-4 py-2 data-[state=active]:bg-background"
+              >
                 <Users className="h-4 w-4" />
                 <span className="hidden sm:inline">Elenco</span>
               </TabsTrigger>

@@ -101,7 +101,8 @@ export function ProfileForm({
       if (!parsed.success) throw new Error(parsed.error.issues[0].message);
 
       const targetId = (form.id as string) || (profile?.id as string) || userId;
-      if (!targetId) throw new Error("Sessão não localizada. Recarregue a página e tente novamente.");
+      if (!targetId)
+        throw new Error("Sessão não localizada. Recarregue a página e tente novamente.");
 
       // Texto/data em branco vira null para não sujar o banco.
       const clean = (v: unknown) => (v === "" || v === undefined ? null : v);
@@ -148,7 +149,9 @@ export function ProfileForm({
       };
 
       // Upsert cobre o caso de a ficha ainda não existir para o usuário.
-      const { error } = await supabase.from("profiles").upsert(payload as any, { onConflict: "id" });
+      const { error } = await supabase
+        .from("profiles")
+        .upsert(payload as any, { onConflict: "id" });
       if (error) throw error;
     },
     onSuccess: async () => {
@@ -221,11 +224,26 @@ export function ProfileForm({
         <div className="p-6 sm:p-8">
           <TabsContent value="pessoal" className="mt-0 space-y-8">
             <Section title="Identificação">
-              <TextField label="Nome completo" value={str("full_name")} onChange={set("full_name")} full />
+              <TextField
+                label="Nome completo"
+                value={str("full_name")}
+                onChange={set("full_name")}
+                full
+              />
               <TextField label="E-mail" type="email" value={str("email")} onChange={set("email")} />
               <TextField label="Telefone / WhatsApp" value={str("phone")} onChange={set("phone")} />
-              <TextField label="Data de nascimento" type="date" value={str("birth_date")} onChange={set("birth_date")} />
-              <SelectField label="Sexo" value={str("gender")} onChange={set("gender")} options={GENDERS} />
+              <TextField
+                label="Data de nascimento"
+                type="date"
+                value={str("birth_date")}
+                onChange={set("birth_date")}
+              />
+              <SelectField
+                label="Sexo"
+                value={str("gender")}
+                onChange={set("gender")}
+                options={GENDERS}
+              />
               <TextField label="CPF" value={str("cpf")} onChange={set("cpf")} maxLength={14} />
               <TextField label="RG" value={str("rg")} onChange={set("rg")} maxLength={20} />
               <SelectField
@@ -244,14 +262,33 @@ export function ProfileForm({
                 onChange={set("marital_status")}
                 options={MARITAL_STATUS}
               />
-              <TextField label="Nome do cônjuge" value={str("spouse_name")} onChange={set("spouse_name")} />
-              <TextField label="Data de casamento" type="date" value={str("wedding_date")} onChange={set("wedding_date")} />
-              <TextField label="Nome do pai" value={str("father_name")} onChange={set("father_name")} />
-              <TextField label="Nome da mãe" value={str("mother_name")} onChange={set("mother_name")} />
+              <TextField
+                label="Nome do cônjuge"
+                value={str("spouse_name")}
+                onChange={set("spouse_name")}
+              />
+              <TextField
+                label="Data de casamento"
+                type="date"
+                value={str("wedding_date")}
+                onChange={set("wedding_date")}
+              />
+              <TextField
+                label="Nome do pai"
+                value={str("father_name")}
+                onChange={set("father_name")}
+              />
+              <TextField
+                label="Nome da mãe"
+                value={str("mother_name")}
+                onChange={set("mother_name")}
+              />
               <Field label="Possui filhos">
                 <div className="flex items-center gap-3 h-9">
                   <Switch checked={!!form.has_children} onCheckedChange={set("has_children")} />
-                  <span className="text-sm text-muted-foreground">{form.has_children ? "Sim" : "Não"}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {form.has_children ? "Sim" : "Não"}
+                  </span>
                 </div>
               </Field>
               {form.has_children && (
@@ -266,7 +303,10 @@ export function ProfileForm({
 
             {(profile?.id || userId) && (
               <Section title="Parentes cadastrados na igreja">
-                <FamilyLinksEditor personId={(profile?.id as string) || (userId as string)} canEdit />
+                <FamilyLinksEditor
+                  personId={(profile?.id as string) || (userId as string)}
+                  canEdit
+                />
               </Section>
             )}
           </TabsContent>
@@ -286,9 +326,22 @@ export function ProfileForm({
                 />
               </Field>
               <TextField label="Rua" value={str("street")} onChange={set("street")} />
-              <TextField label="Número" value={str("street_number")} onChange={set("street_number")} maxLength={10} />
-              <TextField label="Complemento" value={str("complement")} onChange={set("complement")} />
-              <TextField label="Bairro" value={str("neighborhood")} onChange={set("neighborhood")} />
+              <TextField
+                label="Número"
+                value={str("street_number")}
+                onChange={set("street_number")}
+                maxLength={10}
+              />
+              <TextField
+                label="Complemento"
+                value={str("complement")}
+                onChange={set("complement")}
+              />
+              <TextField
+                label="Bairro"
+                value={str("neighborhood")}
+                onChange={set("neighborhood")}
+              />
               <TextField label="Cidade" value={str("city")} onChange={set("city")} />
               <SelectField
                 label="Estado"
@@ -299,28 +352,60 @@ export function ProfileForm({
             </Section>
 
             <Section title="Contato de emergência">
-              <TextField label="Nome do contato" value={str("emergency_contact_name")} onChange={set("emergency_contact_name")} />
-              <TextField label="Telefone" value={str("emergency_contact_phone")} onChange={set("emergency_contact_phone")} />
-              <TextField label="Parentesco" value={str("emergency_contact_relation")} onChange={set("emergency_contact_relation")} />
+              <TextField
+                label="Nome do contato"
+                value={str("emergency_contact_name")}
+                onChange={set("emergency_contact_name")}
+              />
+              <TextField
+                label="Telefone"
+                value={str("emergency_contact_phone")}
+                onChange={set("emergency_contact_phone")}
+              />
+              <TextField
+                label="Parentesco"
+                value={str("emergency_contact_relation")}
+                onChange={set("emergency_contact_relation")}
+              />
             </Section>
           </TabsContent>
 
           <TabsContent value="fe" className="mt-0 space-y-8">
             <Section title="Caminhada com Cristo">
-              <TextField label="Data de conversão" type="date" value={str("conversion_date")} onChange={set("conversion_date")} />
+              <TextField
+                label="Data de conversão"
+                type="date"
+                value={str("conversion_date")}
+                onChange={set("conversion_date")}
+              />
               <Field label="Batizado(a)">
                 <div className="flex items-center gap-3 h-9">
                   <Switch checked={!!form.is_baptized} onCheckedChange={set("is_baptized")} />
-                  <span className="text-sm text-muted-foreground">{form.is_baptized ? "Sim" : "Não"}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {form.is_baptized ? "Sim" : "Não"}
+                  </span>
                 </div>
               </Field>
               {form.is_baptized && (
                 <>
-                  <TextField label="Data do batismo" type="date" value={str("baptism_date")} onChange={set("baptism_date")} />
-                  <TextField label="Igreja do batismo" value={str("baptism_church")} onChange={set("baptism_church")} />
+                  <TextField
+                    label="Data do batismo"
+                    type="date"
+                    value={str("baptism_date")}
+                    onChange={set("baptism_date")}
+                  />
+                  <TextField
+                    label="Igreja do batismo"
+                    value={str("baptism_church")}
+                    onChange={set("baptism_church")}
+                  />
                 </>
               )}
-              <TextField label="Igreja anterior" value={str("previous_church")} onChange={set("previous_church")} />
+              <TextField
+                label="Igreja anterior"
+                value={str("previous_church")}
+                onChange={set("previous_church")}
+              />
               <Field label="Sua história / testemunho" full>
                 <Textarea
                   value={str("bio")}
@@ -395,7 +480,11 @@ export function ProfileForm({
         <p className="text-xs text-muted-foreground">
           As alterações valem para toda a plataforma assim que você salvar.
         </p>
-        <Button onClick={() => save.mutate()} disabled={save.isPending} className="w-full sm:w-auto">
+        <Button
+          onClick={() => save.mutate()}
+          disabled={save.isPending}
+          className="w-full sm:w-auto"
+        >
           {save.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (

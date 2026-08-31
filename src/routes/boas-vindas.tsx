@@ -1,15 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Heart, MessageCircle, Gift, ArrowRight, Loader2, BookOpen, Download } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
-import { registerVisitor } from '@/lib/visitors.functions';
-import { useServerFn } from '@tanstack/react-start';
-import { ChurchLogo } from '@/components/ui/church-logo';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Check,
+  Heart,
+  MessageCircle,
+  Gift,
+  ArrowRight,
+  Loader2,
+  BookOpen,
+  Download,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { registerVisitor } from "@/lib/visitors.functions";
+import { useServerFn } from "@tanstack/react-start";
+import { ChurchLogo } from "@/components/ui/church-logo";
 
-export const Route = createFileRoute('/boas-vindas')({
+export const Route = createFileRoute("/boas-vindas")({
   component: WelcomePage,
 });
 
@@ -18,13 +27,14 @@ const VISITOR_GIFT = {
   author: "John Bunyan",
   description: "Um clássico da literatura cristã que guiará sua jornada com fé.",
   downloadUrl: "https://www.monergismo.com/textos/literatura/o_progresso_do_peregrino_bunyan.pdf",
-  imageUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=200&h=300"
+  imageUrl:
+    "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=200&h=300",
 };
 
 function WelcomePage() {
-  const [step, setStep] = useState<'intro' | 'form' | 'success'>('intro');
-  const [name, setName] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
+  const [step, setStep] = useState<"intro" | "form" | "success">("intro");
+  const [name, setName] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
   const [loading, setLoading] = useState(false);
   const register = useServerFn(registerVisitor);
 
@@ -37,7 +47,7 @@ function WelcomePage() {
     setLoading(true);
     try {
       await register({ data: { full_name: name, whatsapp } });
-      setStep('success');
+      setStep("success");
       toast.success("Seja bem-vindo(a) à IBA!");
     } catch (err: any) {
       console.error("Registration error:", err);
@@ -58,9 +68,9 @@ function WelcomePage() {
           >
             <ChurchLogo className="h-16 w-16 bg-primary text-primary-foreground rounded-2xl p-3 shadow-xl shadow-primary/20" />
           </motion.div>
-          
+
           <AnimatePresence mode="wait">
-            {step === 'intro' && (
+            {step === "intro" && (
               <motion.div
                 key="intro"
                 initial={{ opacity: 0, y: 20 }}
@@ -74,10 +84,10 @@ function WelcomePage() {
                 <p className="text-muted-foreground text-lg">
                   Você não é apenas um visitante, você é um convidado de Deus.
                 </p>
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="w-full h-14 rounded-full text-lg font-medium group"
-                  onClick={() => setStep('form')}
+                  onClick={() => setStep("form")}
                 >
                   Diga um oi para nós
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -85,7 +95,7 @@ function WelcomePage() {
               </motion.div>
             )}
 
-            {step === 'form' && (
+            {step === "form" && (
               <motion.form
                 key="form"
                 onSubmit={handleSubmit}
@@ -96,14 +106,18 @@ function WelcomePage() {
               >
                 <div className="space-y-2">
                   <h2 className="font-serif text-2xl font-bold">Queremos te conhecer</h2>
-                  <p className="text-sm text-muted-foreground">Preencha rapidinho para ganharmos um contato seu.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Preencha rapidinho para ganharmos um contato seu.
+                  </p>
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Nome Completo</label>
-                    <Input 
-                      placeholder="Ex: Maria Silva" 
+                    <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                      Nome Completo
+                    </label>
+                    <Input
+                      placeholder="Ex: Maria Silva"
                       className="h-12 bg-muted/30"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -111,9 +125,11 @@ function WelcomePage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">WhatsApp</label>
-                    <Input 
-                      placeholder="(42) 99999-9999" 
+                    <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                      WhatsApp
+                    </label>
+                    <Input
+                      placeholder="(42) 99999-9999"
                       className="h-12 bg-muted/30"
                       value={whatsapp}
                       onChange={(e) => setWhatsapp(e.target.value)}
@@ -122,9 +138,9 @@ function WelcomePage() {
                   </div>
                 </div>
 
-                <Button 
-                  type="submit" 
-                  size="lg" 
+                <Button
+                  type="submit"
+                  size="lg"
                   className="w-full h-14 rounded-full text-lg"
                   disabled={loading}
                 >
@@ -133,7 +149,7 @@ function WelcomePage() {
               </motion.form>
             )}
 
-            {step === 'success' && (
+            {step === "success" && (
               <motion.div
                 key="success"
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -149,7 +165,7 @@ function WelcomePage() {
                     Acabamos de liberar seu presente: o e-book clássico "{VISITOR_GIFT.title}".
                   </p>
                 </div>
-                
+
                 <div className="grid grid-cols-1 gap-4 pt-4">
                   <div className="flex flex-col gap-4 p-5 rounded-3xl bg-primary/5 border border-primary/10 text-left">
                     <div className="flex items-start gap-4">
@@ -158,16 +174,18 @@ function WelcomePage() {
                       </div>
                       <div className="space-y-1">
                         <h4 className="font-bold text-base leading-none">{VISITOR_GIFT.title}</h4>
-                        <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{VISITOR_GIFT.author}</p>
+                        <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+                          {VISITOR_GIFT.author}
+                        </p>
                         <p className="text-xs text-muted-foreground leading-relaxed pt-1">
                           {VISITOR_GIFT.description}
                         </p>
                       </div>
                     </div>
-                    
-                    <Button 
+
+                    <Button
                       className="w-full rounded-2xl h-11 bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transition-all active:scale-[0.98]"
-                      onClick={() => window.open(VISITOR_GIFT.downloadUrl, '_blank')}
+                      onClick={() => window.open(VISITOR_GIFT.downloadUrl, "_blank")}
                     >
                       <Download className="mr-2 h-4 w-4" />
                       Baixar E-book Grátis
@@ -180,15 +198,17 @@ function WelcomePage() {
                     </div>
                     <div>
                       <h4 className="font-bold text-sm">Quer conversar?</h4>
-                      <p className="text-xs text-muted-foreground">Nossa equipe de recepção falará com você em breve.</p>
+                      <p className="text-xs text-muted-foreground">
+                        Nossa equipe de recepção falará com você em breve.
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full h-12 rounded-full"
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => (window.location.href = "/")}
                 >
                   Conhecer mais a IBA
                 </Button>

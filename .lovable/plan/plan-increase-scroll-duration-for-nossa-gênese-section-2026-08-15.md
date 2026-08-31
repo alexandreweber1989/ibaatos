@@ -12,11 +12,14 @@ The user wants to increase the scroll distance required to transition between ch
 ## Proposed Changes
 
 ### 1. Increase Section Height
+
 Modify the height of the `<section>` in the `Historia` component to increase the total scrollable area.
+
 - Old height: `${capitulos.length * 100}vh` (approx. 300vh)
 - New height: `${capitulos.length * 150}vh` (approx. 450vh) or more if needed.
 
 ### 2. Refine State Transition Logic (Optional but recommended)
+
 The current logic uses a simple `Math.floor(progress * capitulos.length)`. By increasing the height, each chapter stays active for a longer scroll distance.
 
 ## Verification Plan

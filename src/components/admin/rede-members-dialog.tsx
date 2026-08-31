@@ -4,7 +4,12 @@ import { Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfileOptions } from "@/lib/use-profiles";
-import { CHURCH_FUNCTIONS, CHURCH_FUNCTION_LABEL, churchFunctionRank, type ChurchFunction } from "@/lib/igreja";
+import {
+  CHURCH_FUNCTIONS,
+  CHURCH_FUNCTION_LABEL,
+  churchFunctionRank,
+  type ChurchFunction,
+} from "@/lib/igreja";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -66,7 +71,8 @@ export function RedeMembersDialog({ redeId, redeName }: { redeId: string; redeNa
     onSuccess: () => {
       toast.success("Pessoa adicionada à rede.");
       setUserId("");
-      void qc.invalidateQueries({ queryKey: ["rede-members", redeId] }); void qc.invalidateQueries({ queryKey: ["group-stats"] });
+      void qc.invalidateQueries({ queryKey: ["rede-members", redeId] });
+      void qc.invalidateQueries({ queryKey: ["group-stats"] });
       void qc.invalidateQueries({ queryKey: ["rede-members-count"] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -90,7 +96,8 @@ export function RedeMembersDialog({ redeId, redeName }: { redeId: string; redeNa
       if (error) throw error;
     },
     onSuccess: () => {
-      void qc.invalidateQueries({ queryKey: ["rede-members", redeId] }); void qc.invalidateQueries({ queryKey: ["group-stats"] });
+      void qc.invalidateQueries({ queryKey: ["rede-members", redeId] });
+      void qc.invalidateQueries({ queryKey: ["group-stats"] });
       void qc.invalidateQueries({ queryKey: ["rede-members-count"] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -115,18 +122,26 @@ export function RedeMembersDialog({ redeId, redeName }: { redeId: string; redeNa
             <Label>Adicionar pessoa</Label>
             <div className="grid sm:grid-cols-[1fr_auto] gap-2">
               <Select value={userId} onValueChange={setUserId}>
-                <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
                 <SelectContent className="max-h-60">
                   {profiles?.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>
+                    <SelectItem key={p.id} value={p.id}>
+                      {p.full_name}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               <Select value={role} onValueChange={(v) => setRole(v as ChurchFunction)}>
-                <SelectTrigger className="sm:w-44"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="sm:w-44">
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   {CHURCH_FUNCTIONS.map((f) => (
-                    <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                    <SelectItem key={f.value} value={f.value}>
+                      {f.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -142,25 +157,36 @@ export function RedeMembersDialog({ redeId, redeName }: { redeId: string; redeNa
                 <div className="flex items-center gap-2">
                   <Select
                     value={m.role}
-                    onValueChange={(v) => changeRole.mutate({ id: m.id, value: v as ChurchFunction })}
+                    onValueChange={(v) =>
+                      changeRole.mutate({ id: m.id, value: v as ChurchFunction })
+                    }
                   >
                     <SelectTrigger className="h-8 w-40 text-xs">
                       <SelectValue>{CHURCH_FUNCTION_LABEL[m.role]}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {CHURCH_FUNCTIONS.map((f) => (
-                        <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                        <SelectItem key={f.value} value={f.value}>
+                          {f.label}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(m.id)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Remover"
+                    onClick={() => remove.mutate(m.id)}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </li>
             ))}
             {members?.length === 0 && (
-              <li className="py-3 text-sm text-muted-foreground">Nenhuma pessoa nesta rede ainda.</li>
+              <li className="py-3 text-sm text-muted-foreground">
+                Nenhuma pessoa nesta rede ainda.
+              </li>
             )}
           </ul>
         </div>

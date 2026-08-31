@@ -8,8 +8,6 @@ import { ChurchSelect } from "./church-select";
 import { MemberPicker } from "./member-picker";
 import { AddressManager } from "./address-manager";
 
-
-
 import {
   CHURCH_FUNCTIONS,
   CHURCH_FUNCTION_LABEL,
@@ -165,7 +163,16 @@ export function MesaDialog({
           const profile = profiles?.find((p) => p.id === userId);
           const fn = profile?.church_function;
           // Se a função for apascentador ou pastor, mantém. Caso contrário, define como líder de mesa.
-          const role = fn && (fn === "apascentador" || fn === "pastor" || fn === "lider" || fn === "obreiro" || fn === "diacono" || fn === "lider_mesa") ? fn : "lider_mesa";
+          const role =
+            fn &&
+            (fn === "apascentador" ||
+              fn === "pastor" ||
+              fn === "lider" ||
+              fn === "obreiro" ||
+              fn === "diacono" ||
+              fn === "lider_mesa")
+              ? fn
+              : "lider_mesa";
           return { mesa_id: mesaId!, user_id: userId, role: role as any };
         });
 
@@ -204,30 +211,45 @@ export function MesaDialog({
       }}
     >
       <DialogTrigger asChild>
-        {trigger ?? (
-          compact ? (
-            <Button variant="outline" size="sm"><Plus className="h-4 w-4" /> Nova mesa nesta rede</Button>
+        {trigger ??
+          (compact ? (
+            <Button variant="outline" size="sm">
+              <Plus className="h-4 w-4" /> Nova mesa nesta rede
+            </Button>
           ) : (
-            <Button><Plus className="h-4 w-4" /> Nova mesa</Button>
-          )
-        )}
+            <Button>
+              <Plus className="h-4 w-4" /> Nova mesa
+            </Button>
+          ))}
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-3xl">{isEdit ? "Editar mesa" : "Nova mesa"}</DialogTitle>
+          <DialogTitle className="font-serif text-3xl">
+            {isEdit ? "Editar mesa" : "Nova mesa"}
+          </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Nome</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Mesa Betel" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Mesa Betel"
+            />
           </div>
           <ChurchSelect value={churchId} onChange={setChurchId} />
           <div className="space-y-2">
             <Label>Rede</Label>
             <Select value={rede} onValueChange={setRede} disabled={Boolean(redeId) && !isEdit}>
-              <SelectTrigger><SelectValue placeholder="Selecione a rede" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione a rede" />
+              </SelectTrigger>
               <SelectContent className="max-h-60">
-                {redes?.map((r) => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
+                {redes?.map((r) => (
+                  <SelectItem key={r.id} value={r.id}>
+                    {r.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -236,19 +258,24 @@ export function MesaDialog({
             <Label>Líderes da mesa</Label>
             <MemberPicker value={leaders} onChange={setLeaders} label="líder(es)" />
             <p className="text-xs text-muted-foreground">
-              Geralmente um casal. Selecione uma ou mais pessoas da lista de membros. Ao selecionar, elas serão definidas como líderes desta mesa.
+              Geralmente um casal. Selecione uma ou mais pessoas da lista de membros. Ao selecionar,
+              elas serão definidas como líderes desta mesa.
             </p>
           </div>
-
-
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
               <Label>Dia</Label>
               <Select value={day} onValueChange={setDay}>
-                <SelectTrigger><SelectValue placeholder="Dia" /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue placeholder="Dia" />
+                </SelectTrigger>
                 <SelectContent>
-                  {DAYS.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                  {DAYS.map((d) => (
+                    <SelectItem key={d} value={d}>
+                      {d}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -259,11 +286,20 @@ export function MesaDialog({
           </div>
           <div className="space-y-2">
             <Label>Ponto de referência ou descrição do local</Label>
-            <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Casa da família Silva" />
+            <Input
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Casa da família Silva"
+            />
           </div>
           <div className="space-y-2">
             <Label>Descrição</Label>
-            <Textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} className="resize-none" />
+            <Textarea
+              rows={2}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="resize-none"
+            />
           </div>
 
           {isEdit && (
@@ -294,7 +330,6 @@ export function EditMesaButton({ mesa }: { mesa: MesaRecord }) {
     />
   );
 }
-
 
 /** Gerencia os integrantes de uma mesa: membros, líderes, apascentadores e pastores. */
 export function MesaMembersDialog({ mesaId, mesaName }: { mesaId: string; mesaName: string }) {
@@ -338,7 +373,8 @@ export function MesaMembersDialog({ mesaId, mesaName }: { mesaId: string; mesaNa
     onSuccess: () => {
       toast.success("Integrante adicionado à mesa.");
       setUserId("");
-      void qc.invalidateQueries({ queryKey: ["mesa-members", mesaId] }); void qc.invalidateQueries({ queryKey: ["group-stats"] });
+      void qc.invalidateQueries({ queryKey: ["mesa-members", mesaId] });
+      void qc.invalidateQueries({ queryKey: ["group-stats"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -370,7 +406,9 @@ export function MesaMembersDialog({ mesaId, mesaName }: { mesaId: string; mesaNa
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm"><UserPlus className="h-4 w-4" /> Integrantes</Button>
+        <Button variant="outline" size="sm">
+          <UserPlus className="h-4 w-4" /> Integrantes
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
@@ -381,16 +419,26 @@ export function MesaMembersDialog({ mesaId, mesaName }: { mesaId: string; mesaNa
             <Label>Adicionar pessoa</Label>
             <div className="grid sm:grid-cols-[1fr_auto] gap-2">
               <Select value={userId} onValueChange={setUserId}>
-                <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
                 <SelectContent className="max-h-60">
-                  {profiles?.map((p) => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}
+                  {profiles?.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>
+                      {p.full_name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Select value={role} onValueChange={(v) => setRole(v as ChurchFunction)}>
-                <SelectTrigger className="sm:w-44"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="sm:w-44">
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   {CHURCH_FUNCTIONS.map((f) => (
-                    <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                    <SelectItem key={f.value} value={f.value}>
+                      {f.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -406,18 +454,27 @@ export function MesaMembersDialog({ mesaId, mesaName }: { mesaId: string; mesaNa
                 <div className="flex items-center gap-2">
                   <Select
                     value={m.role}
-                    onValueChange={(v) => changeRole.mutate({ id: m.id, value: v as ChurchFunction })}
+                    onValueChange={(v) =>
+                      changeRole.mutate({ id: m.id, value: v as ChurchFunction })
+                    }
                   >
                     <SelectTrigger className="h-8 w-40 text-xs">
                       <SelectValue>{CHURCH_FUNCTION_LABEL[m.role]}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {CHURCH_FUNCTIONS.map((f) => (
-                        <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                        <SelectItem key={f.value} value={f.value}>
+                          {f.label}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(m.id)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Remover"
+                    onClick={() => remove.mutate(m.id)}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
@@ -432,4 +489,3 @@ export function MesaMembersDialog({ mesaId, mesaName }: { mesaId: string; mesaNa
     </Dialog>
   );
 }
-

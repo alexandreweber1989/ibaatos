@@ -95,35 +95,54 @@ export function NewsForm({ open, onOpenChange, news }: NewsFormProps) {
           <DialogTitle className="font-serif text-2xl">
             {news ? "Editar notícia" : "Nova notícia"}
           </DialogTitle>
-          <DialogDescription>
-            Publique novidades para toda a comunidade.
-          </DialogDescription>
+          <DialogDescription>Publique novidades para toda a comunidade.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Título</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título da matéria" />
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Título da matéria"
+            />
           </div>
 
           <div className="space-y-2">
             <Label>Resumo (opcional)</Label>
-            <Input value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Breve descrição" />
+            <Input
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+              placeholder="Breve descrição"
+            />
           </div>
 
           <div className="space-y-2">
             <Label>Conteúdo (Texto)</Label>
-            <Textarea rows={8} value={content} onChange={(e) => setContent(e.target.value)} placeholder="Escreva a matéria aqui..." />
+            <Textarea
+              rows={8}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Escreva a matéria aqui..."
+            />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Categoria</Label>
-              <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Ex: Eventos, Social, Avisos" />
+              <Input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Ex: Eventos, Social, Avisos"
+              />
             </div>
             <div className="space-y-2">
               <Label>URL da Imagem</Label>
-              <Input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." />
+              <Input
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://..."
+              />
             </div>
           </div>
 

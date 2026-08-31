@@ -62,9 +62,7 @@ export function AvisoForm({ open, onOpenChange, aviso }: AvisoFormProps) {
     setBody(aviso?.body ?? "");
     setCategory(aviso?.category ?? "aviso");
     setScope(aviso?.scope ?? "geral");
-    setTargetId(
-      aviso?.church_id ?? aviso?.ministry_id ?? aviso?.rede_id ?? aviso?.mesa_id ?? "",
-    );
+    setTargetId(aviso?.church_id ?? aviso?.ministry_id ?? aviso?.rede_id ?? aviso?.mesa_id ?? "");
     setIsPinned(aviso?.is_pinned ?? false);
     setIsPublished(aviso?.is_published ?? true);
     setExpiresAt(aviso?.expires_at ? aviso.expires_at.slice(0, 16) : "");
@@ -97,11 +95,18 @@ export function AvisoForm({ open, onOpenChange, aviso }: AvisoFormProps) {
     enabled: open && scope !== "geral",
     queryFn: async (): Promise<Opcao[]> => {
       const table =
-        scope === "igreja" ? "churches" : scope === "ministerio" ? "ministries" : scope === "rede" ? "redes" : "mesas";
+        scope === "igreja"
+          ? "churches"
+          : scope === "ministerio"
+            ? "ministries"
+            : scope === "rede"
+              ? "redes"
+              : "mesas";
       const { data, error } = await supabase.from(table).select("id, name").order("name");
       if (error) throw error;
       let lista = (data ?? []) as Opcao[];
-      if (!isAdmin && scope === "ministerio") lista = lista.filter((o) => meusMinisterios.includes(o.id));
+      if (!isAdmin && scope === "ministerio")
+        lista = lista.filter((o) => meusMinisterios.includes(o.id));
       if (!isAdmin && scope === "mesa") lista = lista.filter((o) => minhasMesas.includes(o.id));
       return lista;
     },
@@ -130,7 +135,10 @@ export function AvisoForm({ open, onOpenChange, aviso }: AvisoFormProps) {
       };
 
       if (aviso) {
-        const { error } = await supabase.from("announcements").update(payload as any).eq("id", aviso.id);
+        const { error } = await supabase
+          .from("announcements")
+          .update(payload as any)
+          .eq("id", aviso.id);
         if (error) throw error;
       } else {
         const { error } = await supabase
@@ -173,7 +181,10 @@ export function AvisoForm({ open, onOpenChange, aviso }: AvisoFormProps) {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Categoria</Label>
-              <Select value={category} onValueChange={(v) => setCategory(v as AnnouncementCategory)}>
+              <Select
+                value={category}
+                onValueChange={(v) => setCategory(v as AnnouncementCategory)}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>

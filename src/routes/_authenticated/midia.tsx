@@ -29,7 +29,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LiveStreamCard } from "@/components/midia/live-stream-card";
 import { Video, MonitorPlay, Play, Radio, ListVideo, Podcast } from "lucide-react";
 import { YoutubeVideoCard } from "@/components/midia/youtube-video-card";
-import { getYoutubeVideos, syncYoutubeContent, syncSingleYoutubeVideo } from "@/lib/youtube.functions";
+import {
+  getYoutubeVideos,
+  syncYoutubeContent,
+  syncSingleYoutubeVideo,
+} from "@/lib/youtube.functions";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { Label } from "@/components/ui/label";
@@ -43,8 +47,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-
 
 export const Route = createFileRoute("/_authenticated/midia")({
   component: MediaModule,
@@ -137,10 +139,11 @@ function MediaModule() {
   const filteredAssets = useMemo(() => {
     const term = q.trim().toLowerCase();
     if (!term) return assets ?? [];
-    return (assets ?? []).filter(a => 
-      a.title.toLowerCase().includes(term) || 
-      (a.description && a.description.toLowerCase().includes(term)) ||
-      a.category.toLowerCase().includes(term)
+    return (assets ?? []).filter(
+      (a) =>
+        a.title.toLowerCase().includes(term) ||
+        (a.description && a.description.toLowerCase().includes(term)) ||
+        a.category.toLowerCase().includes(term),
     );
   }, [assets, q]);
 
@@ -152,8 +155,12 @@ function MediaModule() {
         className="border-b-[3px] border-[var(--group-primary)]"
         description="Biblioteca de ativos, logos, artes e central de solicitações para o time de design da IB Atos."
         actions={
-          activeTab !== "youtube" && activeTab !== "live" && (
-            <Button className="gap-2 shadow-lg shadow-pink-500/20" style={{ backgroundColor: "var(--group-primary)" }}>
+          activeTab !== "youtube" &&
+          activeTab !== "live" && (
+            <Button
+              className="gap-2 shadow-lg shadow-pink-500/20"
+              style={{ backgroundColor: "var(--group-primary)" }}
+            >
               <MessageSquarePlus className="h-4 w-4" />
               Nova Solicitação
             </Button>
@@ -172,7 +179,10 @@ function MediaModule() {
                 <Clock className="h-4 w-4" />
                 <span>Solicitações</span>
                 {requests && requests.length > 0 && (
-                  <Badge variant="secondary" className="ml-1 h-5 min-w-[20px] px-1 bg-pink-500/10 text-pink-500 border-none">
+                  <Badge
+                    variant="secondary"
+                    className="ml-1 h-5 min-w-[20px] px-1 bg-pink-500/10 text-pink-500 border-none"
+                  >
                     {requests.length}
                   </Badge>
                 )}
@@ -187,12 +197,11 @@ function MediaModule() {
               </TabsTrigger>
             </TabsList>
 
-
             {activeTab === "library" && (
               <div className="relative w-full sm:w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Buscar ativos..." 
+                <Input
+                  placeholder="Buscar ativos..."
                   className="pl-9 bg-muted/30 border-border/50"
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
@@ -221,7 +230,10 @@ function MediaModule() {
                     </Card>
                   ) : (
                     filteredAssets.map((asset) => (
-                      <Card key={asset.id} className="overflow-hidden group hover:shadow-xl hover:shadow-pink-500/5 transition-all duration-300 border-border/50 hover:border-pink-500/30">
+                      <Card
+                        key={asset.id}
+                        className="overflow-hidden group hover:shadow-xl hover:shadow-pink-500/5 transition-all duration-300 border-border/50 hover:border-pink-500/30"
+                      >
                         <div className="aspect-[4/3] bg-muted relative overflow-hidden">
                           {asset.thumbnail_url ? (
                             <img
@@ -241,7 +253,9 @@ function MediaModule() {
                           </div>
                         </div>
                         <CardHeader className="p-4 space-y-1">
-                          <CardTitle className="text-lg group-hover:text-pink-500 transition-colors">{asset.title}</CardTitle>
+                          <CardTitle className="text-lg group-hover:text-pink-500 transition-colors">
+                            {asset.title}
+                          </CardTitle>
                           {asset.description && (
                             <CardDescription className="line-clamp-2 text-xs leading-relaxed">
                               {asset.description}
@@ -281,7 +295,9 @@ function MediaModule() {
                         variant="outline"
                         className="h-20 flex flex-col gap-2 border-border/50 hover:border-pink-500/30 hover:bg-pink-500/5 transition-all group"
                       >
-                        <cat.icon className={`h-6 w-6 ${cat.color} group-hover:scale-110 transition-transform`} />
+                        <cat.icon
+                          className={`h-6 w-6 ${cat.color} group-hover:scale-110 transition-transform`}
+                        />
                         <span className="font-mono text-[9px] uppercase tracking-widest font-bold">
                           {cat.label}
                         </span>
@@ -301,9 +317,13 @@ function MediaModule() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-[11px] leading-relaxed text-muted-foreground">
-                      Nossa identidade visual reflete nossa essência. Use sempre os logos oficiais. Para posts de mesas, prefira fundos limpos e a tipografia Plus Jakarta Sans.
+                      Nossa identidade visual reflete nossa essência. Use sempre os logos oficiais.
+                      Para posts de mesas, prefira fundos limpos e a tipografia Plus Jakarta Sans.
                     </p>
-                    <Button variant="link" className="p-0 h-auto text-[10px] uppercase tracking-widest text-pink-500 mt-3 font-bold">
+                    <Button
+                      variant="link"
+                      className="p-0 h-auto text-[10px] uppercase tracking-widest text-pink-500 mt-3 font-bold"
+                    >
                       Ver manual completo <ExternalLink className="h-3 w-3 ml-1" />
                     </Button>
                   </CardContent>
@@ -312,64 +332,87 @@ function MediaModule() {
             </div>
           </TabsContent>
 
-          <TabsContent value="requests" className="mt-0 animate-in slide-in-from-right-4 duration-500">
-             <div className="max-w-4xl mx-auto space-y-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="font-serif text-3xl">Fluxo de Criação</h2>
-                  <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                    <div className="h-2 w-2 rounded-full bg-pink-500 animate-pulse" />
-                    Designers Online
-                  </div>
+          <TabsContent
+            value="requests"
+            className="mt-0 animate-in slide-in-from-right-4 duration-500"
+          >
+            <div className="max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="font-serif text-3xl">Fluxo de Criação</h2>
+                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground uppercase tracking-widest">
+                  <div className="h-2 w-2 rounded-full bg-pink-500 animate-pulse" />
+                  Designers Online
                 </div>
+              </div>
 
-                {requests?.length === 0 ? (
-                  <Card className="border-dashed p-20 flex flex-col items-center justify-center text-center bg-muted/5">
-                    <MessageSquarePlus className="h-12 w-12 text-muted-foreground/30 mb-6" />
-                    <CardTitle>Nenhuma solicitação ativa</CardTitle>
-                    <CardDescription className="max-w-xs mx-auto mt-2">
-                      Precisa de uma arte para seu ministério ou rede? Clique no botão "Nova Solicitação" para começar.
-                    </CardDescription>
-                  </Card>
-                ) : (
-                  <div className="grid gap-4">
-                    {requests?.map((req) => (
-                      <Card key={req.id} className="hover:border-pink-500/30 transition-colors">
-                        <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-3">
-                              <h3 className="font-medium text-lg">{req.title}</h3>
-                              <Badge
-                                variant={req.status === "concluido" ? "default" : "secondary"}
-                                className={`text-[9px] px-2 py-0.5 uppercase tracking-wider border-none ${
-                                  req.status === "concluido" ? "bg-green-500" : 
-                                  req.status === "em_producao" ? "bg-blue-500 text-white" : "bg-muted text-muted-foreground"
-                                }`}
-                              >
-                                {req.status.replace("_", " ")}
-                              </Badge>
-                            </div>
-                            <p className="text-sm text-muted-foreground line-clamp-1">{req.description || "Sem descrição adicional."}</p>
-                            <div className="flex items-center gap-4 mt-2 text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
-                              <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> Prazo: {req.deadline ? new Date(req.deadline).toLocaleDateString("pt-BR") : "A definir"}</span>
-                              <span className="flex items-center gap-1"><Layout className="h-3 w-3" /> Tipo: Social</span>
-                            </div>
+              {requests?.length === 0 ? (
+                <Card className="border-dashed p-20 flex flex-col items-center justify-center text-center bg-muted/5">
+                  <MessageSquarePlus className="h-12 w-12 text-muted-foreground/30 mb-6" />
+                  <CardTitle>Nenhuma solicitação ativa</CardTitle>
+                  <CardDescription className="max-w-xs mx-auto mt-2">
+                    Precisa de uma arte para seu ministério ou rede? Clique no botão "Nova
+                    Solicitação" para começar.
+                  </CardDescription>
+                </Card>
+              ) : (
+                <div className="grid gap-4">
+                  {requests?.map((req) => (
+                    <Card key={req.id} className="hover:border-pink-500/30 transition-colors">
+                      <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-3">
+                            <h3 className="font-medium text-lg">{req.title}</h3>
+                            <Badge
+                              variant={req.status === "concluido" ? "default" : "secondary"}
+                              className={`text-[9px] px-2 py-0.5 uppercase tracking-wider border-none ${
+                                req.status === "concluido"
+                                  ? "bg-green-500"
+                                  : req.status === "em_producao"
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-muted text-muted-foreground"
+                              }`}
+                            >
+                              {req.status.replace("_", " ")}
+                            </Badge>
                           </div>
-                          <div className="flex gap-2 shrink-0">
-                            <Button variant="outline" size="sm" className="h-9 px-4 font-mono text-[10px] uppercase tracking-wider">
-                              Ver Detalhes
-                            </Button>
-                            {req.status === "concluido" && (
-                              <Button size="sm" className="h-9 px-4 bg-pink-500 hover:bg-pink-600 font-mono text-[10px] uppercase tracking-wider">
-                                Baixar Entrega
-                              </Button>
-                            )}
+                          <p className="text-sm text-muted-foreground line-clamp-1">
+                            {req.description || "Sem descrição adicional."}
+                          </p>
+                          <div className="flex items-center gap-4 mt-2 text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" /> Prazo:{" "}
+                              {req.deadline
+                                ? new Date(req.deadline).toLocaleDateString("pt-BR")
+                                : "A definir"}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Layout className="h-3 w-3" /> Tipo: Social
+                            </span>
                           </div>
                         </div>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-             </div>
+                        <div className="flex gap-2 shrink-0">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-9 px-4 font-mono text-[10px] uppercase tracking-wider"
+                          >
+                            Ver Detalhes
+                          </Button>
+                          {req.status === "concluido" && (
+                            <Button
+                              size="sm"
+                              className="h-9 px-4 bg-pink-500 hover:bg-pink-600 font-mono text-[10px] uppercase tracking-wider"
+                            >
+                              Baixar Entrega
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="live" className="mt-0 animate-in fade-in duration-500">
@@ -387,16 +430,20 @@ function MediaModule() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <p className="text-xs text-muted-foreground leading-relaxed">
-                        Acesse todos os cultos, pregações e momentos especiais da IB Atos em nosso canal oficial.
+                        Acesse todos os cultos, pregações e momentos especiais da IB Atos em nosso
+                        canal oficial.
                       </p>
                       <div className="space-y-2">
                         {[
                           "Cultos de Celebração",
                           "Série de Mensagens",
                           "Louvor e Adoração",
-                          "Podcast Atos"
-                        ].map(item => (
-                          <div key={item} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors cursor-pointer group">
+                          "Podcast Atos",
+                        ].map((item) => (
+                          <div
+                            key={item}
+                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors cursor-pointer group"
+                          >
                             <div className="h-8 w-8 rounded bg-red-600/10 flex items-center justify-center">
                               <Play className="h-3 w-3 text-red-600 fill-current" />
                             </div>
@@ -415,12 +462,14 @@ function MediaModule() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="font-serif text-3xl">Arquivo de Vídeo</h2>
-                  <p className="text-muted-foreground text-sm">Cultos de Domingo e Estudos Bíblicos (Mesacast)</p>
+                  <p className="text-muted-foreground text-sm">
+                    Cultos de Domingo e Estudos Bíblicos (Mesacast)
+                  </p>
                 </div>
                 <div className="flex gap-2">
                   <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button 
+                      <Button
                         variant="outline"
                         className="gap-2 border-primary/20 text-primary hover:bg-primary hover:text-white transition-colors"
                       >
@@ -432,25 +481,28 @@ function MediaModule() {
                       <DialogHeader>
                         <DialogTitle>Adicionar Vídeo</DialogTitle>
                         <DialogDescription>
-                          Cole o link do vídeo do YouTube para organizá-lo automaticamente na plataforma.
+                          Cole o link do vídeo do YouTube para organizá-lo automaticamente na
+                          plataforma.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="py-4">
-                        <Label htmlFor="youtube-url" className="mb-2 block">Link do Vídeo</Label>
-                        <Input 
+                        <Label htmlFor="youtube-url" className="mb-2 block">
+                          Link do Vídeo
+                        </Label>
+                        <Input
                           id="youtube-url"
                           placeholder="https://www.youtube.com/watch?v=..."
                           value={singleUrl}
                           onChange={(e) => setSingleUrl(e.target.value)}
                         />
                         <p className="text-[10px] text-muted-foreground mt-2 flex items-center gap-1">
-                          <AlertCircle className="h-3 w-3" />
-                          A automação irá extrair a data e o título original.
+                          <AlertCircle className="h-3 w-3" />A automação irá extrair a data e o
+                          título original.
                         </p>
                       </div>
                       <DialogFooter>
-                        <Button 
-                          onClick={handleSyncSingle} 
+                        <Button
+                          onClick={handleSyncSingle}
                           disabled={isSyncingSingle}
                           className="w-full bg-red-600 hover:bg-red-700 text-white"
                         >
@@ -459,20 +511,22 @@ function MediaModule() {
                               <Loader2 className="h-4 w-4 animate-spin mr-2" />
                               Sincronizando...
                             </>
-                          ) : 'Adicionar Agora'}
+                          ) : (
+                            "Adicionar Agora"
+                          )}
                         </Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
 
-                  <Button 
-                    onClick={handleSync} 
+                  <Button
+                    onClick={handleSync}
                     disabled={isSyncing}
                     variant="outline"
                     className="gap-2 border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
                   >
-                    <ListVideo className={`h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
-                    {isSyncing ? 'Sincronizando...' : 'Sincronizar Canal'}
+                    <ListVideo className={`h-4 w-4 ${isSyncing ? "animate-spin" : ""}`} />
+                    {isSyncing ? "Sincronizando..." : "Sincronizar Canal"}
                   </Button>
                 </div>
               </div>
@@ -482,7 +536,9 @@ function MediaModule() {
                   <div className="col-span-full py-20 text-center space-y-4">
                     <Video className="h-12 w-12 text-muted-foreground/20 mx-auto" />
                     <p className="text-muted-foreground">Nenhum vídeo sincronizado ainda.</p>
-                    <Button onClick={handleSync} variant="secondary">Sincronizar Agora</Button>
+                    <Button onClick={handleSync} variant="secondary">
+                      Sincronizar Agora
+                    </Button>
                   </div>
                 ) : (
                   youtubeVideos.map((video, index) => (
@@ -504,10 +560,17 @@ function MediaModule() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Acompanhe nossas transmissões em tempo real. Os cultos ficam salvos automaticamente na seção /streams do canal.
+                      Acompanhe nossas transmissões em tempo real. Os cultos ficam salvos
+                      automaticamente na seção /streams do canal.
                     </p>
                     <Button variant="outline" className="w-full" asChild>
-                      <a href="https://www.youtube.com/@BatistaAtos/streams" target="_blank" rel="noreferrer">Ver no YouTube</a>
+                      <a
+                        href="https://www.youtube.com/@BatistaAtos/streams"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Ver no YouTube
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -524,10 +587,17 @@ function MediaModule() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Nossos estudos bíblicos dominicais agora em formato de Podcast. Profundidade teológica e aplicação prática.
+                      Nossos estudos bíblicos dominicais agora em formato de Podcast. Profundidade
+                      teológica e aplicação prática.
                     </p>
                     <Button variant="outline" className="w-full" asChild>
-                      <a href="https://www.youtube.com/@BatistaAtos/podcasts" target="_blank" rel="noreferrer">Ver no YouTube</a>
+                      <a
+                        href="https://www.youtube.com/@BatistaAtos/podcasts"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Ver no YouTube
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -535,7 +605,6 @@ function MediaModule() {
             </div>
           </TabsContent>
         </Tabs>
-
       </PageBody>
     </>
   );

@@ -19,7 +19,8 @@ export const Route = createFileRoute("/_authenticated/livraria")({
       { property: "og:title", content: "Livraria — Igreja Batista Atos" },
       {
         property: "og:description",
-        content: "Catálogo da livraria da igreja: pedido online, pagamento por PIX e retirada presencial.",
+        content:
+          "Catálogo da livraria da igreja: pedido online, pagamento por PIX e retirada presencial.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -8,8 +8,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function ScheduleDialog({ trigger }: { trigger?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -48,7 +60,11 @@ export function ScheduleDialog({ trigger }: { trigger?: React.ReactNode }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {trigger || <Button><Plus className="h-4 w-4" /> Nova escala / ensaio</Button>}
+        {trigger || (
+          <Button>
+            <Plus className="h-4 w-4" /> Nova escala / ensaio
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
@@ -57,14 +73,24 @@ export function ScheduleDialog({ trigger }: { trigger?: React.ReactNode }) {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Título</Label>
-            <Input placeholder="Culto de Celebração — Domingo" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input
+              placeholder="Culto de Celebração — Domingo"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Tipo</Label>
             <Select value={type} onValueChange={setType}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
-                {Object.entries(SCHEDULE_TYPE_LABELS).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
+                {Object.entries(SCHEDULE_TYPE_LABELS).map(([v, l]) => (
+                  <SelectItem key={v} value={v}>
+                    {l}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

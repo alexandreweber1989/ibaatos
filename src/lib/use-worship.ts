@@ -18,7 +18,9 @@ export function useMusicians() {
     queryFn: async (): Promise<Musician[]> => {
       const { data, error } = await supabase
         .from("worship_musicians")
-        .select("id, user_id, functions, notes, is_active, profile:profiles!inner(full_name, avatar_url)")
+        .select(
+          "id, user_id, functions, notes, is_active, profile:profiles!inner(full_name, avatar_url)",
+        )
         .eq("ministry_id", LOUVOR_MINISTRY_ID);
       if (error) throw error;
       return ((data ?? []) as unknown as Musician[]).sort((a, b) =>

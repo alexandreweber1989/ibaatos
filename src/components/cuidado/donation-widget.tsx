@@ -26,12 +26,15 @@ export function DonationWidget() {
           Apoie o Atos de Amor
         </CardTitle>
         <CardDescription>
-          Sua contribuição financeira nos ajuda a comprar cestas básicas e prover assistência imediata para famílias em necessidade.
+          Sua contribuição financeira nos ajuda a comprar cestas básicas e prover assistência
+          imediata para famílias em necessidade.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="bg-white dark:bg-zinc-900 p-4 rounded-lg border border-rose-100 dark:border-rose-900 shadow-sm">
-          <p className="text-xs text-muted-foreground uppercase font-semibold mb-2 tracking-wider">Doação via PIX</p>
+          <p className="text-xs text-muted-foreground uppercase font-semibold mb-2 tracking-wider">
+            Doação via PIX
+          </p>
           <div className="flex items-center justify-between gap-2">
             <code className="text-sm font-mono break-all">{pixKey}</code>
             <Button size="sm" variant="ghost" onClick={copyPix} className="shrink-0">
@@ -39,13 +42,20 @@ export function DonationWidget() {
             </Button>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-2 gap-3">
           <div className="text-[10px] text-muted-foreground leading-tight italic">
             * 100% das ofertas desta categoria são destinadas à Assistência Social.
           </div>
-          <Button variant="outline" size="sm" className="text-xs border-rose-200 hover:bg-rose-100 hover:text-rose-700" asChild>
-            <a href="https://atos.church/doar" target="_blank" rel="noopener noreferrer">Ver outras formas</a>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs border-rose-200 hover:bg-rose-100 hover:text-rose-700"
+            asChild
+          >
+            <a href="https://atos.church/doar" target="_blank" rel="noopener noreferrer">
+              Ver outras formas
+            </a>
           </Button>
         </div>
       </CardContent>

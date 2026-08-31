@@ -68,9 +68,15 @@ export function MemberFormDialog({
       } else {
         // Fallback: carregar o perfil atual do usuário logado se profile vier vazio
         const loadSelf = async () => {
-          const { data: { user } } = await supabase.auth.getUser();
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
           if (user) {
-            const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+            const { data } = await supabase
+              .from("profiles")
+              .select("*")
+              .eq("id", user.id)
+              .maybeSingle();
             if (data) setForm(data);
           }
         };
@@ -79,8 +85,7 @@ export function MemberFormDialog({
     }
   }, [open, profile]);
 
-  const set = (key: string) => (value: unknown) =>
-    setForm((prev) => ({ ...prev, [key]: value }));
+  const set = (key: string) => (value: unknown) => setForm((prev) => ({ ...prev, [key]: value }));
   const str = (key: string) => (form[key] ?? "") as string;
 
   const toggleCourse = (course: string, checked: boolean) => {
@@ -159,15 +164,22 @@ export function MemberFormDialog({
       if (!targetId) {
         console.error("DEBUG: Save attempt without ID", { profile, form });
         // Se ainda não temos ID, tentamos buscar o usuário logado
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (user) {
           targetId = user.id;
         } else {
-          throw new Error("Sua sessão expirou ou o cadastro não foi localizado. Por favor, recarregue a página.");
+          throw new Error(
+            "Sua sessão expirou ou o cadastro não foi localizado. Por favor, recarregue a página.",
+          );
         }
       }
 
-      const { error } = await supabase.from("profiles").update(payload as any).eq("id", targetId);
+      const { error } = await supabase
+        .from("profiles")
+        .update(payload as any)
+        .eq("id", targetId);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -192,11 +204,26 @@ export function MemberFormDialog({
 
         <div className="space-y-8 py-2">
           <Section title="Identificação">
-            <TextField label="Nome completo" value={str("full_name")} onChange={set("full_name")} full />
+            <TextField
+              label="Nome completo"
+              value={str("full_name")}
+              onChange={set("full_name")}
+              full
+            />
             <TextField label="E-mail" type="email" value={str("email")} onChange={set("email")} />
             <TextField label="Telefone / WhatsApp" value={str("phone")} onChange={set("phone")} />
-            <TextField label="Data de nascimento" type="date" value={str("birth_date")} onChange={set("birth_date")} />
-            <SelectField label="Sexo" value={str("gender")} onChange={set("gender")} options={GENDERS} />
+            <TextField
+              label="Data de nascimento"
+              type="date"
+              value={str("birth_date")}
+              onChange={set("birth_date")}
+            />
+            <SelectField
+              label="Sexo"
+              value={str("gender")}
+              onChange={set("gender")}
+              options={GENDERS}
+            />
             <TextField label="CPF" value={str("cpf")} onChange={set("cpf")} maxLength={14} />
             <TextField label="RG" value={str("rg")} onChange={set("rg")} maxLength={20} />
             <SelectField
@@ -215,14 +242,33 @@ export function MemberFormDialog({
               onChange={set("marital_status")}
               options={MARITAL_STATUS}
             />
-            <TextField label="Nome do cônjuge" value={str("spouse_name")} onChange={set("spouse_name")} />
-            <TextField label="Data de casamento" type="date" value={str("wedding_date")} onChange={set("wedding_date")} />
-            <TextField label="Nome do pai" value={str("father_name")} onChange={set("father_name")} />
-            <TextField label="Nome da mãe" value={str("mother_name")} onChange={set("mother_name")} />
+            <TextField
+              label="Nome do cônjuge"
+              value={str("spouse_name")}
+              onChange={set("spouse_name")}
+            />
+            <TextField
+              label="Data de casamento"
+              type="date"
+              value={str("wedding_date")}
+              onChange={set("wedding_date")}
+            />
+            <TextField
+              label="Nome do pai"
+              value={str("father_name")}
+              onChange={set("father_name")}
+            />
+            <TextField
+              label="Nome da mãe"
+              value={str("mother_name")}
+              onChange={set("mother_name")}
+            />
             <Field label="Possui filhos">
               <div className="flex items-center gap-3 h-9">
                 <Switch checked={!!form.has_children} onCheckedChange={set("has_children")} />
-                <span className="text-sm text-muted-foreground">{form.has_children ? "Sim" : "Não"}</span>
+                <span className="text-sm text-muted-foreground">
+                  {form.has_children ? "Sim" : "Não"}
+                </span>
               </div>
             </Field>
             {form.has_children && (
@@ -255,7 +301,12 @@ export function MemberFormDialog({
               />
             </Field>
             <TextField label="Rua" value={str("street")} onChange={set("street")} />
-            <TextField label="Número" value={str("street_number")} onChange={set("street_number")} maxLength={10} />
+            <TextField
+              label="Número"
+              value={str("street_number")}
+              onChange={set("street_number")}
+              maxLength={10}
+            />
             <TextField label="Complemento" value={str("complement")} onChange={set("complement")} />
             <TextField label="Bairro" value={str("neighborhood")} onChange={set("neighborhood")} />
             <TextField label="Cidade" value={str("city")} onChange={set("city")} />
@@ -268,26 +319,58 @@ export function MemberFormDialog({
           </Section>
 
           <Section title="Contatos de emergência">
-            <TextField label="Nome do contato" value={str("emergency_contact_name")} onChange={set("emergency_contact_name")} />
-            <TextField label="Telefone" value={str("emergency_contact_phone")} onChange={set("emergency_contact_phone")} />
-            <TextField label="Parentesco" value={str("emergency_contact_relation")} onChange={set("emergency_contact_relation")} />
+            <TextField
+              label="Nome do contato"
+              value={str("emergency_contact_name")}
+              onChange={set("emergency_contact_name")}
+            />
+            <TextField
+              label="Telefone"
+              value={str("emergency_contact_phone")}
+              onChange={set("emergency_contact_phone")}
+            />
+            <TextField
+              label="Parentesco"
+              value={str("emergency_contact_relation")}
+              onChange={set("emergency_contact_relation")}
+            />
           </Section>
 
           <Section title="Vida cristã">
-            <TextField label="Data de conversão" type="date" value={str("conversion_date")} onChange={set("conversion_date")} />
+            <TextField
+              label="Data de conversão"
+              type="date"
+              value={str("conversion_date")}
+              onChange={set("conversion_date")}
+            />
             <Field label="Batizado(a)">
               <div className="flex items-center gap-3 h-9">
                 <Switch checked={!!form.is_baptized} onCheckedChange={set("is_baptized")} />
-                <span className="text-sm text-muted-foreground">{form.is_baptized ? "Sim" : "Não"}</span>
+                <span className="text-sm text-muted-foreground">
+                  {form.is_baptized ? "Sim" : "Não"}
+                </span>
               </div>
             </Field>
             {form.is_baptized && (
               <>
-                <TextField label="Data do batismo" type="date" value={str("baptism_date")} onChange={set("baptism_date")} />
-                <TextField label="Igreja do batismo" value={str("baptism_church")} onChange={set("baptism_church")} />
+                <TextField
+                  label="Data do batismo"
+                  type="date"
+                  value={str("baptism_date")}
+                  onChange={set("baptism_date")}
+                />
+                <TextField
+                  label="Igreja do batismo"
+                  value={str("baptism_church")}
+                  onChange={set("baptism_church")}
+                />
               </>
             )}
-            <TextField label="Igreja anterior" value={str("previous_church")} onChange={set("previous_church")} />
+            <TextField
+              label="Igreja anterior"
+              value={str("previous_church")}
+              onChange={set("previous_church")}
+            />
           </Section>
 
           <Section title="Informações de saúde">
@@ -361,7 +444,12 @@ export function MemberFormDialog({
                 onChange={set("membership_type")}
                 options={MEMBERSHIP_TYPES}
               />
-              <TextField label="Membro desde" type="date" value={str("member_since")} onChange={set("member_since")} />
+              <TextField
+                label="Membro desde"
+                type="date"
+                value={str("member_since")}
+                onChange={set("member_since")}
+              />
               <SelectField
                 label="Situação atual"
                 value={str("membership_status")}

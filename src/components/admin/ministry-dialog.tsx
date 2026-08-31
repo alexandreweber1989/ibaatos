@@ -7,7 +7,6 @@ import { slugify, useProfileOptions } from "@/lib/use-profiles";
 import { ChurchSelect } from "./church-select";
 import { MemberPicker } from "./member-picker";
 
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -175,7 +174,11 @@ export function MinistryDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Nome</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ministério de Louvor" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Ministério de Louvor"
+            />
           </div>
           <ChurchSelect value={churchId} onChange={setChurchId} />
 
@@ -187,11 +190,13 @@ export function MinistryDialog({
             </p>
           </div>
 
-
-
           <div className="space-y-2">
             <Label>Descrição</Label>
-            <Textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Encontros</Label>
@@ -224,7 +229,6 @@ export function EditMinistryButton({ ministry }: { ministry: MinistryRecord }) {
   );
 }
 
-
 /** Adiciona um servo ao ministério, com função opcional. */
 export function MinistryMemberDialog({ ministryId }: { ministryId: string }) {
   const [open, setOpen] = useState(false);
@@ -254,7 +258,9 @@ export function MinistryMemberDialog({ ministryId }: { ministryId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm"><UserPlus className="h-4 w-4" /> Adicionar servo</Button>
+        <Button variant="outline" size="sm">
+          <UserPlus className="h-4 w-4" /> Adicionar servo
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -264,17 +270,25 @@ export function MinistryMemberDialog({ ministryId }: { ministryId: string }) {
           <div className="space-y-2">
             <Label>Pessoa</Label>
             <Select value={userId} onValueChange={setUserId}>
-              <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione" />
+              </SelectTrigger>
               <SelectContent className="max-h-60">
                 {profiles?.map((p) => (
-                  <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>
+                  <SelectItem key={p.id} value={p.id}>
+                    {p.full_name}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
             <Label>Função</Label>
-            <Input value={fn} onChange={(e) => setFn(e.target.value)} placeholder="Coordenador(a)" />
+            <Input
+              value={fn}
+              onChange={(e) => setFn(e.target.value)}
+              placeholder="Coordenador(a)"
+            />
           </div>
           <Button className="w-full" disabled={add.isPending} onClick={() => add.mutate()}>
             Adicionar

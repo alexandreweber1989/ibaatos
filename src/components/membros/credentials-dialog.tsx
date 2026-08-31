@@ -113,12 +113,17 @@ export function MemberCredentialsDialog({
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Deixe em branco para manter"
               />
-              <Button type="button" variant="outline" onClick={() => setPassword(suggestPassword())}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setPassword(suggestPassword())}
+              >
                 Gerar
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Mínimo de 8 caracteres. Anote e entregue a senha ao membro — ela não fica visível depois.
+              Mínimo de 8 caracteres. Anote e entregue a senha ao membro — ela não fica visível
+              depois.
             </p>
           </div>
           <Button className="w-full" disabled={save.isPending} onClick={() => save.mutate()}>

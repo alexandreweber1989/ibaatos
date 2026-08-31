@@ -18,7 +18,9 @@ export function CantinaMyReservations() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("canteen_reservations")
-        .select("*, menu:canteen_menus(title, service_date), items:canteen_reservation_items(id, item_name, quantity, unit_price_cents)")
+        .select(
+          "*, menu:canteen_menus(title, service_date), items:canteen_reservation_items(id, item_name, quantity, unit_price_cents)",
+        )
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -44,7 +46,12 @@ export function CantinaMyReservations() {
   if (isLoading) {
     return (
       <div className="grid md:grid-cols-2 gap-6">
-        {[1, 2].map(i => <div key={i} className="h-64 bg-muted/20 rounded-[2rem] animate-pulse border border-border/50" />)}
+        {[1, 2].map((i) => (
+          <div
+            key={i}
+            className="h-64 bg-muted/20 rounded-[2rem] animate-pulse border border-border/50"
+          />
+        ))}
       </div>
     );
   }
@@ -56,7 +63,9 @@ export function CantinaMyReservations() {
           <Utensils className="h-8 w-8 text-muted-foreground/30" />
         </div>
         <h3 className="text-xl font-serif mb-2">Nenhuma reserva encontrada</h3>
-        <p className="text-muted-foreground text-sm font-light">Você ainda não reservou nada em nossa cantina.</p>
+        <p className="text-muted-foreground text-sm font-light">
+          Você ainda não reservou nada em nossa cantina.
+        </p>
       </div>
     );
   }
@@ -66,8 +75,10 @@ export function CantinaMyReservations() {
       <AnimatePresence mode="popLayout">
         {reservations?.map((r: any, idx) => {
           const status = RESERVATION_STATUS[r.status];
-          const serviceDate = r.menu?.service_date ? new Date(r.menu.service_date + "T12:00:00") : null;
-          
+          const serviceDate = r.menu?.service_date
+            ? new Date(r.menu.service_date + "T12:00:00")
+            : null;
+
           return (
             <motion.div
               key={r.id}
@@ -77,22 +88,26 @@ export function CantinaMyReservations() {
               className="group bg-card border border-border/50 rounded-[2.5rem] p-8 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden flex flex-col"
             >
               <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              
+
               <div className="flex flex-wrap items-center justify-between gap-4 mb-6 relative">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-2xl bg-muted/30 flex items-center justify-center font-serif text-2xl text-primary">
                     {r.pickup_code}
                   </div>
                   <div>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground block">Mesa</span>
-                    <span className="font-serif text-xl text-foreground tracking-tight line-clamp-1">{r.menu?.title || "Reserva de Culto"}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground block">
+                      Mesa
+                    </span>
+                    <span className="font-serif text-xl text-foreground tracking-tight line-clamp-1">
+                      {r.menu?.title || "Reserva de Culto"}
+                    </span>
                   </div>
                 </div>
-                <Badge 
-                  variant="outline" 
+                <Badge
+                  variant="outline"
                   className={cn(
                     "font-mono text-[9px] uppercase tracking-widest px-3 py-1 border-opacity-30",
-                    status.className
+                    status.className,
                   )}
                 >
                   {status.label}
@@ -102,21 +117,34 @@ export function CantinaMyReservations() {
               {serviceDate && (
                 <div className="flex items-center gap-2 mb-6 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70">
                   <Calendar className="h-3 w-3" />
-                  {serviceDate.toLocaleDateString("pt-BR", { weekday: 'long', day: 'numeric', month: 'long' })}
+                  {serviceDate.toLocaleDateString("pt-BR", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                  })}
                 </div>
               )}
 
               <div className="space-y-4 mb-8 flex-1">
                 <div className="space-y-2">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground block opacity-60">Pedido</span>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground block opacity-60">
+                    Pedido
+                  </span>
                   <ul className="space-y-2">
                     {r.items?.map((i: any) => (
-                      <li key={i.id} className="flex justify-between items-center text-sm font-light">
+                      <li
+                        key={i.id}
+                        className="flex justify-between items-center text-sm font-light"
+                      >
                         <div className="flex items-center gap-2">
                           <span className="h-1 w-1 rounded-full bg-primary/30" />
-                          <span>{i.quantity}× {i.item_name}</span>
+                          <span>
+                            {i.quantity}× {i.item_name}
+                          </span>
                         </div>
-                        <span className="font-mono text-xs text-muted-foreground">{formatBRL(i.unit_price_cents * i.quantity)}</span>
+                        <span className="font-mono text-xs text-muted-foreground">
+                          {formatBRL(i.unit_price_cents * i.quantity)}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -124,8 +152,12 @@ export function CantinaMyReservations() {
 
                 <div className="pt-4 border-t border-border/50">
                   <div className="flex items-baseline justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Pagar na Retirada</span>
-                    <span className="font-serif text-2xl text-primary">{formatBRL(r.total_cents)}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                      Pagar na Retirada
+                    </span>
+                    <span className="font-serif text-2xl text-primary">
+                      {formatBRL(r.total_cents)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -136,7 +168,8 @@ export function CantinaMyReservations() {
                     <div className="flex gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/10">
                       <Info className="h-5 w-5 text-primary flex-shrink-0" />
                       <p className="text-[11px] text-primary/80 leading-relaxed font-light">
-                        Sua reserva está garantida. Realize o pagamento diretamente na cantina para retirar seus itens.
+                        Sua reserva está garantida. Realize o pagamento diretamente na cantina para
+                        retirar seus itens.
                       </p>
                     </div>
                     <button

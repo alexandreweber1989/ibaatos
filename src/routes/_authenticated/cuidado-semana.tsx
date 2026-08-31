@@ -112,7 +112,9 @@ function waLink(phone: string | null, nome: string): string | null {
   let digits = phone.replace(/\D/g, "");
   if (!digits) return null;
   if (!digits.startsWith("55")) digits = "55" + digits;
-  const msg = encodeURIComponent(`Olá, ${firstName(nome)}! Tudo bem? Passando para saber de você. 🙏`);
+  const msg = encodeURIComponent(
+    `Olá, ${firstName(nome)}! Tudo bem? Passando para saber de você. 🙏`,
+  );
   return `https://wa.me/${digits}?text=${msg}`;
 }
 
@@ -148,10 +150,7 @@ function CuidadoSemanaPage() {
 
   // Mesas que este líder cuida (ou todas, para o admin geral).
   const myMesaIds = useMemo(
-    () =>
-      roles
-        .filter((r) => r.role === "lider_mesa" && r.mesa_id)
-        .map((r) => r.mesa_id as string),
+    () => roles.filter((r) => r.role === "lider_mesa" && r.mesa_id).map((r) => r.mesa_id as string),
     [roles],
   );
 
@@ -160,7 +159,10 @@ function CuidadoSemanaPage() {
     queryFn: async () => {
       let query = supabase.from("mesas").select("id, name").order("name");
       if (!isAdmin) {
-        query = query.in("id", myMesaIds.length ? myMesaIds : ["00000000-0000-0000-0000-000000000000"]);
+        query = query.in(
+          "id",
+          myMesaIds.length ? myMesaIds : ["00000000-0000-0000-0000-000000000000"],
+        );
       }
       const { data, error } = await query;
       if (error) throw error;
@@ -225,19 +227,17 @@ function CuidadoSemanaPage() {
   const registrar = useMutation({
     mutationFn: async () => {
       if (!target || !user) return;
-      const { error } = await (supabase as any)
-        .from("leader_touchpoints")
-        .upsert(
-          {
-            leader_id: user.id,
-            member_id: target.user_id,
-            mesa_id: activeMesa,
-            week_start: weekStart,
-            channel,
-            note: note.trim() || null,
-          },
-          { onConflict: "leader_id,member_id,week_start" },
-        );
+      const { error } = await (supabase as any).from("leader_touchpoints").upsert(
+        {
+          leader_id: user.id,
+          member_id: target.user_id,
+          mesa_id: activeMesa,
+          week_start: weekStart,
+          channel,
+          note: note.trim() || null,
+        },
+        { onConflict: "leader_id,member_id,week_start" },
+      );
       if (error) throw error;
     },
     onSuccess: () => {
@@ -307,7 +307,8 @@ function CuidadoSemanaPage() {
             <Sprout className="h-8 w-8 mx-auto text-muted-foreground" />
             <p className="mt-3 font-serif text-2xl">Nenhuma mesa sob seu cuidado</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Este painel aparece para quem lidera uma mesa. Fale com a liderança para ser vinculado.
+              Este painel aparece para quem lidera uma mesa. Fale com a liderança para ser
+              vinculado.
             </p>
           </div>
         ) : (
@@ -369,12 +370,18 @@ function CuidadoSemanaPage() {
                             <div className="min-w-0 flex-1">
                               <p className="truncate font-medium leading-tight">{m.full_name}</p>
                               <p className="text-xs text-muted-foreground">
-                                {CHURCH_FUNCTION_LABEL[m.role] ?? m.role} · {tempoDesde(lastContact.get(m.user_id) ?? null)}
+                                {CHURCH_FUNCTION_LABEL[m.role] ?? m.role} ·{" "}
+                                {tempoDesde(lastContact.get(m.user_id) ?? null)}
                               </p>
                             </div>
                             <div className="flex shrink-0 items-center gap-1.5">
                               {wa && (
-                                <Button variant="ghost" size="icon" asChild aria-label={`WhatsApp de ${firstName(m.full_name)}`}>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  asChild
+                                  aria-label={`WhatsApp de ${firstName(m.full_name)}`}
+                                >
                                   <a href={wa} target="_blank" rel="noopener noreferrer">
                                     <MessageCircle className="h-4 w-4" />
                                   </a>
@@ -422,7 +429,7 @@ function CuidadoSemanaPage() {
                             <div className="min-w-0 flex-1">
                               <p className="truncate font-medium leading-tight">{m.full_name}</p>
                               <p className="text-xs text-muted-foreground">
-                                {t ? CHANNEL_LABEL[t.channel] ?? t.channel : "Conversaram"}
+                                {t ? (CHANNEL_LABEL[t.channel] ?? t.channel) : "Conversaram"}
                                 {t?.note ? ` · ${t.note}` : ""}
                               </p>
                             </div>

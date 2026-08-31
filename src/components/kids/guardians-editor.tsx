@@ -82,7 +82,10 @@ export function GuardiansEditor({ value, onChange }: GuardiansEditorProps) {
       )}
 
       {value.map((g, index) => (
-        <div key={g.id || `draft-${index}`} className="border border-border rounded-sm p-4 space-y-3 bg-muted/20">
+        <div
+          key={g.id || `draft-${index}`}
+          className="border border-border rounded-sm p-4 space-y-3 bg-muted/20"
+        >
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="space-y-2">
               <Label className="text-xs">Nome completo</Label>

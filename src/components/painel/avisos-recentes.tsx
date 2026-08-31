@@ -50,7 +50,10 @@ export function AvisosRecentes() {
                     {formatData(a.published_at ?? a.created_at)}
                   </span>
                   {!lidos?.has(a.id) && (
-                    <span className="ml-auto h-2 w-2 rounded-full bg-primary" aria-label="Não lido" />
+                    <span
+                      className="ml-auto h-2 w-2 rounded-full bg-primary"
+                      aria-label="Não lido"
+                    />
                   )}
                 </div>
                 <div className="font-serif text-lg mt-1 leading-tight">{a.title}</div>

@@ -13,7 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useServerFn } from "@tanstack/react-start";
 import { updateUserPassword } from "@/lib/auth-admin.functions";
 
-
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
@@ -39,7 +38,6 @@ function AuthPage() {
   const [adminSetupEmail, setAdminSetupEmail] = useState("alew15_7@hotmail.com");
   const [adminSetupPassword, setAdminSetupPassword] = useState("");
   const updatePasswordFn = useServerFn(updateUserPassword);
-
 
   useEffect(() => {
     if (user) navigate({ to: "/dashboard", replace: true });
@@ -93,21 +91,21 @@ function AuthPage() {
   async function handleGoogle() {
     try {
       setLoading(true);
-      
+
       const callbackUrl = `${window.location.origin}/auth/callback`;
       console.log("Iniciando OAuth com Google. Callback:", callbackUrl);
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { 
+        options: {
           redirectTo: callbackUrl,
           queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          }
+            access_type: "offline",
+            prompt: "consent",
+          },
         },
       });
-      
+
       if (error) {
         console.error("Erro no signInWithOAuth:", error);
         toast.error("Erro ao conectar com Google: " + error.message);
@@ -132,11 +130,15 @@ function AuthPage() {
     setLoading(false);
     if (error) {
       if (error.message.includes("Email rate limit exceeded")) {
-        return toast.error("Limite de envios atingido. Tente novamente em alguns minutos ou verifique sua caixa de spam.");
+        return toast.error(
+          "Limite de envios atingido. Tente novamente em alguns minutos ou verifique sua caixa de spam.",
+        );
       }
       return toast.error(error.message);
     }
-    toast.success("Enviamos um link de redefinição para o seu e-mail. Verifique também a pasta de Spam.");
+    toast.success(
+      "Enviamos um link de redefinição para o seu e-mail. Verifique também a pasta de Spam.",
+    );
   }
 
   async function handleAdminSetup(e: React.FormEvent) {
@@ -154,7 +156,6 @@ function AuthPage() {
       setLoading(false);
     }
   }
-
 
   return (
     <div className="min-h-screen bg-background text-foreground grid grid-cols-1 lg:grid-cols-2">
@@ -191,7 +192,6 @@ function AuthPage() {
               <TabsTrigger value="signin">Entrar</TabsTrigger>
               <TabsTrigger value="signup">Solicitar</TabsTrigger>
             </TabsList>
-
 
             <TabsContent value="signin">
               <form onSubmit={handleSignIn} className="space-y-4 mt-6">
@@ -275,9 +275,7 @@ function AuthPage() {
                 </Button>
               </form>
             </TabsContent>
-
           </Tabs>
-
 
           <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
             <div className="h-px flex-1 bg-border" />
@@ -285,10 +283,10 @@ function AuthPage() {
             <div className="h-px flex-1 bg-border" />
           </div>
 
-          <Button 
-            type="button" 
-            variant="outline" 
-            className="w-full relative overflow-hidden group" 
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full relative overflow-hidden group"
             onClick={handleGoogle}
             loading={loading}
           >

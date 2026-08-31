@@ -264,7 +264,11 @@ export function MemberWizardDialog() {
               />
             </Field>
             <Field label="Telefone / WhatsApp">
-              <Input className="h-12" value={s.phone} onChange={(e) => up({ phone: e.target.value })} />
+              <Input
+                className="h-12"
+                value={s.phone}
+                onChange={(e) => up({ phone: e.target.value })}
+              />
             </Field>
           </div>
         ),
@@ -378,7 +382,10 @@ export function MemberWizardDialog() {
             {(s.marital_status === "casado" || s.marital_status === "uniao_estavel") && (
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Nome do cônjuge">
-                  <Input value={s.spouse_name} onChange={(e) => up({ spouse_name: e.target.value })} />
+                  <Input
+                    value={s.spouse_name}
+                    onChange={(e) => up({ spouse_name: e.target.value })}
+                  />
                 </Field>
                 <Field label="Data do casamento">
                   <Input
@@ -399,8 +406,12 @@ export function MemberWizardDialog() {
         hint: "Opcional — pode ser preenchido depois na ficha do membro.",
         render: (s, up) => (
           <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="CPF"><Input value={s.cpf} onChange={(e) => up({ cpf: e.target.value })} /></Field>
-            <Field label="RG"><Input value={s.rg} onChange={(e) => up({ rg: e.target.value })} /></Field>
+            <Field label="CPF">
+              <Input value={s.cpf} onChange={(e) => up({ cpf: e.target.value })} />
+            </Field>
+            <Field label="RG">
+              <Input value={s.rg} onChange={(e) => up({ rg: e.target.value })} />
+            </Field>
             <Field label="Profissão">
               <Input value={s.profession} onChange={(e) => up({ profession: e.target.value })} />
             </Field>
@@ -444,18 +455,30 @@ export function MemberWizardDialog() {
                 }
               />
             </Field>
-            <Field label="Rua"><Input value={s.street} onChange={(e) => up({ street: e.target.value })} /></Field>
+            <Field label="Rua">
+              <Input value={s.street} onChange={(e) => up({ street: e.target.value })} />
+            </Field>
             <Field label="Número">
-              <Input value={s.street_number} onChange={(e) => up({ street_number: e.target.value })} />
+              <Input
+                value={s.street_number}
+                onChange={(e) => up({ street_number: e.target.value })}
+              />
             </Field>
             <Field label="Complemento">
               <Input value={s.complement} onChange={(e) => up({ complement: e.target.value })} />
             </Field>
             <Field label="Bairro">
-              <Input value={s.neighborhood} onChange={(e) => up({ neighborhood: e.target.value })} />
+              <Input
+                value={s.neighborhood}
+                onChange={(e) => up({ neighborhood: e.target.value })}
+              />
             </Field>
-            <Field label="Cidade"><Input value={s.city} onChange={(e) => up({ city: e.target.value })} /></Field>
-            <Field label="Estado"><Input value={s.state} onChange={(e) => up({ state: e.target.value })} /></Field>
+            <Field label="Cidade">
+              <Input value={s.city} onChange={(e) => up({ city: e.target.value })} />
+            </Field>
+            <Field label="Estado">
+              <Input value={s.state} onChange={(e) => up({ state: e.target.value })} />
+            </Field>
           </div>
         ),
       },
@@ -515,7 +538,10 @@ export function MemberWizardDialog() {
                   />
                 </Field>
                 <Field label="Igreja do batismo">
-                  <Input value={s.baptism_church} onChange={(e) => up({ baptism_church: e.target.value })} />
+                  <Input
+                    value={s.baptism_church}
+                    onChange={(e) => up({ baptism_church: e.target.value })}
+                  />
                 </Field>
               </div>
             )}
@@ -542,7 +568,10 @@ export function MemberWizardDialog() {
                 />
               </Field>
               <Field label="Igreja anterior">
-                <Input value={s.previous_church} onChange={(e) => up({ previous_church: e.target.value })} />
+                <Input
+                  value={s.previous_church}
+                  onChange={(e) => up({ previous_church: e.target.value })}
+                />
               </Field>
             </div>
           </div>
@@ -602,7 +631,11 @@ export function MemberWizardDialog() {
               <Textarea rows={3} value={s.gifts} onChange={(e) => up({ gifts: e.target.value })} />
             </Field>
             <Field label="Disponibilidade">
-              <Textarea rows={2} value={s.availability} onChange={(e) => up({ availability: e.target.value })} />
+              <Textarea
+                rows={2}
+                value={s.availability}
+                onChange={(e) => up({ availability: e.target.value })}
+              />
             </Field>
           </div>
         ),
@@ -627,7 +660,11 @@ export function MemberWizardDialog() {
               </Field>
             </div>
             <Field label="Observações de saúde">
-              <Textarea rows={2} value={s.health_notes} onChange={(e) => up({ health_notes: e.target.value })} />
+              <Textarea
+                rows={2}
+                value={s.health_notes}
+                onChange={(e) => up({ health_notes: e.target.value })}
+              />
             </Field>
             <div className="flex items-center gap-3">
               <Switch checked={s.has_children} onCheckedChange={(v) => up({ has_children: v })} />
@@ -669,7 +706,9 @@ export function MemberWizardDialog() {
                 </dd>
               </div>
               <div>
-                <dt className="text-muted-foreground text-xs uppercase tracking-wider">Tipo de membro</dt>
+                <dt className="text-muted-foreground text-xs uppercase tracking-wider">
+                  Tipo de membro
+                </dt>
                 <dd className="text-foreground">
                   {s.church_function ? CHURCH_FUNCTION_LABEL[s.church_function] : "—"}
                 </dd>
@@ -794,7 +833,11 @@ export function MemberWizardDialog() {
       <DialogContent
         className="sm:max-w-3xl p-0 gap-0 overflow-hidden"
         onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+          if (
+            e.key === "Enter" &&
+            !e.shiftKey &&
+            (e.target as HTMLElement).tagName !== "TEXTAREA"
+          ) {
             e.preventDefault();
             next();
           }

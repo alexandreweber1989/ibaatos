@@ -18,11 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  GUARDIAN_RELATIONS,
-  KIDS_CLASSROOMS,
-  suggestClassroom,
-} from "@/lib/kids";
+import { GUARDIAN_RELATIONS, KIDS_CLASSROOMS, suggestClassroom } from "@/lib/kids";
 
 export const Route = createFileRoute("/kids/visitante")({
   validateSearch: z.object({ kiosk: z.coerce.boolean().optional() }),
@@ -120,19 +116,19 @@ function VisitorPage() {
     }
     const v = parsed.data;
     setSaving(true);
-    
+
     try {
       let documentUrl = null;
-      const fileInput = document.getElementById('doc-upload') as HTMLInputElement;
+      const fileInput = document.getElementById("doc-upload") as HTMLInputElement;
       const file = fileInput?.files?.[0];
 
       if (file) {
-        const fileExt = file.name.split('.').pop();
+        const fileExt = file.name.split(".").pop();
         const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
         const filePath = `visitors/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-          .from('kids-documents-v2')
+          .from("kids-documents-v2")
           .upload(filePath, file);
 
         if (uploadError) {
@@ -143,9 +139,9 @@ function VisitorPage() {
         }
       }
 
-      const response = await fetch('/api/public/kids-visitor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/public/kids-visitor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           child_id: knownChildId,
           child_full_name: v.child_full_name,
@@ -170,7 +166,7 @@ function VisitorPage() {
         const errorData = await response.json().catch(() => ({ error: "Erro desconhecido" }));
         throw new Error(errorData.error || "Falha na requisição");
       }
-      
+
       setDone(true);
     } catch (error: any) {
       console.error("Erro ao enviar cadastro:", error);
@@ -204,13 +200,18 @@ function VisitorPage() {
       <div className="mx-auto w-full max-w-xl lg:max-w-4xl xl:max-w-5xl">
         <header className="relative text-center bg-white rounded-3xl sm:rounded-[3rem] p-6 sm:p-10 lg:p-16 border-4 border-yellow-200 shadow-xl mb-6 sm:mb-10 overflow-hidden">
           <Baby className="h-8 w-8 text-primary mx-auto lg:h-12 lg:w-12" />
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl mt-4 font-bold text-yellow-600 tracking-tight">Bem-vindo ao Kids! 🎨</h1>
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl mt-4 font-bold text-yellow-600 tracking-tight">
+            Bem-vindo ao Kids! 🎨
+          </h1>
           <p className="text-sm sm:text-lg lg:text-xl mt-4 lg:mt-6 text-muted-foreground leading-relaxed">
             Estamos muito felizes em ter vocês aqui!
           </p>
         </header>
 
-        <form onSubmit={submit} className="space-y-6 sm:space-y-8 bg-white rounded-3xl sm:rounded-[3rem] p-6 sm:p-12 lg:p-20 border-4 border-blue-100 shadow-2xl relative">
+        <form
+          onSubmit={submit}
+          className="space-y-6 sm:space-y-8 bg-white rounded-3xl sm:rounded-[3rem] p-6 sm:p-12 lg:p-20 border-4 border-blue-100 shadow-2xl relative"
+        >
           <section className="space-y-4">
             <h2 className="text-xl font-bold">1. Responsável</h2>
             <Field label="Telefone com DDD">
@@ -231,12 +232,21 @@ function VisitorPage() {
                 required
               />
             </Field>
-            
+
             <Field label="Parentesco">
-              <Select value={form.guardian_relation} onValueChange={(v) => set("guardian_relation", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+              <Select
+                value={form.guardian_relation}
+                onValueChange={(v) => set("guardian_relation", v)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {GUARDIAN_RELATIONS.map((r) => <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>)}
+                  {GUARDIAN_RELATIONS.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>
+                      {r.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
@@ -263,9 +273,15 @@ function VisitorPage() {
             </Field>
             <Field label="Turma">
               <Select value={form.classroom} onValueChange={(v) => set("classroom", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {KIDS_CLASSROOMS.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
+                  {KIDS_CLASSROOMS.map((c) => (
+                    <SelectItem key={c.value} value={c.value}>
+                      {c.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
@@ -306,7 +322,15 @@ function VisitorPage() {
  * especialmente quem tem menos firmeza na mao. O id sai de `useId`, entao
  * nenhum ponto de uso precisa mudar.
  */
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
   const gerado = useId();
   const campo = isValidElement(children) ? children : null;
   const id = (campo?.props as { id?: string } | undefined)?.id ?? gerado;
