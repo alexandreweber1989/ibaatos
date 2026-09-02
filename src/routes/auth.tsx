@@ -12,6 +12,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useServerFn } from "@tanstack/react-start";
 import { updateUserPassword } from "@/lib/auth-admin.functions";
+import { requestPasswordRecovery } from "@/lib/password-recovery";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -124,21 +125,23 @@ function AuthPage() {
       return toast.error("Digite seu e-mail acima para receber o link de redefinição.");
     }
     setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth`,
-    });
-    setLoading(false);
-    if (error) {
-      if (error.message.includes("Email rate limit exceeded")) {
-        return toast.error(
-          "Limite de envios atingido. Tente novamente em alguns minutos ou verifique sua caixa de spam.",
-        );
+    try {
+      const result = await requestPasswordRecovery(() =>
+        supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth`,
+        }),
+      );
+
+      if (!result.ok) {
+        return toast.error(result.message);
       }
-      return toast.error(error.message);
+
+      toast.success(
+        "Enviamos um link de redefinição para o seu e-mail. Verifique também a pasta de Spam.",
+      );
+    } finally {
+      setLoading(false);
     }
-    toast.success(
-      "Enviamos um link de redefinição para o seu e-mail. Verifique também a pasta de Spam.",
-    );
   }
 
   async function handleAdminSetup(e: React.FormEvent) {
