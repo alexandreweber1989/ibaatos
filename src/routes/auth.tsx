@@ -128,7 +128,7 @@ function AuthPage() {
     try {
       const result = await requestPasswordRecovery(() =>
         supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/auth`,
+          redirectTo: `${window.location.origin}/auth/redefinir-senha`,
         }),
       );
 
