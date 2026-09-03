@@ -37,6 +37,7 @@ import { Route as AuthenticatedPregacoesRouteImport } from './routes/_authentica
 import { Route as AuthenticatedRedesRouteImport } from './routes/_authenticated/redes'
 import { Route as AuthenticatedVisitantesRouteImport } from './routes/_authenticated/visitantes'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AuthRedefinirSenhaRouteImport } from './routes/auth.redefinir-senha'
 import { Route as KidsVisitanteRouteImport } from './routes/kids.visitante'
 import { Route as AuthenticatedKidsRetiradaCheckinIdRouteImport } from './routes/_authenticated/kids-retirada.$checkinId'
 import { Route as AuthenticatedKidsRelatoriosRouteImport } from './routes/_authenticated/kids.relatorios'
@@ -191,6 +192,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/callback',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthRedefinirSenhaRoute = AuthRedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => AuthRoute,
+} as any)
 const KidsVisitanteRoute = KidsVisitanteRouteImport.update({
   id: '/kids/visitante',
   path: '/kids/visitante',
@@ -290,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/redes': typeof AuthenticatedRedesRoute
   '/visitantes': typeof AuthenticatedVisitantesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
   '/kids/visitante': typeof KidsVisitanteRoute
   '/kids-retirada/$checkinId': typeof AuthenticatedKidsRetiradaCheckinIdRoute
   '/kids/relatorios': typeof AuthenticatedKidsRelatoriosRoute
@@ -332,6 +339,7 @@ export interface FileRoutesByTo {
   '/redes': typeof AuthenticatedRedesRoute
   '/visitantes': typeof AuthenticatedVisitantesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
   '/kids/visitante': typeof KidsVisitanteRoute
   '/kids-retirada/$checkinId': typeof AuthenticatedKidsRetiradaCheckinIdRoute
   '/kids/relatorios': typeof AuthenticatedKidsRelatoriosRoute
@@ -376,6 +384,7 @@ export interface FileRoutesById {
   '/_authenticated/redes': typeof AuthenticatedRedesRoute
   '/_authenticated/visitantes': typeof AuthenticatedVisitantesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/redefinir-senha': typeof AuthRedefinirSenhaRoute
   '/kids/visitante': typeof KidsVisitanteRoute
   '/_authenticated/kids-retirada/$checkinId': typeof AuthenticatedKidsRetiradaCheckinIdRoute
   '/_authenticated/kids/relatorios': typeof AuthenticatedKidsRelatoriosRoute
@@ -420,6 +429,7 @@ export interface FileRouteTypes {
     | '/redes'
     | '/visitantes'
     | '/auth/callback'
+    | '/auth/redefinir-senha'
     | '/kids/visitante'
     | '/kids-retirada/$checkinId'
     | '/kids/relatorios'
@@ -462,6 +472,7 @@ export interface FileRouteTypes {
     | '/redes'
     | '/visitantes'
     | '/auth/callback'
+    | '/auth/redefinir-senha'
     | '/kids/visitante'
     | '/kids-retirada/$checkinId'
     | '/kids/relatorios'
@@ -505,6 +516,7 @@ export interface FileRouteTypes {
     | '/_authenticated/redes'
     | '/_authenticated/visitantes'
     | '/auth/callback'
+    | '/auth/redefinir-senha'
     | '/kids/visitante'
     | '/_authenticated/kids-retirada/$checkinId'
     | '/_authenticated/kids/relatorios'
@@ -735,6 +747,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/auth/redefinir-senha': {
+      id: '/auth/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/auth/redefinir-senha'
+      preLoaderRoute: typeof AuthRedefinirSenhaRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/kids/visitante': {
       id: '/kids/visitante'
       path: '/kids/visitante'
@@ -902,10 +921,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface AuthRouteChildren {
   AuthCallbackRoute: typeof AuthCallbackRoute
+  AuthRedefinirSenhaRoute: typeof AuthRedefinirSenhaRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCallbackRoute: AuthCallbackRoute,
+  AuthRedefinirSenhaRoute: AuthRedefinirSenhaRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
