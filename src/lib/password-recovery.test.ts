@@ -13,6 +13,17 @@ describe("requestPasswordRecovery", () => {
     });
   });
 
+  it("não expõe uma mensagem estrutural do Supabase ao usuário", async () => {
+    const result = await requestPasswordRecovery(async () => ({
+      error: { message: "{}" },
+    }));
+
+    expect(result).toEqual({
+      ok: false,
+      message: "Não foi possível enviar o link de redefinição. Tente novamente em alguns minutos.",
+    });
+  });
+
   it("traduz o limite de envio mesmo quando a requisição é rejeitada", async () => {
     const result = await requestPasswordRecovery(async () => {
       throw new Error("Email rate limit exceeded");

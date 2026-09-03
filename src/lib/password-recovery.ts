@@ -15,7 +15,10 @@ const FALLBACK_MESSAGE =
   "Não foi possível enviar o link de redefinição. Tente novamente em alguns minutos.";
 
 function failedRecovery(message: unknown): PasswordRecoveryResult {
-  const safeMessage = typeof message === "string" && message ? message : FALLBACK_MESSAGE;
+  const normalizedMessage = typeof message === "string" ? message.trim() : "";
+  const safeMessage = normalizedMessage && normalizedMessage !== "{}"
+    ? normalizedMessage
+    : FALLBACK_MESSAGE;
 
   if (safeMessage.includes("Email rate limit exceeded")) {
     return {
